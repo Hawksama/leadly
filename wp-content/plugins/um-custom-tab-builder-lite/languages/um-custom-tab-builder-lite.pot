@@ -1,0 +1,1422 @@
+# Copyright (C) 2020 SuitePlugins
+# This file is distributed under the GPLv2.
+msgid ""
+msgstr ""
+"Project-Id-Version: UM Custom Tab Builder Lite 1.0.2\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/um-custom-tab-builder-lite\n"
+"POT-Creation-Date: 2020-07-02 04:12:36+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n1.0.2\n"
+
+#: includes/class-core.php:61 release/1.0.1/includes/class-core.php:61
+#: release/svn/includes/class-core.php:61
+msgid "Add New Tab"
+msgstr ""
+
+#: includes/class-core.php:62 release/1.0.1/includes/class-core.php:62
+#: release/svn/includes/class-core.php:62
+msgid "New Tab"
+msgstr ""
+
+#: includes/class-core.php:63 release/1.0.1/includes/class-core.php:63
+#: release/svn/includes/class-core.php:63
+msgid "Edit Tab"
+msgstr ""
+
+#: includes/class-core.php:64 release/1.0.1/includes/class-core.php:64
+#: release/svn/includes/class-core.php:64
+msgid "View Tab"
+msgstr ""
+
+#: includes/class-core.php:65 release/1.0.1/includes/class-core.php:65
+#: release/svn/includes/class-core.php:65
+msgid "All Tabs"
+msgstr ""
+
+#: includes/class-core.php:66 release/1.0.1/includes/class-core.php:66
+#: release/svn/includes/class-core.php:66
+msgid "Search Tabs"
+msgstr ""
+
+#: includes/class-core.php:67 release/1.0.1/includes/class-core.php:67
+#: release/svn/includes/class-core.php:67
+msgid "Parent Tabs:"
+msgstr ""
+
+#: includes/class-core.php:68 release/1.0.1/includes/class-core.php:68
+#: release/svn/includes/class-core.php:68
+msgid "No tabs found."
+msgstr ""
+
+#: includes/class-core.php:69 release/1.0.1/includes/class-core.php:69
+#: release/svn/includes/class-core.php:69
+msgid "No tabs found in Trash."
+msgstr ""
+
+#: includes/class-core.php:74 release/1.0.1/includes/class-core.php:74
+#: release/svn/includes/class-core.php:74
+msgid "Custom tabs for Ultimate Member."
+msgstr ""
+
+#: includes/class-core.php:100 release/1.0.1/includes/class-core.php:100
+#: release/svn/includes/class-core.php:100
+msgid "Tab Details"
+msgstr ""
+
+#: includes/class-core.php:107 release/1.0.1/includes/class-core.php:107
+#: release/svn/includes/class-core.php:107
+msgid "Icon"
+msgstr ""
+
+#: includes/class-core.php:115 release/1.0.1/includes/class-core.php:115
+#: release/svn/includes/class-core.php:115
+msgid ""
+"Choose the icon to be displayed in the profile tab. Not available for "
+"groups. Scroll to see more options."
+msgstr ""
+
+#: includes/class-core.php:119 release/1.0.1/includes/class-core.php:119
+#: release/svn/includes/class-core.php:119
+msgid "Slug"
+msgstr ""
+
+#: includes/class-core.php:122 release/1.0.1/includes/class-core.php:122
+#: release/svn/includes/class-core.php:122
+msgid "Choose the slug for the tab"
+msgstr ""
+
+#: includes/class-core.php:126 release/1.0.1/includes/class-core.php:126
+#: release/svn/includes/class-core.php:126
+msgid " Private Tab"
+msgstr ""
+
+#: includes/class-core.php:129 release/1.0.1/includes/class-core.php:129
+#: release/svn/includes/class-core.php:129
+msgid "Only owners of the profile can view tab."
+msgstr ""
+
+#: includes/class-core.php:133 release/1.0.1/includes/class-core.php:133
+#: release/svn/includes/class-core.php:133
+msgid "Roles with this tab"
+msgstr ""
+
+#: includes/class-core.php:138 includes/class-core.php:147
+#: release/1.0.1/includes/class-core.php:138
+#: release/1.0.1/includes/class-core.php:147
+#: release/svn/includes/class-core.php:138
+#: release/svn/includes/class-core.php:147
+msgid "Leave unchecked to allow all."
+msgstr ""
+
+#: includes/class-core.php:142 release/1.0.1/includes/class-core.php:142
+#: release/svn/includes/class-core.php:142
+msgid " Roles that can view this tab"
+msgstr ""
+
+#: includes/class-core.php:151 release/1.0.1/includes/class-core.php:151
+#: release/svn/includes/class-core.php:151
+msgid "Profile"
+msgstr ""
+
+#: includes/class-core.php:156 release/1.0.1/includes/class-core.php:156
+#: release/svn/includes/class-core.php:156
+msgid "Tab Type"
+msgstr ""
+
+#: includes/class-core.php:161 release/1.0.1/includes/class-core.php:161
+#: release/svn/includes/class-core.php:161
+msgid ""
+"What type of tab is being created? Pro version and Groups extension needed "
+"to use group tab."
+msgstr ""
+
+#: includes/class-core.php:165 release/1.0.1/includes/class-core.php:165
+#: release/svn/includes/class-core.php:165
+msgid "Content Type"
+msgstr ""
+
+#: includes/class-core.php:169 release/1.0.1/includes/class-core.php:169
+#: release/svn/includes/class-core.php:169
+msgid ""
+"What type of content will be placed in tab? UM Form not available for group "
+"tab types."
+msgstr ""
+
+#: includes/class-core.php:174 includes/class-core.php:199
+#: release/1.0.1/includes/class-core.php:174
+#: release/1.0.1/includes/class-core.php:199
+#: release/svn/includes/class-core.php:174
+#: release/svn/includes/class-core.php:199
+msgid "Shortcode"
+msgstr ""
+
+#: includes/class-core.php:178 release/1.0.1/includes/class-core.php:178
+#: release/svn/includes/class-core.php:178
+msgid "Add shortcodes and shorttags here. Use UM Form type for UM Forms."
+msgstr ""
+
+#: includes/class-core.php:182 includes/class-core.php:200
+#: release/1.0.1/includes/class-core.php:182
+#: release/1.0.1/includes/class-core.php:200
+#: release/svn/includes/class-core.php:182
+#: release/svn/includes/class-core.php:200
+msgid "Content"
+msgstr ""
+
+#: includes/class-core.php:186 release/1.0.1/includes/class-core.php:186
+#: release/svn/includes/class-core.php:186
+msgid "Add html content, shortcodes and shorttags here."
+msgstr ""
+
+#: release/1.0.1/um-custom-tab-builder-lite.php:307
+#: release/svn/um-custom-tab-builder-lite.php:307
+#: um-custom-tab-builder-lite.php:307
+msgid ""
+"UM Custom Tab Builder is missing requirements and has been <a "
+"href=\"%s\">deactivated</a>. Please make sure all requirements are "
+"available."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:115
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:115
+#: vendor/cmb2/cmb2/example-functions.php:115
+msgid "Test Metabox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:148
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:492
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:148
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:492
+#: vendor/cmb2/cmb2/example-functions.php:148
+#: vendor/cmb2/cmb2/example-functions.php:492
+msgid "Test Text"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:149
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:162
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:175
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:182
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:195
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:203
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:212
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:220
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:235
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:243
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:251
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:268
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:277
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:293
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:300
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:307
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:332
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:345
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:358
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:370
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:384
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:392
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:401
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:408
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:422
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:493
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:583
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:591
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:598
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:605
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:612
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:619
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:626
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:652
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:660
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:667
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:716
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:149
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:162
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:175
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:182
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:195
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:203
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:212
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:220
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:235
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:243
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:251
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:268
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:277
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:293
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:300
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:307
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:332
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:345
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:358
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:370
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:384
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:392
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:401
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:408
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:422
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:493
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:583
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:591
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:598
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:605
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:612
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:619
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:626
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:652
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:660
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:667
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:716
+#: vendor/cmb2/cmb2/example-functions.php:149
+#: vendor/cmb2/cmb2/example-functions.php:162
+#: vendor/cmb2/cmb2/example-functions.php:175
+#: vendor/cmb2/cmb2/example-functions.php:182
+#: vendor/cmb2/cmb2/example-functions.php:195
+#: vendor/cmb2/cmb2/example-functions.php:203
+#: vendor/cmb2/cmb2/example-functions.php:212
+#: vendor/cmb2/cmb2/example-functions.php:220
+#: vendor/cmb2/cmb2/example-functions.php:235
+#: vendor/cmb2/cmb2/example-functions.php:243
+#: vendor/cmb2/cmb2/example-functions.php:251
+#: vendor/cmb2/cmb2/example-functions.php:268
+#: vendor/cmb2/cmb2/example-functions.php:277
+#: vendor/cmb2/cmb2/example-functions.php:293
+#: vendor/cmb2/cmb2/example-functions.php:300
+#: vendor/cmb2/cmb2/example-functions.php:307
+#: vendor/cmb2/cmb2/example-functions.php:332
+#: vendor/cmb2/cmb2/example-functions.php:345
+#: vendor/cmb2/cmb2/example-functions.php:358
+#: vendor/cmb2/cmb2/example-functions.php:370
+#: vendor/cmb2/cmb2/example-functions.php:384
+#: vendor/cmb2/cmb2/example-functions.php:392
+#: vendor/cmb2/cmb2/example-functions.php:401
+#: vendor/cmb2/cmb2/example-functions.php:408
+#: vendor/cmb2/cmb2/example-functions.php:422
+#: vendor/cmb2/cmb2/example-functions.php:493
+#: vendor/cmb2/cmb2/example-functions.php:583
+#: vendor/cmb2/cmb2/example-functions.php:591
+#: vendor/cmb2/cmb2/example-functions.php:598
+#: vendor/cmb2/cmb2/example-functions.php:605
+#: vendor/cmb2/cmb2/example-functions.php:612
+#: vendor/cmb2/cmb2/example-functions.php:619
+#: vendor/cmb2/cmb2/example-functions.php:626
+#: vendor/cmb2/cmb2/example-functions.php:652
+#: vendor/cmb2/cmb2/example-functions.php:660
+#: vendor/cmb2/cmb2/example-functions.php:667
+#: vendor/cmb2/cmb2/example-functions.php:716
+msgid "field description (optional)"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:161
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:161
+#: vendor/cmb2/cmb2/example-functions.php:161
+msgid "Test Text Small"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:174
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:174
+#: vendor/cmb2/cmb2/example-functions.php:174
+msgid "Test Text Medium"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:181
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:181
+#: vendor/cmb2/cmb2/example-functions.php:181
+msgid "Read-only Disabled Field"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:185
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:185
+#: vendor/cmb2/cmb2/example-functions.php:185
+msgid "Hey there, I'm a read-only field"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:194
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:194
+#: vendor/cmb2/cmb2/example-functions.php:194
+msgid "Custom Rendered Field"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:202
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:202
+#: vendor/cmb2/cmb2/example-functions.php:202
+msgid "Website URL"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:211
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:211
+#: vendor/cmb2/cmb2/example-functions.php:211
+msgid "Test Text Email"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:219
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:219
+#: vendor/cmb2/cmb2/example-functions.php:219
+msgid "Test Time"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:227
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:228
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:227
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:228
+#: vendor/cmb2/cmb2/example-functions.php:227
+#: vendor/cmb2/cmb2/example-functions.php:228
+msgid "Time zone"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:234
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:234
+#: vendor/cmb2/cmb2/example-functions.php:234
+msgid "Test Date Picker"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:242
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:242
+#: vendor/cmb2/cmb2/example-functions.php:242
+msgid "Test Date Picker (UNIX timestamp)"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:250
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:250
+#: vendor/cmb2/cmb2/example-functions.php:250
+msgid "Test Date/Time Picker Combo (UNIX timestamp)"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:267
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:267
+#: vendor/cmb2/cmb2/example-functions.php:267
+msgid "Test Money"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:276
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:276
+#: vendor/cmb2/cmb2/example-functions.php:276
+msgid "Test Color Picker"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:292
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:292
+#: vendor/cmb2/cmb2/example-functions.php:292
+msgid "Test Text Area"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:299
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:299
+#: vendor/cmb2/cmb2/example-functions.php:299
+msgid "Test Text Area Small"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:306
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:306
+#: vendor/cmb2/cmb2/example-functions.php:306
+msgid "Test Text Area for Code"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:324
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:324
+#: vendor/cmb2/cmb2/example-functions.php:324
+msgid "Test Title Weeeee"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:325
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:325
+#: vendor/cmb2/cmb2/example-functions.php:325
+msgid "This is a title description"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:331
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:331
+#: vendor/cmb2/cmb2/example-functions.php:331
+msgid "Test Select"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:337
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:350
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:362
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:337
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:350
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:362
+#: vendor/cmb2/cmb2/example-functions.php:337
+#: vendor/cmb2/cmb2/example-functions.php:350
+#: vendor/cmb2/cmb2/example-functions.php:362
+msgid "Option One"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:338
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:351
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:363
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:338
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:351
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:363
+#: vendor/cmb2/cmb2/example-functions.php:338
+#: vendor/cmb2/cmb2/example-functions.php:351
+#: vendor/cmb2/cmb2/example-functions.php:363
+msgid "Option Two"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:339
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:352
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:364
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:339
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:352
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:364
+#: vendor/cmb2/cmb2/example-functions.php:339
+#: vendor/cmb2/cmb2/example-functions.php:352
+#: vendor/cmb2/cmb2/example-functions.php:364
+msgid "Option Three"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:344
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:344
+#: vendor/cmb2/cmb2/example-functions.php:344
+msgid "Test Radio inline"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:357
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:357
+#: vendor/cmb2/cmb2/example-functions.php:357
+msgid "Test Radio"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:369
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:369
+#: vendor/cmb2/cmb2/example-functions.php:369
+msgid "Test Taxonomy Radio"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:383
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:383
+#: vendor/cmb2/cmb2/example-functions.php:383
+msgid "Test Taxonomy Select"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:391
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:391
+#: vendor/cmb2/cmb2/example-functions.php:391
+msgid "Test Taxonomy Multi Checkbox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:400
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:400
+#: vendor/cmb2/cmb2/example-functions.php:400
+msgid "Test Checkbox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:407
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:407
+#: vendor/cmb2/cmb2/example-functions.php:407
+msgid "Test Multi Checkbox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:413
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:413
+#: vendor/cmb2/cmb2/example-functions.php:413
+msgid "Check One"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:414
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:414
+#: vendor/cmb2/cmb2/example-functions.php:414
+msgid "Check Two"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:415
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:415
+#: vendor/cmb2/cmb2/example-functions.php:415
+msgid "Check Three"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:421
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:421
+#: vendor/cmb2/cmb2/example-functions.php:421
+msgid "Test wysiwyg"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:431
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:431
+#: vendor/cmb2/cmb2/example-functions.php:431
+msgid "Test Image"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:432
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:432
+#: vendor/cmb2/cmb2/example-functions.php:432
+msgid "Upload an image or enter a URL."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:438
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:438
+#: vendor/cmb2/cmb2/example-functions.php:438
+msgid "Multiple Files"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:439
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:439
+#: vendor/cmb2/cmb2/example-functions.php:439
+msgid "Upload or add multiple images/attachments."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:446
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:446
+#: vendor/cmb2/cmb2/example-functions.php:446
+msgid "oEmbed"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:449
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:449
+#: vendor/cmb2/cmb2/example-functions.php:449
+#. translators: %s: link to codex.wordpress.org/Embeds
+msgid "Enter a youtube, twitter, or instagram URL. Supports services listed at %s."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:481
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:481
+#: vendor/cmb2/cmb2/example-functions.php:481
+msgid "About Page Metabox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:511
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:511
+#: vendor/cmb2/cmb2/example-functions.php:511
+msgid "Repeating Field Group"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:519
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:519
+#: vendor/cmb2/cmb2/example-functions.php:519
+msgid "Generates reusable form entries"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:521
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:521
+#: vendor/cmb2/cmb2/example-functions.php:521
+msgid "Entry {#}"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:522
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:522
+#: vendor/cmb2/cmb2/example-functions.php:522
+msgid "Add Another Entry"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:523
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:523
+#: vendor/cmb2/cmb2/example-functions.php:523
+msgid "Remove Entry"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:537
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:537
+#: vendor/cmb2/cmb2/example-functions.php:537
+msgid "Entry Title"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:544
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:544
+#: vendor/cmb2/cmb2/example-functions.php:544
+msgid "Description"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:545
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:545
+#: vendor/cmb2/cmb2/example-functions.php:545
+msgid "Write a short description for this entry"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:551
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:551
+#: vendor/cmb2/cmb2/example-functions.php:551
+msgid "Entry Image"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:557
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:557
+#: vendor/cmb2/cmb2/example-functions.php:557
+msgid "Image Caption"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:575
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:575
+#: vendor/cmb2/cmb2/example-functions.php:575
+msgid "User Profile Metabox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:582
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:651
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:582
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:651
+#: vendor/cmb2/cmb2/example-functions.php:582
+#: vendor/cmb2/cmb2/example-functions.php:651
+msgid "Extra Info"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:590
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:590
+#: vendor/cmb2/cmb2/example-functions.php:590
+msgid "Avatar"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:597
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:597
+#: vendor/cmb2/cmb2/example-functions.php:597
+msgid "Facebook URL"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:604
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:604
+#: vendor/cmb2/cmb2/example-functions.php:604
+msgid "Twitter URL"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:611
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:611
+#: vendor/cmb2/cmb2/example-functions.php:611
+msgid "Google+ URL"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:618
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:618
+#: vendor/cmb2/cmb2/example-functions.php:618
+msgid "Linkedin URL"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:625
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:625
+#: vendor/cmb2/cmb2/example-functions.php:625
+msgid "User Field"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:644
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:644
+#: vendor/cmb2/cmb2/example-functions.php:644
+msgid "Category Metabox"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:659
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:659
+#: vendor/cmb2/cmb2/example-functions.php:659
+msgid "Term Image"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:666
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:666
+#: vendor/cmb2/cmb2/example-functions.php:666
+msgid "Arbitrary Term Field"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:685
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:685
+#: vendor/cmb2/cmb2/example-functions.php:685
+msgid "Theme Options"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:715
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:715
+#: vendor/cmb2/cmb2/example-functions.php:715
+msgid "Site Background Color"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:752
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:752
+#: vendor/cmb2/cmb2/example-functions.php:752
+msgid "%s &mdash; Updated!"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:784
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:784
+#: vendor/cmb2/cmb2/example-functions.php:784
+msgid "REST Test Box"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:793
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:793
+#: vendor/cmb2/cmb2/example-functions.php:793
+msgid "REST Test Text"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:794
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:794
+#: vendor/cmb2/cmb2/example-functions.php:794
+msgid "Will show in the REST API for this box and for pages."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:800
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:800
+#: vendor/cmb2/cmb2/example-functions.php:800
+msgid "REST Editable Test Text"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/example-functions.php:801
+#: release/svn/vendor/cmb2/cmb2/example-functions.php:801
+#: vendor/cmb2/cmb2/example-functions.php:801
+msgid "Will show in REST API \"editable\" contexts only (`POST` requests)."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2.php:199
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2.php:199
+#: vendor/cmb2/cmb2/includes/CMB2.php:199
+msgid "Metabox configuration is required to have an ID parameter."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2.php:609
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2.php:609
+#: vendor/cmb2/cmb2/includes/CMB2.php:609
+msgid "Click to toggle"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:75
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:75
+#: vendor/cmb2/cmb2/includes/CMB2_Ajax.php:75
+msgid "Please Try Again"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:181
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:181
+#: vendor/cmb2/cmb2/includes/CMB2_Ajax.php:181
+msgid "Remove Embed"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:189
+#: release/1.0.1/vendor/cmb2/cmb2/includes/helper-functions.php:107
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Ajax.php:189
+#: release/svn/vendor/cmb2/cmb2/includes/helper-functions.php:107
+#: vendor/cmb2/cmb2/includes/CMB2_Ajax.php:189
+#: vendor/cmb2/cmb2/includes/helper-functions.php:107
+#. translators: 1: results for. 2: link to codex.wordpress.org/Embeds
+msgid "No oEmbed Results Found for %1$s. View more info at %2$s."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:422
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:422
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:422
+msgid ""
+"The \"%1$s\" field parameter has been deprecated in favor of the \"%2$s\" "
+"parameter."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:426
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:426
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:426
+msgid ""
+"Using the \"%1$s\" field parameter as a callback has been deprecated in "
+"favor of the \"%2$s\" parameter."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:456
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:456
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:456
+msgid ""
+"%1$s was called with a parameter that is <strong>deprecated</strong> since "
+"version %2$s! %3$s"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:458
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:458
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:458
+msgid ""
+"%1$s was called with a parameter that is <strong>deprecated</strong> since "
+"version %2$s with no alternative available."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:491
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:102
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Options.php:247
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:357
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:173
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:491
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:102
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Options.php:247
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:357
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:173
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:491
+#: vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:102
+#: vendor/cmb2/cmb2/includes/CMB2_Options.php:247
+#: vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:357
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:173
+msgid "Invalid %1$s property: %2$s"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Base.php:509
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:157
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Base.php:509
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:157
+#: vendor/cmb2/cmb2/includes/CMB2_Base.php:509
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Base.php:157
+msgid "Invalid %1$s method: %2$s"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field.php:1438
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field.php:1438
+#: vendor/cmb2/cmb2/includes/CMB2_Field.php:1438
+msgid "Add Group"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field.php:1439
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field.php:1439
+#: vendor/cmb2/cmb2/includes/CMB2_Field.php:1439
+msgid "Remove Group"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field.php:1471
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field.php:1475
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field.php:1471
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field.php:1475
+#: vendor/cmb2/cmb2/includes/CMB2_Field.php:1471
+#: vendor/cmb2/cmb2/includes/CMB2_Field.php:1475
+msgid "None"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field.php:1589
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field.php:1589
+#: vendor/cmb2/cmb2/includes/CMB2_Field.php:1589
+msgid "Sorry, this field does not have a cmb_id specified."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Field_Display.php:453
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:237
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:79
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Field_Display.php:453
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:237
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:79
+#: vendor/cmb2/cmb2/includes/CMB2_Field_Display.php:453
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:237
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:79
+msgid "File:"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:188
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:188
+#: vendor/cmb2/cmb2/includes/CMB2_Hookup.php:188
+msgid ""
+"Term Metadata is a WordPress 4.4+ feature. Please upgrade your WordPress "
+"install."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:192
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:192
+#: vendor/cmb2/cmb2/includes/CMB2_Hookup.php:192
+msgid "Term metaboxes configuration requires a \"taxonomies\" parameter."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:550
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Hookup.php:550
+#: vendor/cmb2/cmb2/includes/CMB2_Hookup.php:550
+msgid "Toggle panel: %s"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:44
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:44
+#: vendor/cmb2/cmb2/includes/CMB2_Hookup_Base.php:44
+msgid "%1$s should be implemented by the extended class."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:172
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:217
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:172
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:217
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:172
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:217
+msgid "Clear"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:173
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:173
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:173
+msgid "Default"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:174
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:174
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:174
+msgid "Select Color"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:175
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:175
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:175
+msgid "Current Color"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:208
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:208
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:208
+msgid "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:209
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:209
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:209
+msgid "Su, Mo, Tu, We, Th, Fr, Sa"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:210
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:210
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:210
+msgid "Sun, Mon, Tue, Wed, Thu, Fri, Sat"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:211
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:211
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:211
+msgid ""
+"January, February, March, April, May, June, July, August, September, "
+"October, November, December"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:212
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:212
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:212
+msgid "Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:213
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:213
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:213
+msgid "Next"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:214
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:214
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:214
+msgid "Prev"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:215
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:215
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:215
+msgid "Today"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:216
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:226
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:216
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:226
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:216
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:226
+msgid "Done"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:220
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:220
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:220
+msgid "Choose Time"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:221
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:221
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:221
+msgid "Time"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:222
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:222
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:222
+msgid "Hour"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:223
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:223
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:223
+msgid "Minute"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:224
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:224
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:224
+msgid "Second"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:225
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:225
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:225
+msgid "Now"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:233
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:233
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:233
+msgid "Use this file"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:234
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:234
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:234
+msgid "Use these files"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:235
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:64
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:235
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:64
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:235
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:64
+msgid "Remove Image"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:236
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:84
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:236
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:84
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:236
+#: vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:84
+msgid "Remove"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:238
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:82
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:238
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:82
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:238
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File_Base.php:82
+msgid "Download"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:239
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:239
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:239
+msgid "Select / Deselect All"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:139
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:139
+#: vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:139
+msgid "Nothing to update."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:143
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:143
+#: vendor/cmb2/cmb2/includes/CMB2_Options_Hookup.php:143
+msgid "Settings updated."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Types.php:226
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Types.php:226
+#: vendor/cmb2/cmb2/includes/CMB2_Types.php:226
+msgid "Custom CMB2 field type classes must extend CMB2_Type_Base."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Types.php:344
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Types.php:344
+#: vendor/cmb2/cmb2/includes/CMB2_Types.php:344
+msgid "Add Row"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+#: vendor/cmb2/cmb2/includes/CMB2_Types.php:408
+msgid "Remove Row"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/helper-functions.php:307
+#: release/svn/vendor/cmb2/cmb2/includes/helper-functions.php:307
+#: vendor/cmb2/cmb2/includes/helper-functions.php:307
+msgid "Save"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:257
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:257
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:257
+msgid "This box does not have read permissions."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:277
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:277
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:277
+msgid "This box does not have write permissions."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:300
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:300
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:300
+msgid ""
+"No box found by that id. A box needs to be registered with the "
+"\"show_in_rest\" parameter configured."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:378
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:378
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:378
+msgid "A human-readable description of the object."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:385
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:385
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:385
+msgid "The id for the object."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:392
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:392
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller.php:392
+msgid "The title for the object."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:51
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:51
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:51
+msgid "Includes the registered fields for the box in the response."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:72
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:72
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:72
+msgid ""
+"Includes the fully rendered attributes, 'form_open', 'form_close', as well "
+"as the enqueued 'js_dependencies' script handles, and 'css_dependencies' "
+"stylesheet handles."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:122
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:122
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Boxes.php:122
+msgid "No boxes found."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:27
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:27
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:27
+msgid "Includes the box object which the fields are registered to in the response."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:30
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:30
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:30
+msgid ""
+"When the '_rendered' argument is passed, the renderable field attributes "
+"will be returned fully rendered. By default, the names of the callback "
+"handers for the renderable attributes will be returned."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:33
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:36
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:33
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:36
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:33
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:36
+msgid ""
+"To view or modify the field's value, the 'object_id' and 'object_type' "
+"arguments are required."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:236
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:236
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:236
+msgid "CMB2 Field value cannot be updated without the value parameter specified."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:297
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:297
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:297
+msgid ""
+"CMB2 Field value cannot be modified without the object_id and object_type "
+"parameters specified."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:312
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:341
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:312
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:341
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:312
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:341
+msgid "No field found by that id."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:415
+#: release/svn/vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:415
+#: vendor/cmb2/cmb2/includes/rest-api/CMB2_REST_Controller_Fields.php:415
+msgid "Value Error for %s"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:25
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:25
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:25
+#. translators: %s: register_routes()
+msgid "Method '%s' must be overridden."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:35
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:47
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:59
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:71
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:83
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:95
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:107
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:119
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:131
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:143
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:155
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:168
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:35
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:47
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:59
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:71
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:83
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:95
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:107
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:119
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:131
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:143
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:155
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:168
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:35
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:47
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:59
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:71
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:83
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:95
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:107
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:119
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:131
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:143
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:155
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:168
+msgid "Method '%s' not implemented. Must be overridden in subclass."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:273
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:273
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:273
+msgid "Current page of the collection."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:281
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:281
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:281
+msgid "Maximum number of items to be returned in result set."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:290
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:290
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:290
+msgid "Limit results to those matching a string."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:308
+#: release/svn/vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:308
+#: vendor/cmb2/cmb2/includes/shim/WP_REST_Controller.php:308
+msgid ""
+"Scope under which the request is made; determines fields present in "
+"response."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:50
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:50
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:50
+msgid "Words left"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:51
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:51
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:51
+msgid "Words"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:56
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:56
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:56
+msgid "Characters left"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:57
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:57
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:57
+msgid "Characters"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:62
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:62
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Counter_Base.php:62
+msgid "Your text may be truncated."
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File.php:76
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File.php:76
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File.php:76
+msgid "Add or Upload File"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_List.php:41
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_File_List.php:41
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_File_List.php:41
+msgid "Add or Upload Files"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/types/CMB2_Type_Taxonomy_Base.php:115
+#: release/svn/vendor/cmb2/cmb2/includes/types/CMB2_Type_Taxonomy_Base.php:115
+#: vendor/cmb2/cmb2/includes/types/CMB2_Type_Taxonomy_Base.php:115
+msgid "No terms"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "UM Custom Tab Builder Lite"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://suiteplugins.com/downloads/um-custom-tab-builder/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A radical way to build tabs for Ultimate Member"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "SuitePlugins"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://suiteplugins.com"
+msgstr ""
+
+#: includes/class-core.php:56 release/1.0.1/includes/class-core.php:56
+#: release/svn/includes/class-core.php:56
+msgctxt "post type general name"
+msgid "Tabs"
+msgstr ""
+
+#: includes/class-core.php:57 release/1.0.1/includes/class-core.php:57
+#: release/svn/includes/class-core.php:57
+msgctxt "post type singular name"
+msgid "Tab"
+msgstr ""
+
+#: includes/class-core.php:58 release/1.0.1/includes/class-core.php:58
+#: release/svn/includes/class-core.php:58
+msgctxt "admin menu"
+msgid "Tabs"
+msgstr ""
+
+#: includes/class-core.php:59 release/1.0.1/includes/class-core.php:59
+#: release/svn/includes/class-core.php:59
+msgctxt "add new on admin bar"
+msgid "Tab"
+msgstr ""
+
+#: includes/class-core.php:60 release/1.0.1/includes/class-core.php:60
+#: release/svn/includes/class-core.php:60
+msgctxt "tab"
+msgid "Add New"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:207
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:207
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:207
+msgctxt "Valid formatDate string for jquery-ui datepicker"
+msgid "mm/dd/yy"
+msgstr ""
+
+#: release/1.0.1/vendor/cmb2/cmb2/includes/CMB2_JS.php:227
+#: release/svn/vendor/cmb2/cmb2/includes/CMB2_JS.php:227
+#: vendor/cmb2/cmb2/includes/CMB2_JS.php:227
+msgctxt ""
+"Valid formatting string, as per "
+"http://trentrichardson.com/examples/timepicker/"
+msgid "hh:mm TT"
+msgstr ""

@@ -1,0 +1,127 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ultimate Member - Terms & Conditions\n"
+"POT-Creation-Date: 2019-08-01 16:04+0300\n"
+"PO-Revision-Date: 2019-12-07 11:58+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_CH\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: um-terms-conditions.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/admin/class-terms-conditions-admin.php:35
+msgid "Terms & Conditions"
+msgstr "Allgemeine Geschäftsbedingungen"
+
+#: includes/admin/templates/form/register_terms-conditions.php:6
+msgid "Select page"
+msgstr "Seite wählen"
+
+#: includes/admin/templates/form/register_terms-conditions.php:21
+msgid "Enable on this form"
+msgstr "Auf diesem Formular aktivieren"
+
+#: includes/admin/templates/form/register_terms-conditions.php:24
+msgid "No"
+msgstr "Nein"
+
+#: includes/admin/templates/form/register_terms-conditions.php:25
+msgid "Yes"
+msgstr "Ja"
+
+#: includes/admin/templates/form/register_terms-conditions.php:31
+msgid "Content"
+msgstr "Inhalt"
+
+#: includes/admin/templates/form/register_terms-conditions.php:39
+msgid "Toggle Show text"
+msgstr "Umschalten Text anzeigen"
+
+#: includes/admin/templates/form/register_terms-conditions.php:40
+#: includes/admin/templates/form/register_terms-conditions.php:41
+#: templates/um-terms-conditions-public-display.php:14
+#: templates/um-terms-conditions-public-display.php:16
+msgid "Show Terms"
+msgstr "Bedingungen anzeigen"
+
+#: includes/admin/templates/form/register_terms-conditions.php:47
+msgid "Toggle Hide text"
+msgstr "Umschalten Text ausblenden"
+
+#: includes/admin/templates/form/register_terms-conditions.php:48
+#: includes/admin/templates/form/register_terms-conditions.php:49
+#: templates/um-terms-conditions-public-display.php:15
+msgid "Hide Terms"
+msgstr "Bedingungen verstecken"
+
+#: includes/admin/templates/form/register_terms-conditions.php:55
+#: includes/admin/templates/form/register_terms-conditions.php:57
+msgid "Checkbox agreement description"
+msgstr "Kontrollkästchen Beschreibung der Vereinbarung"
+
+#: includes/admin/templates/form/register_terms-conditions.php:56
+#: templates/um-terms-conditions-public-display.php:27
+msgid "Please confirm that you agree to our terms & conditions"
+msgstr ""
+"Bitte bestätigen Sie, dass Sie mit unseren Geschäftsbedingungen "
+"einverstanden sind"
+
+#: includes/admin/templates/form/register_terms-conditions.php:63
+msgid "Error Text"
+msgstr "Fehlertext"
+
+#: includes/admin/templates/form/register_terms-conditions.php:64
+#: includes/admin/templates/form/register_terms-conditions.php:65
+#: templates/um-terms-conditions-public-display.php:36
+msgid "You must agree to our terms & conditions"
+msgstr "Sie müssen unseren Geschäftsbedingungen zustimmen"
+
+#: um-terms-conditions.php:44 um-terms-conditions.php:60
+#, php-format
+msgid ""
+"The <strong>%s</strong> extension requires the Ultimate Member plugin to be "
+"activated to work properly. You can download it <a href=\"https://wordpress."
+"org/plugins/ultimate-member\">here</a>"
+msgstr ""
+"Das <strong>%s</strong> Erweiterung erfordert, dass das Ultimate Member "
+"Plugin aktiviert ist, damit es ordnungsgemäß funktioniert. Sie können es "
+"hier herunterladen <a href=\"https://wordpress.org/plugins/ultimate-member"
+"\"></a>"
+
+#. Plugin Name of the plugin/theme
+msgid "Ultimate Member - Terms & Conditions"
+msgstr "Ultimate Member - Allgemeine Geschäftsbedingungen"
+
+#. Plugin URI of the plugin/theme
+msgid "https://ultimatemember.com/extensions/terms-conditions/"
+msgstr "https://ultimatemember.com/extensions/terms-conditions/"
+
+#. Description of the plugin/theme
+msgid ""
+"Add a terms and condition checkbox to your registration forms & require "
+"users to agree to your T&Cs before registering on your site."
+msgstr ""
+"Fügen Sie Ihren Registrierungsformularen ein Kontrollkästchen für "
+"Bedingungen hinzu und fordern Sie die Benutzer auf, Ihren AGBs zuzustimmen, "
+"bevor Sie sich auf Ihrer Website registrieren."
+
+#. Author of the plugin/theme
+msgid "Ultimate Member"
+msgstr "Ultimate Member"
+
+#. Author URI of the plugin/theme
+msgid "https://ultimatemember.com/"
+msgstr "https://ultimatemember.com/"
+

@@ -1,0 +1,4 @@
+status,url_from,url_to,type,query parameters,regex,position,case_insensitive
+enabled,/redirect_from_url_2,/redirect_to_url_2,301,ignore,,0,disabled
+enabled,/redirect_from_url_3,/redirect_to_url_3,301,ignore,,0,enabled
+enabled,/redirect_from_url_4,/wp_301/sample-page/,301,ignore,,0,enabled
