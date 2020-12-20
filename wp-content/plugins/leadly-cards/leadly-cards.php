@@ -30,6 +30,8 @@ if( !class_exists('leadlyCards') ) :
         /** @var array Storage for class instances */
         var $instances = array();
 
+        private $required_plugins = array('301-redirects', 'ultimate-member');
+
         function __construct() {
             // vars
             $version  = $this->version;
@@ -63,8 +65,6 @@ if( !class_exists('leadlyCards') ) :
             include_once( LEADLY_PATH . 'includes/activate.php');
             include_once( LEADLY_PATH . 'includes/deactivate.php');
 
-            load_plugin_textdomain('leadly', false, $slug . '/languages');
-
             $this->initialize();
         }
 
@@ -76,73 +76,168 @@ if( !class_exists('leadlyCards') ) :
         }
 
         function init() {
-            $x = 0;
-            // create rest api
-            add_action('rest_api_init', array($this, 'register_routes'));
+            if (!$this->haveRequiredPlugins())
+                return;
+            load_plugin_textdomain('leadly', false, dirname(plugin_basename(__FILE__)) . '/languages');
+
+            $this->registerActions();
         }
         
-        function register_routes() {
-            $y = 1;
-            register_rest_route('leadly/v1', '/card(?P<id>\d+)', [
-                'methods' => 'GET',
-                'callback' => [$this,'get_user'],
-                'args' => array(
-                    'id' => array(
-                        'default' => 10,
-                        'validate_callback' => function($param, $request, $key) {
-                            return is_numeric( $param );
-                        }
-                    )
-                ),
-            ]);
-        }
-
-        /**
-        *  get_user
-        *
-        *  Return one user based on URL parameter 'id'.
-        *
-        *  @return	json
-        */
-        public function get_user() {
-
-            /** @var int Get the user id from the request */
-            $userId = $_GET['number'];
-
-            /** @var json Database saved json written by the plugin IF true, else, array from $apiResponse */
-            if( false === ($user = get_transient("user_api_$userId"))) {
-
-                /** @var array The API request response  */
-                $apiResponse = wp_remote_request(get_option('api_link') . '/' . $userId, array(
-                    'ssl_verify' => true
-                ));
-        
-                if(is_wp_error( $apiResponse ) && WP_DEBUG == true){
-                    printf(
-                        'There was an ERROR in your request.<br />Code: %s<br />Message: %s',
-                        $apiResponse->get_error_code(),
-                        $apiResponse->get_error_message()
-                    );
-                }
-                
-                // Prepare the data
-                $user = trim( wp_remote_retrieve_body( $apiResponse ) );
-                
-                // Double check the Curl response.
-                if(strlen($user) == 0) {
-                    $apiResponse = wp_remote_request(get_option('api_link') . '/' . $userId);
-                    $user = trim( wp_remote_retrieve_body( $apiResponse ) );
-                }
-
-                // Convert output to JSON if is not
-                if ( strstr( wp_remote_retrieve_header( $apiResponse, 'content-type' ), 'json' ) ){
-                    $user = json_decode( $user );
-                }
-
-                set_transient("user_api_$userId", $user, DAY_IN_SECONDS);
+        function haveRequiredPlugins() {
+            if (empty($this->required_plugins))
+                return true;
+            $active_plugins = (array) get_option('active_plugins', array());
+            if (is_multisite()) {
+                $active_plugins = array_merge($active_plugins, get_site_option('active_sitewide_plugins', array()));
             }
+            foreach ($this->required_plugins as $key => $required) {
+                $required = (!is_numeric($key)) ? "{$key}/{$required}.php" : "{$required}/{$required}.php";
+                if (!in_array($required, $active_plugins) && !array_key_exists($required, $active_plugins))
+                    return false;
+            }
+            return true;
+        }
 
-            return $user;
+        function registerActions() {
+            // remove_action('um_after_profile_fields', 'um_add_submit_button_to_profile', 1000);
+            // add_action('um_after_profile_fields', array($this, 'um_add_submit_button_to_profile'), 1000);
+
+            // add_action( 'um_after_form_fields', array($this, 'ultimateMemberRegisterCardSave'), 10, 1 );
+            add_action( 'um_submit_form_errors_hook__registration', array($this, 'my_submit_form_errors_registration'), 10, 1 );
+        }
+
+        function my_submit_form_errors_registration( $args ) {
+            $x = 0;
+        }
+
+        function ultimateMemberRegisterCardSave( $args ) {
+            if(isset($args['custom_fields']['nfc-serial'])) {
+                ?>
+                <script type="text/javascript">
+                    (function ($) {
+                        $( document ).ready(function() {
+                            $("#um-submit-btn").on("click", function (e) {
+                                debugger;
+                                setTimeout(() => $(this).submit(), 1000);
+
+                                $(this).addClass("loading");
+                                $.post(
+                                    '/wp-admin/admin-ajax.php', {
+                                        action: "wf301_run_tool",
+                                        _ajax_nonce: wf301_vars.run_tool_nonce,
+                                        tool: "submit_redirect_rule",
+                                        redirect_id: "",
+                                        redirect_enabled: true,
+                                        redirect_url_from: $("#redirect_url_from").val(),
+                                        redirect_url_to: $("#redirect_url_to").val(),
+                                        redirect_query: $("#redirect_query").children("option:selected").val(),
+                                        redirect_case_insensitive: $("#redirect_case_insensitive").is(
+                                            ":checked"
+                                        ),
+                                        redirect_regex: $("#redirect_regex").is(
+                                            ":checked"
+                                        ),
+                                        redirect_type: $("#redirect_type").children("option:selected").val(),
+                                        redirect_position: $("#redirect_position").val(),
+                                        redirect_tags: $("#redirect_tags").val(),
+                                    },
+                                    function (response) {
+                                        if (response.success) {
+                                            wf301_swal.close();
+                                            $(".dataTables_empty").closest("tr").remove();
+                                            if ($("#wf301-redirects-table tr#" + response.data.id).length == 1) {
+                                                $("#wf301-redirects-table tr#" + response.data.id).replaceWith(
+                                                    response.data.row_html
+                                                );
+                                            } else {
+                                                $("#wf301-redirects-table").prepend(response.data.row_html);
+                                                $("#wf301-redirects-table tbody")
+                                                    .find("tr")
+                                                    .first()
+                                                    .hide()
+                                                    .show(500);
+                                            }
+                                        } else {
+                                            alert(response.data);
+                                        }
+                                        $("#submit_redirect_rule").removeClass("loading");
+                                    }
+                                ).fail(function () {
+                                    alert("Undocumented error. Please reload the page and try again.");
+                                });
+                            });
+                        });    
+                    })(jQuery);
+                </script>
+                <?php
+            }
+        }
+
+        function um_add_submit_button_to_profile( $args ) {
+            // DO NOT add when reviewing user's details
+            if ( UM()->user()->preview == true && is_admin() ) {
+                return;
+            }
+        
+            // only when editing
+            if ( UM()->fields()->editing == false ) {
+                return;
+            }
+        
+            if ( ! isset( $args['primary_btn_word'] ) || $args['primary_btn_word'] == '' ){
+                $args['primary_btn_word'] = UM()->options()->get( 'profile_primary_btn_word' );
+            }
+            if ( ! isset( $args['secondary_btn_word'] ) || $args['secondary_btn_word'] == '' ){
+                $args['secondary_btn_word'] = UM()->options()->get( 'profile_secondary_btn_word' );
+            } ?>
+        
+            <div class="um-col-alt LEADLYYYYYYYYYY">
+        
+                <div class="um-col-1">
+                    <div id="um_field_300_birth_date_11"
+                        class="um-field um-field-date  um-field-birth_date_11 um-field-date um-field-type_date"
+                        data-key="birth_date_11">
+
+                        <div class="um-field-label"><label for="phone_number-300">Phone Number</label>
+                            <div class="um-clear"></div>
+                        </div>
+
+                        <div class="um-field-area">
+                            <div class="um-field-icon">
+                                <i class="um-faicon-phone"></i>
+                            </div>
+                            <input autocomplete="off"
+                                class="um-form-field valid not-required um-iconed " type="text" name="phone_number-300"
+                                id="phone_number-300" value="+04237672712" placeholder="" data-validate="0"
+                                data-key="phone_number">
+                        </div>
+                    </div>
+                </div>
+
+                <?php if ( isset( $args['secondary_btn'] ) && $args['secondary_btn'] != 0 ) { ?>
+        
+                    <div class="um-left um-half MANUEL">
+                        <input type="submit" value="<?php esc_attr_e( wp_unslash( $args['primary_btn_word'] ), 'ultimate-member' ); ?>" class="um-button" />
+                    </div>
+                    <div class="um-right um-half CARABUS">
+                        <a href="<?php echo esc_url( um_edit_my_profile_cancel_uri() ); ?>" class="um-button um-alt">
+                            <?php _e( wp_unslash( $args['secondary_btn_word'] ), 'ultimate-member' ); ?>
+                        </a>
+                    </div>
+        
+                <?php } else { ?>
+        
+                    <div class="um-center">
+                        <input type="submit" value="<?php esc_attr_e( wp_unslash( $args['primary_btn_word'] ), 'ultimate-member' ); ?>" class="um-button" />
+                    </div>
+        
+                <?php } ?>
+        
+                <div class="um-clear"></div>
+        
+            </div>
+        
+            <?php
         }
 
         /**
