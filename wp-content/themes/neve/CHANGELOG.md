@@ -1,3 +1,24 @@
+##### [Version 2.9.5](https://github.com/Codeinwp/neve/compare/v2.9.4...v2.9.5) (2020-12-28)
+
+- [Feat] Update starter content
+
+##### [Version 2.9.4](https://github.com/Codeinwp/neve/compare/v2.9.3...v2.9.4) (2020-12-25)
+
+- [Feat] Starter content support
+
+##### [Version 2.9.3](https://github.com/Codeinwp/neve/compare/v2.9.2...v2.9.3) (2020-12-17)
+
+- [Fix] Cart menu component layout on mobile devices
+- [Fix] Dynamic tags list not inserted for header/footer builder components
+
+##### [Version 2.9.2](https://github.com/Codeinwp/neve/compare/v2.9.1...v2.9.2) (2020-12-15)
+
+- [Fix] Customizer tabs not opening in Windows browsers
+- [Fix] Syntax error causing errors
+- [Fix] Search input not focused when opened from the Search Icon component
+- [Fix] Individual page settings not applying to the Shop page
+- [Fix] Composer requiring PHP greater than 7.1.0
+
 ##### [Version 2.9.1](https://github.com/Codeinwp/neve/compare/v2.9.0...v2.9.1) (2020-12-07)
 
 - [Feat] New Fallback Font option
