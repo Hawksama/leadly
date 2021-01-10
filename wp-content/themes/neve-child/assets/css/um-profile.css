@@ -1,0 +1,119 @@
+.um-page-user div.um-profile.uimob960 .um-profile-photo a.um-profile-photo-img {
+    width: auto;
+}
+
+.um-page-user .um-300.um .um-profile-meta {
+    padding-left: 0px !important;
+    padding-right: 0px;
+}
+
+.um-page-user .um-header .um-profile-edit {
+    margin-right: 0px;
+    top: 10px;
+}
+
+.um-page-user .um-form .um-cover {
+    background-color: transparent;
+}
+
+.um-page-user .um-cover .um-cover-e img {
+    border-radius: 1.2rem;
+}
+
+.um-page-user .um-form .um-header {
+    margin: 25px 0 0 0;
+    padding: 0px 0 0 0;
+    min-height: unset;
+    border-top: solid 2px #eee;
+    border-bottom: 0;
+}
+
+.um-page-user .um-profile .um-profile-body {
+    padding-top: 0px;
+}
+
+.um-page-user .um-profile.um-viewing .um-field-label label,
+.um-page-user .um-profile.um-viewing .um-field-label .um-clear {
+    display: none;
+}
+
+.um-page-user .um-profile.um-viewing .um-field-label {
+    margin: 0;
+    border-bottom: unset;
+    padding-bottom: 0px;
+}
+
+.um-page-user .um-profile.um-viewing .um-field-area .um-field-value {
+    margin: 0 0 7px 0;
+    /* border-bottom: solid 2px #eee; */
+    padding-bottom: 10px;
+    padding-top: 5px;
+}
+
+.um-page-user .um-profile.um-viewing .um-field-facebook,
+.um-page-user .um-profile.um-viewing .um-field-twitter,
+.um-page-user .um-profile.um-viewing .um-field-linkedin,
+.um-page-user .um-profile.um-viewing .um-field-instagram,
+.um-page-user .um-profile.um-viewing .um-field-youtube,
+.um-page-user .um-profile.um-viewing .um-field-youtube {
+    display: none;
+}
+
+.um-page-user .um-field-label .um-field-label-icon i {
+    font-size: 30px;
+}
+
+.um-page-user .um-profile .um-field-divider {
+    padding: 0px;
+    height: unset;
+    margin-bottom: 0px;
+}
+
+.um-page-user .um-profile .um-field-headline  {
+    padding-top: 0px;
+    font-size: 0.9rem;
+}
+
+.um-page-user .um-profile .um-field-headline .um-field-value {
+    padding-top: 0px;
+}
+
+.um-page-user .um-name {
+    line-height: 1;
+}
+
+.um-page-user .um-main-meta {
+    padding-top: 20px;
+}
+
+.um-page-user .um-field-label .um-field-label-icon {
+    float: left;
+    margin: 0 15px 0 0;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+}
+
+.um-page-user .um-profile-connect.um-member-connect a {
+    background:#D4AF37 !important;
+    width: 60px;
+    line-height: 60px;
+    height: 60px;
+    font-size: 30px;
+}
+
+.um-page-user .um-profile-connect.um-member-connect {
+    box-sizing: border-box;
+    min-width: 0px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 60px);
+    gap: 20px;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.um-page-user .um-profile-meta .um-meta-text {
+    font-size: 16px;
+}
