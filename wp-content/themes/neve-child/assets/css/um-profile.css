@@ -2,9 +2,17 @@
     width: auto;
 }
 
+.um-page-user div.uimob500 .um-header .um-profile-meta {
+    padding-top: 0px !important;
+    margin-top: 65px;
+}
+
 .um-page-user .um-300.um .um-profile-meta {
     padding-left: 0px !important;
     padding-right: 0px;
+    margin-top: 90px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .um-page-user .um-header .um-profile-edit {
@@ -69,7 +77,7 @@
     margin-bottom: 0px;
 }
 
-.um-page-user .um-profile .um-field-headline  {
+.um-page-user .um-profile .um-field-headline {
     padding-top: 0px;
     font-size: 0.9rem;
 }
@@ -80,6 +88,8 @@
 
 .um-page-user .um-name {
     line-height: 1;
+    float: unset;
+    margin-right: 0px;
 }
 
 .um-page-user .um-main-meta {
@@ -97,23 +107,257 @@
 }
 
 .um-page-user .um-profile-connect.um-member-connect a {
-    background:#D4AF37 !important;
+    background: #D4AF37 !important;
     width: 60px;
     line-height: 60px;
     height: 60px;
     font-size: 30px;
+    margin: 0px 10px;
 }
 
 .um-page-user .um-profile-connect.um-member-connect {
     box-sizing: border-box;
     min-width: 0px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 60px);
-    gap: 20px;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0px -10px;
 }
 
 .um-page-user .um-profile-meta .um-meta-text {
     font-size: 16px;
+}
+
+.um-page-user .um-row-heading {
+    padding: 15px 5px 0px 5px;
+}
+
+.um-page-user .um-profile.um-viewing .field-label-show .um-field-area .um-field-value,
+.um-page-user .um-profile.um-viewing .field-label-show .um-field-label label,
+.um-page-user .um-profile.um-viewing .field-label-show .um-field-label .um-clear {
+    display: inline-block;
+}
+
+.um-page-user .um-profile.um-viewing .field-label-show .um-field-label {
+    margin: 0 0 8px 0;
+    border-bottom: solid 2px #eee;
+    padding-bottom: 4px;
+}
+
+.um-page-user div.uimob800 .um-profile-photo {
+    float: unset;
+    margin-left: 0px;
+    width: 100% !important;
+}
+
+.um-page-user div.uimob500 .um-profile-photo {
+    top: -60px;
+}
+
+.um-page-user div.uimob500 .um-header .um-profile-meta {
+    margin-top: 45px;
+}
+
+.um-page-user div.uimob340 .um-header .um-profile-photo {
+    top: -60px;
+}
+
+.um-page-user div.uimob340 .um-header .um-profile-meta {
+    padding-top: 50px !important;
+    margin-top: 0px;
+}
+
+.um-page-user div.uimob800 .um-profile-photo a.um-profile-photo-img {
+    transform: translate(-50%);
+    top: -80px !important;
+    left: 50%;
+    box-shadow: 0px 10px 45px 0px rgba(0, 0, 0, 0.4);
+}
+
+.um-page-user blockquote {
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 1.5em 20px;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+
+.um-page-user blockquote:before {
+    font-family: serif;
+    background: transparent;
+    display: inline;
+    color: #ccc;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+}
+
+.um-page-user blockquote:after {
+    content: unset;
+}
+
+.um-page-user blockquote p {
+    display: inline;
+}
+
+.um-page-user .um-form .um-field-area ul ::marker {
+    content: "»";
+    font-size: 25px;
+    color: #D4AF37;
+}
+
+.um-page-user .um-form .um-field-area ul li {
+    padding-inline-start: 1ch;
+}
+
+.um-page-user .um-form .um-field-area ul,
+.um-page-user .um-form .um-field-area ol {
+    max-width: 100%;
+    margin-left: 30px;
+}
+
+.um-page-user .um-form .um-field a.um-button {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-transform: uppercase !important;
+}
+
+.um-page-user .um-form .um-field #share-link {
+    position: relative;
+    overflow: initial;
+}
+
+.um-page-user .um-form .um-field #share-link .tooltip {
+    background: #2a3035;
+    box-shadow: -5px -5px 15px rgba(48,54,61,0.2);
+    bottom: 100%;
+    color: #fff;
+    cursor: default;
+    font-size: 0.68em;
+    right: 50%;
+    margin: 0 0 20px -180px;
+    line-height: 1.4;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    padding: 1.31em 1.21em;
+    text-align: left;
+    transition: opacity 0.2s, transform 0.2s;
+    transform-origin: 50% calc(100% + 10px);
+    transform: translateX(50%);
+    line-height: 1.35;
+    display: block;
+    z-index: 9999;
+}
+
+.um-page-user .um-form .um-field #share-link .tooltip::after {
+    content: '';
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-top-color: #2a3035;
+    border-width: 10px;
+    margin-left: -10px;
+}
+
+.um-page-user .um-form .um-field #share-link.show-tooltip .tooltip {
+    opacity: 1;
+    transform: perspective(1000px) rotate3d(1,0,0,0deg) translateX(50%);
+}
+
+.um-page-user .elementor-section-wrap {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.um-page-user .elementor-section-wrap .elementor-section:first-child {
+    flex: 1 0 auto;
+}
+
+.um-page-user .elementor-section-wrap .elementor-section:nth-child(2)  {
+    flex-shrink: 0;
+}
+
+.um-page-user .neve-main > div[class*="elementor elementor"] {
+    min-height: 100vh;
+}
+
+.um-page-user .elementor-inner {
+    min-height: 100vh;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields {
+    text-align: center;
+}
+
+.um-page-user .um-row.centered-fields .um-field-label .um-field-label-icon {
+    float: unset;
+}
+
+.um-page-user .um-row.centered-fields .um-field-label .um-field-label-icon i {
+    top: 2px;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field-label,
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field-area {
+    display: inline-block;
+}
+
+.um-page-user .um-row.centered-fields .um-field-area p,
+.um-page-user .um-row.centered-fields .um-field-area .um-field-value {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px;
+}
+
+.um-page-user .um-row.centered-fields .um-field-area .um-field-value {
+    padding-top: 12px;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field-label {
+    position: relative;
+    margin-top: 5px;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field-label label {
+    margin-top: -5px;
+    position: absolute;
+    font-size: 10px!important;
+    display: inline-block;
+    white-space: nowrap;
+    left: 46px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    font-weight: 100;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field-area {
+    width: 160px;
+    text-align: left;
+}
+
+.um-page-user .um-profile.um-viewing .um-row.centered-fields .um-field {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.um-page-user div.uimob500 .um-profile-connect.um-member-connect a,
+.um-page-user div.uimob340 .um-profile-connect.um-member-connect a {
+    width: 50px;
+    line-height: 50px;
+    height: 50px;
+    font-size: 25px;
+    margin: 0px 5px;
 }

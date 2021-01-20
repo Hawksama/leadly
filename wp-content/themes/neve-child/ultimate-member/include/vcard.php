@@ -41,7 +41,7 @@ class vcard {
      * 
      * @return boolean
      */
-    function vcard() {
+    function __construct() {
         $this->vcardInformation = array(
             
             // personal information
@@ -58,6 +58,15 @@ class vcard {
             "url" => null,
             "photo" => null,
             "birthday" => null,
+
+            // social accounts
+            "twitter" => null,
+            "facebook" => null,
+            "linkedin" => null,
+            "instagram" => null,
+            "youtube" => null,
+            "soundcloud" => null,
+            "skype" => null,
             
             // home address
             "home_po_box" => null,
@@ -90,7 +99,6 @@ class vcard {
             "sort_string" => null,
             "note" => null,
         );
-        return true;
     }
 
     /**
@@ -153,7 +161,7 @@ class vcard {
             $this->card .= ";" . $this->vcardInformation['department'];
         }
         if ($this->vcardInformation['photo']) {
-            $this->card .= "PHOTO;TYPE=JPEG;VALUE=URI:" . $this->vcardInformation['photo'] . "\r\n";
+            $this->card .= "\r\n" . "PHOTO;TYPE=JPEG;ENCODING=BASE64:" . base64_encode(file_get_contents($this->vcardInformation['photo'])) . "\r\n";
         }
         if ($this->vcardInformation['twitter']) {
             $this->card .= "X-SOCIALPROFILE;type=twitter:" . $this->vcardInformation['twitter'] . "\r\n";
@@ -165,13 +173,18 @@ class vcard {
             $this->card .= "X-SOCIALPROFILE;type=linkedin:" . $this->vcardInformation['linkedin'] . "\r\n";
         }
         if ($this->vcardInformation['instagram']) {
-            $this->card .= "X-SOCIALPROFILE;type=instagram:" . $this->vcardInformation['instagram'] . "\r\n";
+            $this->card .= "item1.URL:" . $this->vcardInformation['instagram'] . "\r\n";
+            $this->card .= "item1.X-ABLABEL:Instagram\r\n";
         }
         if ($this->vcardInformation['youtube']) {
-            $this->card .= "X-SOCIALPROFILE;type=youtube:" . $this->vcardInformation['youtube'] . "\r\n";
+            $this->card .= "item2.URL:" . $this->vcardInformation['youtube'] . "\r\n";
+            $this->card .= "item2.X-ABLABEL:Youtube\r\n";
         }
         if ($this->vcardInformation['soundcloud']) {
             $this->card .= "X-SOCIALPROFILE;type=other:" . $this->vcardInformation['soundcloud'] . "\r\n";
+        }
+        if ($this->vcardInformation['skype']) {
+            $this->card .= "X-SKYPE:joe.bloggs" . $this->vcardInformation['skype'] . "\r\n";
         }
         
         $this->card .= "\r\n";
@@ -200,7 +213,7 @@ class vcard {
             $this->card .= "EMAIL;TYPE=internet,pref:" . $this->vcardInformation['email1'] . "\r\n";
         }
         if ($this->vcardInformation['email2']) {
-            $this->card .= "EMAIL;TYPE=internet:" . $this->vcardInformation['email2'] . "\r\n";
+            $this->card .= "EMAIL;TYPE=WORK:" . $this->vcardInformation['email2'] . "\r\n";
         }
         if ($this->vcardInformation['office_tel']) {
             $this->card .= "TEL;TYPE=work,voice:" . $this->vcardInformation['office_tel'] . "\r\n";

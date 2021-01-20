@@ -1,8 +1,16 @@
 <?php
-include_once( dirname( __FILE__ ) . '/ultimate-member/include/vcard.php');
+
+define( 'NEVE_CHILD_VERSION', '1.0' );
+
+
+function nevechild_enqueue_scripts() {
+	wp_enqueue_script( 'neve-child', get_stylesheet_directory_uri() . '/assets/js/custom.js', array( 'jquery' ), NEVE_CHILD_VERSION, true );
+}
+add_action( 'wp_enqueue_scripts', 'nevechild_enqueue_scripts' );
+
 
 function nevechild_enqueue_styles() {
-    wp_enqueue_style( 'um-profile.css', get_stylesheet_directory_uri() . '/assets/css/um-profile.css');
+    wp_enqueue_style( 'um-profile.css', get_stylesheet_directory_uri() . '/assets/css/um-profile.css', array(), NEVE_CHILD_VERSION);
 }
 add_action( 'wp_enqueue_scripts', 'nevechild_enqueue_styles' );
 
@@ -59,6 +67,100 @@ function my_profile_header( $args ) {
 		 * ?>
 		 */
 		do_action( 'um_pre_header_editprofile', $args ); ?>
+
+		<div class="um-profile-photo" data-user_id="<?php echo esc_attr( um_profile_id() ); ?>">
+
+		<a href="<?php echo esc_url( um_user_profile_url() ); ?>" class="um-profile-photo-img" title="<?php echo esc_attr( um_user( 'display_name' ) ); ?>">
+			<?php if ( ! $default_size || $default_size == 'original' ) {
+				$profile_photo = UM()->uploader()->get_upload_base_url() . um_user( 'ID' ) . "/" . um_profile( 'profile_photo' );
+
+				$data = um_get_user_avatar_data( um_user( 'ID' ) );
+				echo $overlay . sprintf( '<img src="%s" class="%s" alt="%s" data-default="%s" onerror="%s" />',
+					esc_url( $profile_photo ),
+					esc_attr( $data['class'] ),
+					esc_attr( $data['alt'] ),
+					esc_attr( $data['default'] ),
+					'if ( ! this.getAttribute(\'data-load-error\') ){ this.setAttribute(\'data-load-error\', \'1\');this.setAttribute(\'src\', this.getAttribute(\'data-default\'));}'
+				);
+			} else {
+				echo $overlay . get_avatar( um_user( 'ID' ), $default_size );
+			} ?>
+		</a>
+
+		<?php if ( empty( $disable_photo_uploader ) && empty( UM()->user()->cannot_edit ) ) {
+
+			UM()->fields()->add_hidden_field( 'profile_photo' );
+
+			if ( ! um_profile( 'profile_photo' ) ) { // has profile photo
+
+				$items = array(
+					'<a href="javascript:void(0);" class="um-manual-trigger" data-parent=".um-profile-photo" data-child=".um-btn-auto-width">' . __( 'Upload photo', 'ultimate-member' ) . '</a>',
+					'<a href="javascript:void(0);" class="um-dropdown-hide">' . __( 'Cancel', 'ultimate-member' ) . '</a>',
+				);
+
+				/**
+				 * UM hook
+				 *
+				 * @type filter
+				 * @title um_user_photo_menu_view
+				 * @description Change user photo on menu view
+				 * @input_vars
+				 * [{"var":"$items","type":"array","desc":"User Photos"}]
+				 * @change_log
+				 * ["Since: 2.0"]
+				 * @usage
+				 * <?php add_filter( 'um_user_photo_menu_view', 'function_name', 10, 1 ); ?>
+				 * @example
+				 * <?php
+				 * add_filter( 'um_user_photo_menu_view', 'my_user_photo_menu_view', 10, 1 );
+				 * function my_user_photo_menu_view( $items ) {
+				 *     // your code here
+				 *     return $items;
+				 * }
+				 * ?>
+				 */
+				$items = apply_filters( 'um_user_photo_menu_view', $items );
+
+				UM()->profile()->new_ui( 'bc', 'div.um-profile-photo', 'click', $items );
+
+			} elseif ( UM()->fields()->editing == true ) {
+
+				$items = array(
+					'<a href="javascript:void(0);" class="um-manual-trigger" data-parent=".um-profile-photo" data-child=".um-btn-auto-width">' . __( 'Change photo', 'ultimate-member' ) . '</a>',
+					'<a href="javascript:void(0);" class="um-reset-profile-photo" data-user_id="' . esc_attr( um_profile_id() ) . '" data-default_src="' . esc_url( um_get_default_avatar_uri() ) . '">' . __( 'Remove photo', 'ultimate-member' ) . '</a>',
+					'<a href="javascript:void(0);" class="um-dropdown-hide">' . __( 'Cancel', 'ultimate-member' ) . '</a>',
+				);
+
+				/**
+				 * UM hook
+				 *
+				 * @type filter
+				 * @title um_user_photo_menu_edit
+				 * @description Change user photo on menu edit
+				 * @input_vars
+				 * [{"var":"$items","type":"array","desc":"User Photos"}]
+				 * @change_log
+				 * ["Since: 2.0"]
+				 * @usage
+				 * <?php add_filter( 'um_user_photo_menu_edit', 'function_name', 10, 1 ); ?>
+				 * @example
+				 * <?php
+				 * add_filter( 'um_user_photo_menu_edit', 'my_user_photo_menu_edit', 10, 1 );
+				 * function my_user_photo_menu_edit( $items ) {
+				 *     // your code here
+				 *     return $items;
+				 * }
+				 * ?>
+				 */
+				$items = apply_filters( 'um_user_photo_menu_edit', $items );
+
+				UM()->profile()->new_ui( 'bc', 'div.um-profile-photo', 'click', $items );
+
+			}
+
+		} ?>
+
+		</div>
 
 		<div class="um-profile-meta">
 
@@ -497,11 +599,13 @@ function my_profile_dynamic_meta_desc() {
 remove_action( 'wp_head', 'um_profile_dynamic_meta_desc', 20);
 add_action( 'wp_head', 'my_profile_dynamic_meta_desc', 21, 1);
 
-function my_awesome_func( $data ) {
+function vcard_function( $data ) {
+	include_once( dirname( __FILE__ ) . '/ultimate-member/include/vcard.php');
     
 	$vpost = get_user_meta($data->get_param('id'));
-	print_r($vpost);
-	die;
+	
+	// print_r($vpost);
+	// die("HERE");
 	$wpUserData = get_userdata($data->get_param('id'));
 	
     /* Instantiate a new vcard object. */
@@ -509,49 +613,168 @@ function my_awesome_func( $data ) {
     $vc->class = "PUBLIC";
      
     /* Fill in data for vCard */
-    $vc->filename = strtolower(str_replace(" ","-",$vpost->post_title)); 
-    $vc->data['first_name'] = $vpost['full_name'][0]; 
-    $vc->data['company'] = get_field('company_name',$vpost->ID); 
-    $vc->data['department'] = get_field('department',$vpost->ID); 
-    $vc->data['title'] = $vpost['headline'][0]; 
-    $vc->data['office_tel'] = get_field('phone',$vpost->ID); 
-    $vc->data['email1'] = $wpUserData->user_email; 
-    $vc->data['url'] = $wpUserData->user_url; 
-    $vc->data['photo'] = get_avatar_url($data->get_param('id')); 
-	$vc->data['note'] = $vpost['description'][0];
-
-	if (empty($vpost['twitter'][0])) {
-		$vc->data['twitter'] = $vpost['twitter'][0];
+	$vc->filename = strtolower(str_replace(" ","-",$vpost['full_name'][0])); 
+	
+	if (!empty($vpost['first_name'][0])) {
+		$vc->vcardInformation['display_name'] = $vpost['full_name'][0]; 
+	}
+	
+	if (!empty($vpost['first_name'][0])) {
+		$vc->vcardInformation['first_name'] = $vpost['first_name'][0]; 
 	}
 
-	if (empty($vpost['facebook'][0])) {
-		$vc->data['facebook'] = $vpost['facebook'][0];
+	if (!empty($vpost['last_name'][0])) {
+		$vc->vcardInformation['last_name'] = $vpost['last_name'][0]; 
+	}
+	
+	if (!empty($vpost['company-name'][0])) {
+		$vc->vcardInformation['company'] = $vpost['company-name'][0]; 
 	}
 
-	if (empty($vpost['linkedin'][0])) {
-		$vc->data['linkedin'] = $vpost['linkedin'][0];
+	if (!empty($vpost['nickname'][0])) {
+		$vc->vcardInformation['nickname'] = $vpost['nickname'][0]; 
 	}
 
-	if (empty($vpost['instagram'][0])) {
-		$vc->data['instagram'] = $vpost['instagram'][0];
+	if (!empty($vpost['headline'][0])) {
+		$vc->vcardInformation['title'] = $vpost['job-title'][0]; 
 	}
 
-	if (empty($vpost['youtube'][0])) {
-		$vc->data['youtube'] = $vpost['youtube'][0];
+	if (!empty($vpost['phone_number'][0])) {
+		$vc->vcardInformation['office_tel'] = $vpost['phone_number'][0]; 
+	}
+	
+	if ($wpUserData->user_email) {
+		$vc->vcardInformation['email1'] = $wpUserData->user_email; 
 	}
 
-	if (empty($vpost['soundcloud'][0])) {
-		$vc->data['soundcloud'] = $vpost['soundcloud'][0];
+	if (!empty($vpost['work-email'][0])) {
+		$vc->vcardInformation['email2'] = $vpost['work-email'][0]; 
 	}
 
-    $vs->download();
+	if ($wpUserData->user_url) {
+		$vc->vcardInformation['url'] = $wpUserData->user_url; 
+	}
+
+	if ($data->get_param('id')) {
+		$vc->vcardInformation['photo'] = get_avatar_url($data->get_param('id')); 
+	}
+
+	if ($vpost['biography-short'][0]) {
+		$vc->vcardInformation['note'] = $vpost['biography-short'][0];
+	}
+
+	if (!empty($vpost['twitter'][0])) {
+		$vc->vcardInformation['twitter'] = $vpost['twitter'][0];
+	}
+
+	if (!empty($vpost['facebook'][0])) {
+		$vc->vcardInformation['facebook'] = $vpost['facebook'][0];
+	}
+
+	if (!empty($vpost['linkedin'][0])) {
+		$vc->vcardInformation['linkedin'] = $vpost['linkedin'][0];
+	}
+
+	if (!empty($vpost['instagram'][0])) {
+		$vc->vcardInformation['instagram'] = $vpost['instagram'][0];
+	}
+
+	if (!empty($vpost['youtube'][0])) {
+		$vc->vcardInformation['youtube'] = $vpost['youtube'][0];
+	}
+
+	if (!empty($vpost['soundcloud'][0])) {
+		$vc->vcardInformation['soundcloud'] = $vpost['soundcloud'][0];
+	}
+
+	if (!empty($vpost['skype'][0])) {
+		$vc->vcardInformation['skype'] = $vpost['skype'][0];
+	}
+
+	if (!empty($vpost['birthday'][0])) {
+		$vc->vcardInformation['birthday'] = $vpost['birthday'][0];
+	}
+
+	if (!empty($vpost['work-po-box'][0])) {
+		$vc->vcardInformation['work_po_box'] = $vpost['work-po-box'][0];
+	}
+
+	if (!empty($vpost['work-extended-address'][0])) {
+		$vc->vcardInformation['work_extended_address'] = $vpost['work-extended-address'][0];
+	}
+
+	if (!empty($vpost['work-address'][0])) {
+		$vc->vcardInformation['work_address'] = $vpost['work-address'][0];
+	}
+
+	if (!empty($vpost['work-city'][0])) {
+		$vc->vcardInformation['work_city'] = $vpost['work-city'][0];
+	}
+
+	if (!empty($vpost['work-state'][0])) {
+		$vc->vcardInformation['work_state'] = $vpost['work-state'][0];
+	}
+
+	if (!empty($vpost['work-postal-code'][0])) {
+		$vc->vcardInformation['work_postal_code'] = $vpost['work-postal-code'][0];
+	}
+
+	if (!empty($vpost['work-country'][0])) {
+		$vc->vcardInformation['work_country'] = $vpost['work-country'][0];
+	}
+
+	if (!empty($vpost['work-postal-code'][0])) {
+		$vc->vcardInformation['home_postal_code'] = $vpost['work-postal-code'][0];
+	}
+
+	if (!empty($vpost['home-po-box'][0])) {
+		$vc->vcardInformation['home_po_box'] = $vpost['home-po-box'][0];
+	}
+
+	if (!empty($vpost['home-extended-address'][0])) {
+		$vc->vcardInformation['home_extended_address'] = $vpost['home-extended-address'][0];
+	}
+
+	if (!empty($vpost['home-address'][0])) {
+		$vc->vcardInformation['home_address'] = $vpost['home-address'][0];
+	}
+
+	if (!empty($vpost['home-city'][0])) {
+		$vc->vcardInformation['home_city'] = $vpost['home-city'][0];
+	}
+
+	if (!empty($vpost['home-state'][0])) {
+		$vc->vcardInformation['home_state'] = $vpost['home-state'][0];
+	}
+
+	if (!empty($vpost['home-postal-code'][0])) {
+		$vc->vcardInformation['home_postal_code'] = $vpost['home-postal-code'][0];
+	}
+
+	if (!empty($vpost['home-state'][0])) {
+		$vc->vcardInformation['home_state'] = $vpost['home-state'][0];
+	}
+
+	if (!empty($vpost['home-postal-code'][0])) {
+		$vc->vcardInformation['home_postal_code'] = $vpost['home-postal-code'][0];
+	}
+
+	if (!empty($vpost['country'][0])) {
+		$vc->vcardInformation['home_country'] = $vpost['country'][0];
+	}
+
+	if (!empty($vpost['birth_date'][0])) {
+		$vc->vcardInformation['birthday'] = $vpost['birth_date'][0];
+	}
+	
+    $vc->download();
 }
 
 
 add_action( 'rest_api_init', function () {
     register_rest_route( 'vcard/v1', '/user/id=(?P<id>\d+)', array(
         'methods' => 'GET',
-        'callback' => 'my_awesome_func',
+        'callback' => 'vcard_function',
         'args' => array(
             'id' => array(
                 'validate_callback' => function($param, $request, $key) {
@@ -564,19 +787,80 @@ add_action( 'rest_api_init', function () {
 
 // function that runs when shortcode is called
 function wpb_demo_shortcode() { 
-    ?>
-    <a href="<?php echo esc_url( $_SERVER['SERVER_NAME'] ); ?>/wp-json/vcard/v1/user/id/<?= um_profile_id() ?>" 
-        class="um-button um-alt"    
-        target="_blank"
-        title="SAVE CONTACT">
-        SAVE CONTACT
-    </a>
-     <?php
-    // Things that you want to do. 
-    $message = 'Hello world!'; 
-     
-    // Output needs to be return
-    return $message;
+    $message = '<a href="' . esc_url( $_SERVER['SERVER_NAME'] ) . '/wp-json/vcard/v1/user/id=' . um_profile_id() . '"';
+    $message .= 'class="um-button um-alt"';
+    $message .= 'target="_blank"';
+    $message .= 'title="SAVE CONTACT">';
+	$message .= 'SAVE CONTACT';
+	$message .= '</a>';
+    
+	return $message;
 } 
 // register shortcode
 add_shortcode('greeting', 'wpb_demo_shortcode'); 
+
+
+/**
+ * Shows social links
+ */
+function my_show_social_urls() {
+	$social = array();
+
+	$message = '';
+
+	$fields = UM()->builtin()->get_all_user_fields();
+	foreach ( $fields as $field => $args ) {
+		if ( isset( $args['advanced'] ) && $args['advanced'] == 'social' ) {
+			$social[ $field ] = $args;
+		}
+	}
+
+	foreach ( $social as $k => $arr ) {
+		if ( um_profile( $k ) ) {
+
+			$message .=	'<a href="' . esc_url( um_filtered_social_link( $k, $arr['match'] ) ) . '"';
+			$message .=	'style="background: ' . esc_attr( $arr['color'] ) . '" target="_blank" class="um-tip-n"';
+			$message .= 'title="' . esc_attr( $arr['title'] ) . '">';
+			
+			if($k != 'youtube') {
+				$message .= '<i class="' . esc_attr( $arr['icon'] ) . '"></i>';
+			} else {
+				$message .= '<i class="um-faicon-youtube-play"></i>';
+			}
+
+			$message .= '</a>';
+		}
+	}
+
+	return $message;
+}
+
+/**
+ * Show social links as icons below profile name
+ *
+ * @param $args
+ */
+function my_social_links_icons( $args ) {
+	$message = '<div class="um-profile-connect um-member-connect">';
+	$message .=	my_show_social_urls();
+	$message .= '</div>';
+
+	return $message;
+}
+
+add_shortcode('social-links', 'my_social_links_icons');
+
+remove_action( 'um_after_profile_header_name_args', 'um_social_links_icons', 50 );
+
+function link_to_clipboard() {
+	$message = '';
+
+	$message .=	'<a href="#"';
+	$message .=	'id="share-link"';
+	$message .= 'target="_blank" class="um-button um-alt"';
+	$message .= 'title="Share me"><i class="um-faicon-share-alt" aria-hidden="true"></i> Share profile</a>';
+
+	return $message;
+}
+
+add_shortcode('link-clipboard', 'link_to_clipboard');
