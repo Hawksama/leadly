@@ -79,7 +79,7 @@ class WF301_functions extends WF301
                   }
                 }
 
-                WF301_logs::log_redirect($redirect->id, $wp->request, $to, $redirect->last_count, false);
+                WF301_logs::log_redirect($redirect->id, self::get_url(), $to, $redirect->last_count, false);
                 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
                 header("Cache-Control: post-check=0, pre-check=0", false);
                 header("Pragma: no-cache");
@@ -131,7 +131,7 @@ class WF301_functions extends WF301
                 self::autoredirect_404($url_request);
             }
 
-            WF301_logs::log_404(null, false);
+            WF301_logs::log_404(self::get_url());
 
             if (!empty($options['redirect_url_404'])){
                 header('HTTP/1.1 ' . '302 Moved Temporarily');
@@ -224,7 +224,11 @@ class WF301_functions extends WF301
      */
     static function wild_compare($pattern, $path, $ignoreCase = false, &$matches = null)
     {
-    	if (fnmatch($pattern, $path)) {
+        if($ignoreCase == true){
+            $path = strtolower($path);
+        }
+        
+        if (fnmatch($pattern, $path)) {
     		return true;
         }
         
@@ -531,6 +535,12 @@ class WF301_functions extends WF301
     static function should_check_post_permalink($post, $post_before)
     {
 
+        $options = WF301_setup::get_options();
+        
+        if($options['monitor_permalinks'] != true){
+            return false;
+        }
+        
         if (!isset($post->ID) || !isset(self::$updated_posts[$post->ID])) {
             return false;
         }
@@ -579,9 +589,10 @@ class WF301_functions extends WF301
 
         $after  = wp_parse_url(get_permalink($post_id), PHP_URL_PATH);
         $before = wp_parse_url(esc_url($before), PHP_URL_PATH);
-
+        
         // Add notice if permalink changed
         if (self::has_permalink_changed($before, $after)) {
+            
             $permalinks[$post_id] = array('before' => $before, 'after' => $after);
             self::update_changed_permalinks($permalinks);
         }
@@ -668,6 +679,11 @@ class WF301_functions extends WF301
      */
     static function get_changed_permalinks_notices($pid = false)
     {
+        $options = WF301_setup::get_options();
+        if($options['monitor_permalinks'] != true){
+            return array();
+        }
+        
         $permalinks = get_option(WF301_PERMALINKS_KEY);
         $notices = array();
         if ($permalinks) {

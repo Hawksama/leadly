@@ -371,7 +371,7 @@ class WF301_utility extends WF301
                     $agent['os_ver'] = $user_agent->os->version->nickname;
                 } else if (!empty($user_agent->os->version->alias)) {
                     $agent['os_ver'] = $user_agent->os->version->alias;
-                } else {
+                } else if (!empty($user_agent->os->version->value)) {
                     $agent['os_ver'] = $user_agent->os->version->value;
                 }
             } else {

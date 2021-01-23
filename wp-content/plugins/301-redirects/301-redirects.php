@@ -3,7 +3,7 @@
   Plugin Name: 301 Redirects Pro
   Plugin URI: https://wp301redirects.com/
   Description: Manage redirects and 404 errors.
-  Version: 5.59
+  Version: 5.62
   Author: WebFactory Ltd
   Author URI: https://www.webfactoryltd.com/
   Text Domain: 301-redirects

@@ -91,7 +91,7 @@ class WF301_logs extends WF301
         $agent = WF301_utility::parse_user_agent_array();
 
         $entry404 = array(
-            'url' => '/' . $url,
+            'url' => $url,
             'agent' => @$_SERVER['HTTP_USER_AGENT'],
             'referrer' => isset($_SERVER['HTTP_REFERER']) ? @$_SERVER['HTTP_REFERER'] : '',
             'location' => WF301_utility::getUserCountry(),
