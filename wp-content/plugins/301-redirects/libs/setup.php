@@ -225,6 +225,7 @@ class WF301_setup extends WF301
             'nb_redirects' => 0,
             'last_options_edit' => current_time('mysql', true),
             'autoredirect_404' => 1,
+            'monitor_permalinks' => 1,
             'logs_upload' => 0,
             'onboarding' => 0,
             'uninstall_delete' => 0,
@@ -259,6 +260,10 @@ class WF301_setup extends WF301
             $options['logs_upload'] = 0;
         }
 
+        if (array_key_exists('redirect_cpt', $options) && !array_key_exists('monitor_permalinks', $options)) {
+            $options['monitor_permalinks'] = 0;
+        }
+
         if (array_key_exists('logs_upload', $options)) {
             if ($old_options['logs_upload'] != $options['logs_upload']) {
               global $logs_upload;
@@ -278,6 +283,7 @@ class WF301_setup extends WF301
                     case 'htaccess_method':
                     case 'disable_for_users':
                     case 'autoredirect_404':
+                    case 'monitor_permalinks':
                         $options[$key] = trim($value);
                         break;
                     case 'logs_upload':
@@ -304,6 +310,10 @@ class WF301_setup extends WF301
 
         if (!isset($options['autoredirect_404'])) {
             $options['autoredirect_404'] = 0;
+        }
+
+        if (!isset($options['monitor_permalinks'])) {
+            $options['monitor_permalinks'] = 1;
         }
 
         if (!isset($options['logs_upload'])) {

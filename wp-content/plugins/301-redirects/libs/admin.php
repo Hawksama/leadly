@@ -173,10 +173,13 @@ class WF301_admin extends WF301
 
         $permalink_changes = WF301_functions::get_changed_permalinks();
 
-        foreach ($permalink_changes as $post_id => $permalink) {
-            echo '<div data-permalink="' . $post_id . '" class="notice-warning notice is-dismissible"><p>
-            You have changed the permalink for ' . get_the_title($post_id) . ' from ' . $permalink['before'] . ' to ' . $permalink['after'] . '. <a class="wf301-add-redirect-rule" href="#" data-permalink="' . $post_id . '">Click here</a> if you want to add a redirect rule.
-            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></p></div>';
+        $options = WF301_setup::get_options();
+        if($options['monitor_permalinks'] == true){
+            foreach ($permalink_changes as $post_id => $permalink) {
+                echo '<div data-permalink="' . $post_id . '" class="notice-warning notice is-dismissible"><p>
+                You have changed the permalink for ' . get_the_title($post_id) . ' from ' . $permalink['before'] . ' to ' . $permalink['after'] . '. <a class="wf301-add-redirect-rule" href="#" data-permalink="' . $post_id . '">Click here</a> if you want to add a redirect rule.
+                <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></p></div>';
+            }
         }
 
         if (is_array($notices)) {
@@ -566,7 +569,7 @@ class WF301_admin extends WF301
         settings_fields(WF301_OPTIONS_KEY);
 
         $tabs = array();
-        if ($wf_301_licensing->is_active()) {
+        if (true) {
             $tabs[] = array('id' => 'wf301_redirect', 'icon' => 'wf301-icon wf301-redirect', 'class' => '', 'label' => __('Redirect Rules', '301-redirects'), 'callback' => array('WF301_tab_redirect', 'display'));
             $tabs[] = array('id' => 'wf301_redirect_log', 'icon' => 'wf301-icon wf301-log', 'class' => '', 'label' => __('Redirect Log', '301-redirects'), 'callback' => array('WF301_tab_redirect_log', 'display'));
             $tabs[] = array('id' => 'wf301_404_log', 'icon' => 'wf301-icon wf301-404', 'class' => '', 'label' => __('404 Log', '301-redirects'), 'callback' => array('WF301_tab_404_log', 'display'));

@@ -44,6 +44,14 @@ class WF301_tab_settings extends WF301
         echo '<br /><span>Autoredirect visitors if a page with a similar slug exists. For example, if it would have resulted in a 404 not found error, "/sample-pag" will be redirected to "/sample-page"</span>';
         echo '</td></tr>';
 
+
+        echo '<tr valign="top">
+        <th scope="row"><label for="monitor_permalinks">Monitor permalink changes</label></th>
+        <td>';
+        WF301_utility::create_toogle_switch('monitor_permalinks', array('saved_value' => $options['monitor_permalinks'], 'option_key' => WF301_OPTIONS_KEY . '[monitor_permalinks]'));
+        echo '<br /><span>Monitor permalink changes and show a notice allowing you to create a redirect rule in order to avoid 404 errors.</span>';
+        echo '</td></tr>';
+
         $get_cpt_args = array(
             'public'   => true,
             '_builtin' => true

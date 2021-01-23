@@ -20,7 +20,7 @@ class WF301_ei extends WF301
     {
         $filename = str_replace(array('http://', 'https://'), '', home_url());
         $filename = str_replace(array('/', '\\', '.'), '-', $filename);
-        $filename .= '-' . date('Y-m-d') . '-301-redirects-pro.txt';
+        $filename .= '-' . date('Y-m-d') . '-301-redirects-pro.csv';
 
         $out = '';
         $rules = WF301_functions::get_redirects();
@@ -34,8 +34,7 @@ class WF301_ei extends WF301
                 $rule->query_parameters,
                 $rule->regex,
                 $rule->position,
-                $rule->case_insensitive,
-                $rule->regex
+                $rule->case_insensitive
             );
             $out .= implode(',', $csv);
             $out .= "\n";
