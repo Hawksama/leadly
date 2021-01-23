@@ -24,7 +24,8 @@
     background-color: transparent;
 }
 
-.um-page-user .um-cover .um-cover-e img {
+.um-page-user .um-cover .um-cover-e img,
+.um-profile.um-editing .um-cover.has-cover .um-cover-overlay {
     border-radius: 1.2rem;
 }
 
@@ -360,4 +361,25 @@
     height: 50px;
     font-size: 25px;
     margin: 0px 5px;
+}
+
+.um-page-user .um-profile.um .um-profile-headericon a:hover, 
+.um-page-user .um-profile.um .um-profile-edit-a.active {
+    color: #d4af37;
+}
+
+.um-modal-btn, .um-modal-btn.disabled {
+    color: #fff !important;
+}
+
+.um-page-account .um-request-button:hover,
+.um-page-account .um-request-button {
+    background-color: #D4AF37;
+    color: #fff;
+}
+
+@media (hover: none) and (pointer: coarse) { 
+    .tipsy {
+        display: none !important;
+    }
 }
