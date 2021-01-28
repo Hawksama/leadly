@@ -14,6 +14,9 @@ if ( ! class_exists( 'Email_Subscribers_Starter' ) ) {
 
 			$this->starter_plugin_url  = untrailingslashit( plugins_url( '/', __FILE__ ) ) . '/';
 			$this->starter_plugin_path = untrailingslashit( plugin_dir_path( __FILE__ ) );
+
+			$this->load_dependencies();
+
 			if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 				$php_version = phpversion();
 				if ( version_compare( $php_version, '5.4.0', '<' ) ) {
@@ -82,6 +85,52 @@ if ( ! class_exists( 'Email_Subscribers_Starter' ) ) {
 			
 			// Filter to get plugin plan
 			add_filter( 'ig_es_plan', array( &$this, 'get_plan' ), 11 );
+
+			add_action( 'wp_ajax_ig_es_disable_session_tracking', array( &$this, 'ajax_disable_session_tracking' ) );
+			add_action( 'wp_ajax_nopriv_ig_es_disable_session_tracking', array( &$this, 'ajax_disable_session_tracking' ) );
+		}
+
+		/**
+		 * Load the required dependencies for this plugin.
+		 * 
+		 * @since 4.6.6
+		 */
+		public function load_dependencies() {
+			$files_to_load = array(
+				//Load Starter & Pro files if exists
+				'class-es-utils.php',
+				
+				'mailers/class-es-smtp-mailer.php',
+
+				// Data Types from Starter version
+				'workflows/data-types/class-es-data-type-comment.php',
+				'workflows/data-types/class-es-data-type-wc-order.php',
+				'workflows/data-types/class-es-data-type-edd-payment.php',
+				'workflows/data-types/class-es-data-type-cf7-data.php',
+				'workflows/data-types/class-es-data-type-wpforms-data.php',
+				'workflows/data-types/class-es-data-type-ninja-forms-data.php',
+				'workflows/data-types/class-es-data-type-give-data.php',
+				'workflows/data-types/class-es-data-type-gravity-forms-data.php',
+				'workflows/data-types/class-es-data-type-forminator-forms-data.php',
+				
+				// Triggers from Starter version
+				'workflows/triggers/class-es-trigger-comment-added.php',
+				'workflows/triggers/class-es-trigger-cf7-submitted.php',
+				'workflows/triggers/class-es-trigger-wc-order-created.php',
+				'workflows/triggers/class-es-trigger-wc-order-completed.php',
+				'workflows/triggers/class-es-trigger-edd-purchase-completed.php',
+				'workflows/triggers/class-es-trigger-wpforms-submitted.php',
+				'workflows/triggers/class-es-trigger-ninja-forms-submitted.php',
+				'workflows/triggers/class-es-trigger-give-donation-made.php',
+				'workflows/triggers/class-es-trigger-gravity-forms-submitted.php',
+				'workflows/triggers/class-es-trigger-forminator-forms-submitted.php',
+			);
+
+			foreach ( $files_to_load as $file ) {
+				if ( is_file( $this->starter_plugin_path . '/' . $file ) ) {
+					require_once $this->starter_plugin_path . '/' . $file;
+				}
+			}
 		}
 
 		/**
@@ -218,10 +267,25 @@ if ( ! class_exists( 'Email_Subscribers_Starter' ) ) {
 		 * @since 3.5.x
 		 */
 		public function es_starter_load_scripts_styles() {
+
+			
 			wp_register_script( 'es_starter_main_js', $this->starter_plugin_url . 'assets/js/starter-main.js', array( 'jquery' ), ES_PLUGIN_VERSION, true );
 			wp_enqueue_script( 'es_starter_main_js' );
 			wp_register_style( 'es_starter_main_css', $this->starter_plugin_url . 'assets/css/starter-main.css', array(), ES_PLUGIN_VERSION, 'all' );
 			wp_enqueue_style( 'es_starter_main_css' );
+			
+			$js_params = array();
+
+			$show_opt_in_consent                       = get_option( 'ig_es_show_opt_in_consent', 'no' );
+			$js_params['show_opt_in_consent']          = $show_opt_in_consent;
+			$js_params['session_tracking_enabled']	   = IG_ES_WC_Session_Tracker::session_tracking_enabled() ? 'yes' : 'no';
+			$js_params['consent_opt_in_message']       = get_option( 'ig_es_opt_in_consent_text', '' );
+			$js_params['consent_opt_out_message']      = __( 'No Thanks', 'email-subscribers' );
+			$js_params['conset_after_opt_out_message'] = __( 'You won\'t receive further emails from us, thank you!', 'email-subscribers' );
+			$js_params['ajax_url']                     = admin_url( 'admin-ajax.php' );
+			$js_params['security']                     = wp_create_nonce( 'ig-es-public-nonce' );
+
+			wp_localize_script( 'es_starter_main_js', 'ig_es_starter_main_js_params', $js_params );
 		}
 
 		/**
@@ -1065,6 +1129,16 @@ if ( ! class_exists( 'Email_Subscribers_Starter' ) ) {
 			$plan = 'starter';
 			
 			return $plan;
+		}
+
+		public function ajax_disable_session_tracking() {
+			check_ajax_referer( 'ig-es-public-nonce', 'security' );
+
+			setcookie( 'ig_es_session_tracking_disabled', 'true', 0, '/' );
+
+			do_action( 'ig_es_session_tracking_disabled' );
+
+			wp_send_json_success();
 		}
 	}
 

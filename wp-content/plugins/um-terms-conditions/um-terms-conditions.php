@@ -3,7 +3,7 @@
 Plugin Name: Ultimate Member - Terms & Conditions
 Plugin URI: https://ultimatemember.com/extensions/terms-conditions/
 Description: Add a terms and condition checkbox to your registration forms & require users to agree to your T&Cs before registering on your site.
-Version: 2.1.2
+Version: 2.1.3
 Author: Ultimate Member
 Author URI: https://ultimatemember.com/
 Text Domain: um-terms-conditions

@@ -95,4 +95,32 @@ class ES_Workflow_Data_Layer {
 		return $is_missing;
 	}
 
+	/**
+	 * Get customer object from data layer
+	 * 
+	 * @return IG_ES_Customer|false
+	 */
+	public function get_customer() {
+		return $this->get_item( 'customer' );
+	}
+
+
+	/**
+	 * Get cart object from data layer
+	 * 
+	 * @return IG_ES_Cart|false
+	 */
+	public function get_cart() {
+		return $this->get_item( 'cart' );
+	}
+
+	/**
+	 * Get cart object from data layer
+	 * 
+	 * @return IG_ES_Guest|false
+	 */
+	public function get_guest() {
+		return $this->get_item( 'guest' );
+	}
+
 }

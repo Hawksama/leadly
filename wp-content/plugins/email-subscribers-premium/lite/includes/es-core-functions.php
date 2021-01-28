@@ -978,3 +978,4 @@ if ( ! function_exists( 'ig_es_insert_widget_in_sidebar' ) ) {
 		return false;
 	}
 }
+

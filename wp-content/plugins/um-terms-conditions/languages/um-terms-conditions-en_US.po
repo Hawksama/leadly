@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Ultimate Member - Terms & Conditions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ultimate Member - Terms & Conditions 2.1.2\n"
+"Project-Id-Version: Ultimate Member - Terms & Conditions 2.1.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/um-terms-"
 "conditions\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-04-08T02:39:38+03:00\n"
-"PO-Revision-Date: 2020-04-08 02:59+0300\n"
+"POT-Creation-Date: 2020-12-16T16:25:52+02:00\n"
+"PO-Revision-Date: 2020-12-16 19:10+0200\n"
 "X-Generator: Poedit 2.0.6\n"
 "X-Domain: um-terms-conditions\n"
 "Last-Translator: \n"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: includes/admin/templates/form/register_terms-conditions.php:48
 #: includes/admin/templates/form/register_terms-conditions.php:49
-#: templates/um-terms-conditions-public-display.php:11
+#: templates/um-terms-conditions-public-display.php:10
 #: templates/um-terms-conditions-public-display.php:20
 msgid "Hide Terms"
 msgstr ""

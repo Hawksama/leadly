@@ -356,24 +356,24 @@ class ES_Workflow_Queue extends ES_DB_Workflows_Queue {
 		if ( ! $this->exists ) {
 			return false;
 		}
-
+		
 		// mark as failed and then delete if complete, so fatal error will not cause it to run repeatedly
 		$this->mark_as_failed( self::F_FATAL_ERROR );
 		$this->save();
 		$success = false;
-
+		
 		$workflow   = $this->get_workflow();
 		$data_layer = $this->get_data_layer();
 		$workflow->setup( $data_layer );
-
+		
 		$failure = $this->do_failure_check( $workflow );
-
+		
 		if ( $failure ) {
 			// queued event failed
 			$this->mark_as_failed( $failure );
 		} else {
 			$success = true;
-
+			
 			// passed fail check so validate workflow and then delete
 			if ( $this->validate_workflow( $workflow ) ) {
 				$workflow->run();

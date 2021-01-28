@@ -5,6 +5,8 @@ class ACUI_Columns{
 	function __construct(){
 		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
+		add_action( 'acui_columns_save_settings', array( $this, 'save_settings' ), 10, 1 );
+
 		if( get_option( 'acui_show_profile_fields' ) == true ){
 			add_action( "user_new_form", array( $this, "extra_user_profile_fields" ) );
 			add_action( "show_user_profile", array( $this, "extra_user_profile_fields" ) );
@@ -162,7 +164,8 @@ class ACUI_Columns{
 	}
 
 	function extra_user_profile_fields( $user ) {
-		$acui_restricted_fields = acui_get_restricted_fields();
+		$acui_helper = new ACUI_Helper();
+		$acui_restricted_fields = $acui_helper->get_restricted_fields();
 		$headers = get_option("acui_columns");
 	
 		if( is_array( $headers ) && !empty( $headers ) ):
@@ -186,8 +189,9 @@ class ACUI_Columns{
 	}
 
 	function save_extra_user_profile_fields( $user_id ){
+		$acui_helper = new ACUI_Helper();
 		$headers = get_option("acui_columns");
-		$acui_restricted_fields = acui_get_restricted_fields();
+		$acui_restricted_fields = $acui_helper->get_restricted_fields();
 	
 		$post_filtered = filter_input_array( INPUT_POST );
 	
@@ -200,6 +204,18 @@ class ACUI_Columns{
 				update_user_meta( $user_id, $column, $post_filtered[$column_sanitized] );
 			}
 		endif;
+	}
+
+	public static function save_settings( $form_data ){
+		if ( !isset( $form_data['security'] ) || !wp_verify_nonce( $form_data['security'], 'codection-security' ) ) {
+			wp_die( __( 'Nonce check failed', 'import-users-from-csv-with-meta' ) ); 
+		}
+	
+		if( isset( $form_data['show-profile-fields-action'] ) && $form_data['show-profile-fields-action'] == 'update' )
+			update_option( "acui_show_profile_fields", isset( $form_data["show-profile-fields"] ) && $form_data["show-profile-fields"] == "yes" );
+	
+		if( isset( $form_data['reset-profile-fields-action'] ) && $form_data['reset-profile-fields-action'] == 'reset' )
+			update_option( "acui_columns", array() );
 	}
 }
 

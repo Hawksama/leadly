@@ -21,7 +21,7 @@ class ACUI_Exporter{
 	}
 
 	public static function admin_gui(){
-		$roles = acui_get_editable_roles();
+		$roles = ACUI_Helper::get_editable_roles();
 	?>
 	<h3 id="acui_export_users_header"><?php _e( 'Export users', 'import-users-from-csv-with-meta' ); ?></h3>
 	<form id="acui_export_users_wrapper" method="POST" target="_blank" enctype="multipart/form-data" action="<?php echo admin_url( 'admin-ajax.php' ); ?>">
@@ -137,11 +137,15 @@ class ACUI_Exporter{
 		return $value;
 	}
 
-	public static function prepare( $key, $value, $datetime_format ){
+	public static function prepare( $key, $value, $datetime_format, $user = 0 ){
 		$timestamp_keys = apply_filters( 'acui_export_timestamp_keys', array( 'wc_last_active' ) );
 		$non_date_keys = apply_filters( 'acui_export_non_date_keys', array() );
+		$original_value = $value;
 
-		if( is_array( $value ) ){
+		if( $key == 'role' ){
+			return self::get_role( $user );
+		}
+		if( is_array( $value ) || is_object( $value ) ){
 			return serialize( $value );
 		}
 		elseif( in_array( $key, $non_date_keys ) || empty( $datetime_format ) ){
@@ -154,11 +158,11 @@ class ACUI_Exporter{
 			return date( $datetime_format, $value );
 		}
 		else{
-			return self::clean_bad_characters_formulas( $value );
+			return apply_filters( 'acui_export_prepare', self::clean_bad_characters_formulas( $value ), $original_value );
 		}
 	}
 
-	function get_role( $user_id ){
+	static function get_role( $user_id ){
 		$user = get_user_by( 'id', $user_id );
 		return implode( ',', $user->roles );
 	}
@@ -221,14 +225,19 @@ class ACUI_Exporter{
 
 			foreach ( $this->user_data as $key ) {
 				$key = apply_filters( 'acui_export_get_key_user_data', $key );
-				$row[ $key ] = self::prepare( $key, $userdata->data->{$key}, $datetime_format );
+				$row[ $key ] = self::prepare( $key, $userdata->data->{$key}, $datetime_format, $user );
 			}
 
-			$row['role'] = $this->get_role( $user );
+			$row[] = $this->get_role( $user );
 
 			foreach ( $this->get_user_meta_keys() as $key ) {
-				$row[ $key ] = self::prepare( $key, get_user_meta( $user, $key, true ), $datetime_format );
+				$row[ $key ] = self::prepare( $key, get_user_meta( $user, $key, true ), $datetime_format, $user );
 			}
+
+			$row['user_login'] = '';
+			$row['user_email'] = '';
+
+			$row = $this->maybe_fill_empty_data( $row, $user );
 
 			$row = apply_filters( 'acui_export_data', $row, $user, $datetime_format, $columns, $order_fields_alphabetically );
 
@@ -250,7 +259,7 @@ class ACUI_Exporter{
 		header( "Content-type: text/csv;charset=utf-8" );
 		header( "Content-Disposition: attachment; filename=\"".$path_parts["basename"]."\"" );
 		header( "Content-length: $fsize" );
-		header( "Cache-control: private" );
+		header( "Cache-control: privfilefleate" );
 		header( "Content-Description: File Transfer" );
     	header( "Content-Transfer-Encoding: binary" );
     	header( "Expires: 0" );
@@ -276,8 +285,12 @@ class ACUI_Exporter{
 	    $usermeta = $wpdb->get_results( $select, ARRAY_A );
 	  
 	  	foreach ($usermeta as $key => $value) {
-	  		$meta_keys[] = $value["meta_key"];
-	  	}
+			if( $value["meta_key"] == 'role' )
+				continue;
+
+			$meta_keys[] = $value["meta_key"];
+		}
+
 	    return apply_filters( 'acui_export_get_user_meta_keys', $meta_keys );
 	}
 
@@ -312,6 +325,20 @@ class ACUI_Exporter{
 
 	function filter_key_user_id( $key ){
 		return ( $key == 'source_user_id' ) ? 'ID' : $key;
+	}
+
+	function maybe_fill_empty_data( $row, $user_id ){
+		if( empty( $row['user_login'] ) || empty( $row['user_email'] ) ){
+			$user = new WP_User( $user_id );
+
+			if( $user->ID == 0 )
+				return $row;
+
+			$row['user_login'] = $user->user_login;
+			$row['user_email'] = $user->user_email;
+		}
+		
+		return $row;
 	}
 }
 

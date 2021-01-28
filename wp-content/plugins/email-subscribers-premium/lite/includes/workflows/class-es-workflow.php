@@ -392,7 +392,6 @@ class ES_Workflow {
 			return false;
 		}
 
-		
 		if ( ! $trigger->validate_workflow( $this ) ) {
 			return false;
 		}

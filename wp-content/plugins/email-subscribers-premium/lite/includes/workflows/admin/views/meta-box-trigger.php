@@ -11,7 +11,9 @@
 $trigger_list = array();
 
 foreach ( ES_Workflow_Triggers::get_all() as $trigger ) {
-	$trigger_list[ $trigger->get_group() ][ $trigger->get_name() ] = $trigger;
+	if ( $trigger instanceof ES_Workflow_Trigger ) {
+		$trigger_list[ $trigger->get_group() ][ $trigger->get_name() ] = $trigger;
+	}
 }
 
 if ( ! ES()->is_starter() ) {

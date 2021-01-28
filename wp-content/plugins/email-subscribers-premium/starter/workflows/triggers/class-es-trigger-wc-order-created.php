@@ -50,8 +50,9 @@ class ES_Trigger_WC_Order_Created extends ES_Workflow_Trigger {
 	 */
 	public function handle_order_created_event( $order_id, $wc_order = null ) {
 
-		// Fetch user conset if given.
-		$opt_in_consent      = ig_es_get_request_data( 'ig-es-opt-in-consent', 'no' );
+		// Session tracking is enabled untill user optout from the checkout page.
+		$session_tracking_enabled = IG_ES_WC_Session_Tracker::session_tracking_enabled();
+
 		$show_opt_in_consent = get_site_option( 'ig_es_show_opt_in_consent', 'no' );
 		
 		// By default set consent status to default so when consent is enabled from settings we can get it from the consent field when placing order.
@@ -59,7 +60,7 @@ class ES_Trigger_WC_Order_Created extends ES_Workflow_Trigger {
 
 		// Check consent only when consent is enabled and user is not in the admin interface.
 		if ( 'yes' === $show_opt_in_consent && ! is_admin() ) {
-			$consent_status = ( 'yes' === $opt_in_consent ) ? 'given' : 'not_given';
+			$consent_status = ( $session_tracking_enabled ) ? 'given' : 'not_given';
 		}
 
 		// If user haven't given consent when consent field present then return.

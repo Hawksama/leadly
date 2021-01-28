@@ -3,8 +3,8 @@
 /**
  * Can be loaded by ajax
  *
- * @var $workflow AutomateWoo\Workflow
- * @var $trigger AutomateWoo\Trigger
+ * @var $workflow Workflow
+ * @var $trigger Trigger
  * @var $fill_fields (optional)
  */
 

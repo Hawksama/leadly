@@ -50,7 +50,12 @@
 		$.post( ajaxurl, data, function( response ) {
 			var response = JSON.parse( response );
 			$( '#title' ).val( response.title );
-			tinyMCE.get( 'body_mail' ).setContent( response.content );
+			
+			if( typeof( tinyMCE ) === "undefined" )
+				$( 'body_mail' ).val( response.content );
+			else
+				tinyMCE.get( 'body_mail' ).setContent( response.content );
+			
 			$( '#email_template_attachment_id' ).val( response.attachment_id );
 			if( response.attachment_url != '' ){
 				$( '#email_template_attachment_file' ).val( response.attachment_url );

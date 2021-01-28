@@ -683,7 +683,7 @@ function add_spam_score_utm_link() {
  */
 function ig_es_add_captcha_option( $form_data ) {
 
-	if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) { 
+	if ( ES()->can_upsell_features( array( 'lite', 'trial' ) ) ) { 
 
 		$utm_args = array(
 			'utm_medium' => 'es_form_captcha'

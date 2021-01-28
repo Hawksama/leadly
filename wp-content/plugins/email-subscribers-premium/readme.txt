@@ -3,9 +3,23 @@ Plugin URI	: https://www.icegram.com/
 Author		: Icegram
 Author URI	: https://www.icegram.com/
 Requires at least: 3.9
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 4.6.4
+Stable tag: 4.6.6
+
+
+************************************************************Version 4.6.6************************************************************
+
+* New: Now, able to map fields while importing
+* Update: Improved UI
+* Fix: YouTube video embedding issue
+
+************************************************************Version 4.6.5************************************************************
+
+* New: WooCommerce Abandoned Cart [PRO]
+* New: Added option to disable storing of subscribers' IP Address [PRO]
+* New: Added new column 'Last opened at' on the audience page [PRO]
+* New: Added option to filter reports by type and status
 
 ************************************************************Version 4.6.4************************************************************
 

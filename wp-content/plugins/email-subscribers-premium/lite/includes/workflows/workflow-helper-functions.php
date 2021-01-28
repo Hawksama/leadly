@@ -56,3 +56,34 @@ function ig_es_validate_data_item( $type, $item ) {
 function ig_es_bool_int( $val ) {
 	return intval( (bool) $val );
 }
+
+/**
+ * Generate tracking key
+ * 
+ * @param $length int
+ * @param bool $case_sensitive When false only lowercase letters will be included
+ * @param bool $more_numbers
+ * @return string
+ */
+function ig_es_generate_key( $length = 25, $case_sensitive = true, $more_numbers = false ) {
+
+	$chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+	if ( $case_sensitive ) {
+		$chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	}
+
+	if ( $more_numbers ) {
+		$chars .= '01234567890123456789';
+	}
+
+	$password = '';
+	$chars_length = strlen( $chars );
+
+	for ( $i = 0; $i < $length; $i++ ) {
+		$password .= substr($chars, wp_rand( 0, $chars_length - 1), 1);
+	}
+
+	return $password;
+}
+

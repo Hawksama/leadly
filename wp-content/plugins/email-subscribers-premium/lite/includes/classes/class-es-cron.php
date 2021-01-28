@@ -35,6 +35,7 @@ class ES_Cron {
 		}
 
 		$this->handle_cron_request();
+		$this->handle_data_request();
 	}
 
 	/**
@@ -124,6 +125,10 @@ class ES_Cron {
 
 		if ( ! wp_next_scheduled( 'ig_es_cron_worker' ) ) {
 			wp_schedule_event( floor( time() / 300 ) * 300, 'ig_es_cron_interval', 'ig_es_cron_worker' );
+		}
+
+		if ( ! wp_next_scheduled( 'ig_es_wc_abandoned_cart_worker' ) ) {
+			wp_schedule_event( floor( time() / 300 ) * 300, 'ig_es_two_minutes', 'ig_es_wc_abandoned_cart_worker' );
 		}
 
 	}
@@ -218,9 +223,9 @@ class ES_Cron {
 		global $wpdb;
 
 		$lock = 'ig_es_cron_lock_' . $key . '%';
-		
-		$res = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}options WHERE option_name LIKE %s AND option_value != ''", $lock ) ) ;
-		
+
+		$res = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}options WHERE option_name LIKE %s AND option_value != ''", $lock ) );
+
 		return ! ! $res;
 	}
 
@@ -237,6 +242,11 @@ class ES_Cron {
 		$schedules['ig_es_cron_interval'] = array(
 			'interval' => $this->get_cron_interval(),
 			'display'  => esc_html__( 'Email Subscribers Cronjob Interval', 'email-subscribers' ),
+		);
+
+		$schedules['ig_es_two_minutes'] = array(
+			'interval' => 120,
+			'display'  => esc_html__( 'Two minutes', 'email-subscribers' ),
 		);
 
 		return $schedules;
@@ -281,8 +291,8 @@ class ES_Cron {
 	/**
 	 * Get Cron URL
 	 *
-	 * @param bool   $self
-	 * @param bool   $pro
+	 * @param bool $self
+	 * @param bool $pro
 	 * @param string $campaign_hash
 	 *
 	 * @return mixed|string|void
@@ -525,6 +535,50 @@ class ES_Cron {
 	}
 
 	/**
+	 *
+	 */
+	public function handle_data_request() {
+		$es_request = ig_es_get_request_data( 'es' );
+
+		// It's not a cron request . Say Goodbye!
+		if ( 'get_info' !== $es_request ) {
+			return;
+		}
+
+		$guid = ig_es_get_request_data( 'guid' );
+
+		$is_valid_request = $this->is_valid_request( $guid );
+
+		$response = array();
+		if ( $is_valid_request ) {
+
+			if ( ES()->is_premium() || ES()->is_trial() ) {
+
+				global $ig_es_tracker;
+				/*
+				 * Trial start date
+				 * Total # Contacts they have
+				 * Total # lists they have
+				 * Some of ES settings like enable track opens, track clicks etc
+				 * Uninstall Date
+				 */
+
+				$response['meta_info']     = ES_Common::get_ig_es_meta_info();
+				$response['system_status'] = array(
+					'active_plugins'   => implode( ', ', $ig_es_tracker::get_active_plugins() ),
+					'inactive_plugins' => implode( ', ', $ig_es_tracker::get_inactive_plugins() ),
+					'current_theme'    => $ig_es_tracker::get_current_theme_info(),
+					'wp_info'          => $ig_es_tracker::get_wp_info(),
+					'server_info'      => $ig_es_tracker::get_server_info()
+				);
+			}
+		}
+
+		echo json_encode( $response );
+		die();
+	}
+
+	/**
 	 * Get Status Message
 	 *
 	 * @param string $message
@@ -560,14 +614,44 @@ class ES_Cron {
 	}
 
 	/**
+	 * Is valid request
+	 *
+	 * @param string $guid
+	 *
+	 * @return bool
+	 *
+	 * @since 4.6.6
+	 */
+	public function is_valid_request( $guid = '' ) {
+
+		$security1             = strlen( $guid );
+		$es_c_cronguid_noslash = str_replace( '-', '', $guid );
+		$security2             = strlen( $es_c_cronguid_noslash );
+		if ( 34 == $security1 && 30 == $security2 ) {
+			if ( ! preg_match( '/[^a-z]/', $es_c_cronguid_noslash ) ) {
+				$cron_url = ES()->cron->url();
+
+				parse_str( $cron_url, $output );
+
+				// Now, all check pass.
+				if ( $guid === $output['guid'] ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Method to get list of cron jobs being used in the plugin
-	 * 
+	 *
 	 * @return array $es_cron_jobs List of cron jobs used in the plugin
-	 * 
+	 *
 	 * @since 4.6.4
 	 */
 	public function get_cron_jobs_list() {
-		
+
 		$es_cron_jobs = array(
 			'ig_es_cron',
 			'ig_es_cron_worker',

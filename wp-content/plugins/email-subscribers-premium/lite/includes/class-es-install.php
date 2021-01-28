@@ -231,6 +231,16 @@ if ( ! class_exists( 'ES_Install' ) ) {
 				'ig_es_update_463_db_version',
 			),
 
+			'4.6.5' => array(
+				'ig_es_update_465_create_tables',
+				'ig_es_update_465_db_version',
+			),
+
+			'4.6.6' => array(
+				'ig_es_update_466_create_temp_import_table',
+				'ig_es_update_466_db_version',
+			),
+
 		);
 
 		/**
@@ -1165,6 +1175,83 @@ if ( ! class_exists( 'ES_Install' ) ) {
 		}
 
 		/**
+		 * Create WooCommerce cart and guest tables
+		 *
+		 * @param string $collate
+		 *
+		 * @return string
+		 *
+		 * @sinc 4.6.5
+		 */
+		public static function get_ig_es_465_schema( $collate = '' ) {
+			global $wpdb;
+
+			$tables = "CREATE TABLE `{$wpdb->prefix}ig_wc_cart` (
+					`id` bigint(20) NOT NULL AUTO_INCREMENT,
+					`status` varchar(100) NOT NULL default '',
+					`user_id` bigint(20) NOT NULL default 0,
+					`guest_id` bigint(20) NOT NULL default 0,
+					`last_modified` datetime NULL,
+					`created` datetime NULL,
+					`items` longtext NOT NULL default '',
+					`coupons` longtext NOT NULL default '',
+					`fees` longtext NOT NULL default '',
+					`shipping_tax_total` double DEFAULT 0 NOT NULL,
+					`shipping_total` double DEFAULT 0 NOT NULL,
+					`total` double DEFAULT 0 NOT NULL,
+					`token` varchar(32) NOT NULL default '',
+					`currency` varchar(8) NOT NULL default '',
+					PRIMARY KEY  (id),
+					KEY `status` (`status`),
+					KEY `user_id` (`user_id`),
+					KEY `guest_id` (`guest_id`),
+					KEY `last_modified` (`last_modified`),
+					KEY `created` (`created`)
+				) $collate;
+
+				CREATE TABLE `{$wpdb->prefix}ig_wc_guests` (
+				id bigint(20) NOT NULL AUTO_INCREMENT,
+				email varchar(255) NOT NULL default '',
+				tracking_key varchar(32) NOT NULL default '',
+				created datetime NULL,
+				last_active datetime NULL,
+				language varchar(10) NOT NULL default '',
+				most_recent_order bigint(20) NOT NULL DEFAULT 0,
+				version bigint(20) NOT NULL default 0,
+				PRIMARY KEY  (id),
+				KEY tracking_key (tracking_key),
+				KEY email (email(191)),
+				KEY most_recent_order (most_recent_order),
+				KEY version (version)
+				) $collate;
+			";
+			
+			return $tables;
+		}
+
+		/**
+		 * Create table for storing subscribers import CSV data temporarily
+		 *
+		 * @param string $collate
+		 *
+		 * @return string
+		 *
+		 * @since 4.6.6
+		 */
+		public static function get_ig_es_466_schema( $collate = '' ) {
+			global $wpdb;
+
+			$tables = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}ig_temp_import (
+				ID bigint(20) NOT NULL AUTO_INCREMENT,
+				data longtext NOT NULL,
+				identifier char(13) NOT NULL,
+				PRIMARY KEY (ID)
+			) $collate";
+			
+			return $tables;
+		}
+
+		/**
 		 * Collect multiple version schema
 		 *
 		 * @param string $collate
@@ -1180,6 +1267,8 @@ if ( ! class_exists( 'ES_Install' ) ) {
 			$tables .= self::get_ig_es_421_schema( $collate );
 			$tables .= self::get_ig_es_424_schema( $collate );
 			$tables .= self::get_ig_es_441_schema( $collate );
+			$tables .= self::get_ig_es_465_schema( $collate );
+			$tables .= self::get_ig_es_466_schema( $collate );
 
 			return $tables;
 		}
