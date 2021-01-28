@@ -1,6 +1,6 @@
 <?php
 
-define( 'NEVE_CHILD_VERSION', '1.0' );
+define( 'NEVE_CHILD_VERSION', '1.0.2' );
 
 
 function nevechild_enqueue_scripts() {

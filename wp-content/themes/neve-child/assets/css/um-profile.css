@@ -83,6 +83,11 @@
     font-size: 0.9rem;
 }
 
+.um-page-user .um-profile .um-field-biography,
+.um-page-user .um-profile .um-field-headline {
+    text-align: center;
+}
+
 .um-page-user .um-profile .um-field-headline .um-field-value {
     padding-top: 0px;
 }
@@ -207,18 +212,21 @@
 
 .um-page-user .um-form .um-field-area ul ::marker {
     content: "»";
+    display: inline-block;
     font-size: 25px;
     color: #D4AF37;
 }
 
 .um-page-user .um-form .um-field-area ul li {
     padding-inline-start: 1ch;
+    display: inline-block;
 }
 
 .um-page-user .um-form .um-field-area ul,
 .um-page-user .um-form .um-field-area ol {
     max-width: 100%;
     margin-left: 30px;
+    margin-right: 30px;
 }
 
 .um-page-user .um-form .um-field a.um-button {
