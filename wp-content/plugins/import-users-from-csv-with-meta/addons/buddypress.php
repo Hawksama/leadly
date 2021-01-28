@@ -7,38 +7,79 @@ if( !is_plugin_active( 'buddypress/bp-loader.php' ) && !function_exists( 'bp_is_
 }
 
 class ACUI_Buddypress{
+	var $fields;
+	var $profile_groups;
+
 	function __construct(){
+		if( !class_exists( "BP_XProfile_Group" ) ){
+			require_once( WP_PLUGIN_DIR . "/buddypress/bp-xprofile/classes/class-bp-xprofile-group.php" );
+		}
+		
+		$this->profile_groups = $this->get_profile_groups();
+		$this->fields = $this->get_fields();
+	}
+	
+	function hooks(){
 		add_filter( 'acui_restricted_fields', array( $this, 'restricted_fields' ), 10, 1 );
 		add_action( 'acui_tab_import_before_import_button', array( $this, 'show_compatibility' ) );
 		add_action( 'acui_documentation_after_plugins_activated', array( $this, 'documentation' ) );
 		add_filter( 'acui_export_columns', array( $this, 'export_columns' ), 10, 1 );
 		add_filter( 'acui_export_data', array( $this, 'export_data' ), 10, 3 );
-		add_action( 'post_acui_import_single_user', array( $this, 'import_avatar' ), 10, 3 );		
+		add_action( 'post_acui_import_single_user', array( $this, 'import' ), 10, 3 );	
+		add_action( 'post_acui_import_single_user', array( $this, 'import_avatar' ), 10, 3 );	
 	}
 
 	function restricted_fields( $acui_restricted_fields ){
-		return array_merge( $acui_restricted_fields, array( 'bp_avatar' ) );
+		return array_merge( $acui_restricted_fields, array( 'bp_group', 'bp_group_role', 'bp_avatar' ), $this->fields );
 	}
 
-	function show_compatibility(){
-		if( !class_exists( "BP_XProfile_Group" ) ){
-			require_once( WP_PLUGIN_DIR . "/buddypress/bp-xprofile/classes/class-bp-xprofile-group.php" );
-		}
-	
+	function get_profile_groups(){
+		return BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
+	}
+
+	public function get_fields(){
 		$buddypress_fields = array();
-		$buddypress_types = array();
-		$profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
-	
-		if ( !empty( $profile_groups ) ) {
-			 foreach ( $profile_groups as $profile_group ) {
+		
+		if ( !empty( $this->profile_groups ) ) {
+			 foreach ( $this->profile_groups as $profile_group ) {
 				if ( !empty( $profile_group->fields ) ) {				
 					foreach ( $profile_group->fields as $field ) {
 						$buddypress_fields[] = $field->name;
-						$buddypress_types[] = $field->type;
 					}
 				}
 			}
 		}
+
+		return $buddypress_fields;
+	}
+
+	function get_field_type( $field_name ){
+		if ( !empty( $this->profile_groups ) ) {
+			 foreach ( $this->profile_groups as $profile_group ) {
+				if ( !empty( $profile_group->fields ) ) {				
+					foreach ( $profile_group->fields as $field ) {
+						if( $field_name == $field->name )
+							return $field->type;
+					}
+				}
+			}
+		}
+	}
+
+	function get_groups( $user_id ){
+		if( !class_exists( "BP_Groups_Member" ) ){
+			require_once( WP_PLUGIN_DIR . "/buddypress/bp-groups/classes/class-bp-groups-member.php" );
+		}
+
+		$groups = BP_Groups_Member::get_group_ids( $user_id );
+		return implode( ",", $groups['groups'] );
+	}
+
+	function get_member_type( $user_id ){
+		return implode( ",", bp_get_member_type( $user_id, false ) );
+	}
+
+	function show_compatibility(){
 		?>
 		<h2><?php _e( 'BuddyPress & BuddyBoss compatibility', 'import-users-from-csv-with-meta'); ?></h2>
 	
@@ -48,7 +89,7 @@ class ACUI_Buddypress{
 				<th scope="row"><label><?php _e( 'BuddyPress/BuddyBoss users', 'import-users-from-csv-with-meta' ); ?></label></th>
 				<td><?php _e( 'You can insert any profile from BuddyPress using his name as header. Plugin will check, before import, which fields are defined in BuddyPress and will assign it in the update. You can use this fields:', 'import-users-from-csv-with-meta' ); ?>
 				<ul style="list-style:disc outside none;margin-left:2em;">
-					<?php foreach ( $buddypress_fields as $buddypress_field ): ?><li><?php echo $buddypress_field; ?></li><?php endforeach; ?>
+					<?php foreach ( $this->get_fields() as $buddypress_field ): ?><li><?php echo $buddypress_field; ?></li><?php endforeach; ?>
 				</ul>
 				<?php _e( 'Remember that all date fields have to be imported using a format like this: 2016-01-01 00:00:00', 'import-users-from-csv-with-meta' ); ?>
 	
@@ -87,42 +128,8 @@ class ACUI_Buddypress{
 		<?php
 	}
 
-	function get_fields(){
-		if( !is_plugin_active( 'buddypress/bp-loader.php' ) && !function_exists( 'bp_is_active' ) ){
-			return array();
-		}
-
-		if( !class_exists( "BP_XProfile_Group" ) ){
-			require_once( WP_PLUGIN_DIR . "/buddypress/bp-xprofile/classes/class-bp-xprofile-group.php" );
-		}
-
-		$buddypress_fields = array();
-		$profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
-
-		if ( !empty( $profile_groups ) ) {
-			 foreach ( $profile_groups as $profile_group ) {
-				if ( !empty( $profile_group->fields ) ) {				
-					foreach ( $profile_group->fields as $field ) {
-						$buddypress_fields[] = $field->name;
-					}
-				}
-			}
-		}
-
-		return $buddypress_fields;
-	}
-
-	function get_groups( $user_id ){
-		$groups = BP_Groups_Member::get_group_ids( $user_id );
-		return implode( ",", $groups['groups'] );
-	}
-
-	function get_member_type( $user_id ){
-		return implode( ",", bp_get_member_type( $user_id, false ) );
-	}
-
 	function export_columns( $row ){
-		foreach ( $this->get_fields() as $key ) {
+		foreach ( $this->fields as $key ) {
 			$row[] = $key;
 		}
 
@@ -133,7 +140,7 @@ class ACUI_Buddypress{
 	}
 
 	function export_data( $row, $user ){
-		foreach ( $this->get_fields() as $key ) {
+		foreach ( $this->fields as $key ) {
 			$row[] = ACUI_Exporter::prepare( $key, xprofile_get_field_data( $key, $user, 'comma' ), $datetime_format );
 		}
 
@@ -141,6 +148,68 @@ class ACUI_Buddypress{
 		$row[] = $this->get_member_type( $user );
 
 		return $row;
+	}
+
+	function import( $headers, $row, $user_id ){
+		foreach( $this->fields as $field ){
+			$pos = array_search( $field, $headers );
+
+			if( $pos === FALSE )
+				continue;
+
+			switch( $this->get_field_type( $field ) ){
+				case 'datebox':
+					$date = $row[$pos];
+					switch( true ){
+						case is_numeric( $date ):
+							$UNIX_DATE = ($date - 25569) * 86400;
+							$datebox = gmdate("Y-m-d H:i:s", $UNIX_DATE);break;
+						case preg_match('/(\d{1,2})[\/-](\d{1,2})[\/-]([4567890]{1}\d{1})/',$date,$match):
+							$match[3]='19'.$match[3];
+						case preg_match('/(\d{1,2})[\/-](\d{1,2})[\/-](20[4567890]{1}\d{1})/',$date,$match):
+						case preg_match('/(\d{1,2})[\/-](\d{1,2})[\/-](19[4567890]{1}\d{1})/',$date,$match):
+							$datebox= ($match[3].'-'.$match[2].'-'.$match[1]);
+							break;
+
+						default:
+							$datebox = $date;
+					}
+
+					$datebox = strtotime( $datebox );
+					xprofile_set_field_data( $field, $user_id, date( 'Y-m-d H:i:s', $datebox ) );
+					unset( $datebox );
+					break;
+				default:
+					xprofile_set_field_data( $field, $user_id, $row[$pos] );
+			}	
+		}
+
+		$pos_bp_group = array_search( 'bp_group', $headers );
+		$pos_bp_group_role = array_search( 'bp_group_role', $headers );
+		if( $pos_bp_group !== FALSE ){
+			$groups = explode( ',', $row[ $pos_bp_group ] );
+			$groups_role = explode( ',', $row[ $pos_bp_group_role ] );
+
+			for( $j = 0; $j < count( $groups ); $j++ ){
+				$group_id = BP_Groups_Group::group_exists( $groups[ $j ] );
+
+				if( !empty( $group_id ) ){
+					groups_join_group( $group_id, $user_id );
+
+					if( $groups_role[ $j ] == 'Moderator' ){
+						groups_promote_member( $user_id, $group_id, 'mod' );
+					}
+					elseif( $groups_role[ $j ] == 'Administrator' ){
+						groups_promote_member( $user_id, $group_id, 'admin' );
+					}
+				}
+			}
+		}
+			
+		$pos_member_type = array_search( 'member_type', $headers );
+		if( $pos_member_type !== FALSE ){
+			bp_set_member_type( $user_id, $row[$pos_member_type] );
+		}
 	}
 
 	function import_avatar( $headers, $row, $user_id ){
@@ -188,4 +257,5 @@ class ACUI_Buddypress{
 		}
 	}
 }
-new ACUI_Buddypress();
+$acui_buddypress = new ACUI_Buddypress();
+$acui_buddypress->hooks();

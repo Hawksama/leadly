@@ -247,6 +247,24 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 		public $mailer;
 
 		/**
+		 * IG_ES_Trail object
+		 *
+		 * @var object|IG_ES_Trial
+		 *
+		 * @since 4.6.6
+		 */
+		public $trial;
+
+		/**
+		 * IG_ES_DB_WC_Cart object
+		 *
+		 * @var object|IG_ES_DB_WC_Cart
+		 *
+		 * @since 4.6.6
+		 */
+		public $carts_db;
+
+		/**
 		 * The loader that's responsible for maintaining and registering all hooks that power
 		 * the plugin.
 		 *
@@ -620,6 +638,8 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/class-email-subscribers-loader.php',
 				'lite/includes/class-email-subscribers-i18n.php',
 
+				'lite/includes/classes/class-es-list-table.php',
+
 				// Logs
 				'lite/includes/logs/class-ig-logger-interface.php',
 				'lite/includes/logs/class-ig-log-handler-interface.php',
@@ -646,6 +666,8 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/db/class-es-db-forms.php',
 				'lite/includes/db/class-es-db-blocked-emails.php',
 				'lite/includes/db/class-es-db-actions.php',
+				'lite/includes/db/class-ig-es-db-wc-cart.php',
+				'lite/includes/db/class-ig-es-db-wc-guest.php',
 
 				// Mailers
 				'lite/includes/mailers/class-es-base-mailer.php',
@@ -734,46 +756,40 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/feedback/class-ig-feedback.php',
 				'lite/includes/feedback.php',
 				// End-IG-Code.
-
-				//Load Starter & Pro files if exists
-				'starter/class-es-utils.php',
-				'pro/pro-class-email-subscribers.php',
-				'starter/starter-class-email-subscribers.php',
-				'pro/classes/class-es-pro-sequence-report.php',
-
-				'starter/mailers/class-es-smtp-mailer.php',
-
+				
+				// WC session tracking
+				'lite/includes/classes/class-ig-es-wc-session-tracker.php',
+				'lite/includes/classes/ig-es-wc-cookies.php',
+				
 				// Workflows
 				'lite/includes/workflows/db/class-es-db-workflows.php',
 				'lite/includes/workflows/db/class-es-db-workflows-queue.php',
 				'lite/includes/workflows/class-es-workflows-table.php',
-
-
 				// Workflow Abstracts
 				'lite/includes/workflows/abstracts/class-es-workflow-registry.php',
 				'lite/includes/workflows/abstracts/class-es-workflow-trigger.php',
 				'lite/includes/workflows/abstracts/class-es-workflow-action.php',
 				'lite/includes/workflows/abstracts/class-es-workflow-data-type.php',
-
+				
 				// Workflow Utility
 				'lite/includes/workflows/class-es-clean.php',
 				'lite/includes/workflows/class-es-format.php',
 				'lite/includes/workflows/class-es-workflow-time-helper.php',
 				'lite/includes/workflows/class-es-workflow-datetime.php',
 				'lite/includes/workflows/workflow-helper-functions.php',
-
+				
 				// Workflow
 				'lite/includes/workflows/class-es-workflow.php',
 				'lite/includes/workflows/class-es-workflow-factory.php',
-
+				
 				// Data Types
 				'lite/includes/workflows/data-types/abstracts/class-es-data-type-form-data.php',
 				'lite/includes/workflows/data-types/class-es-data-type-user.php',
 				'lite/includes/workflows/class-es-workflow-data-types.php',
-
+				
 				// Data Layer
 				'lite/includes/workflows/class-es-workflow-data-layer.php',
-
+				
 				// Workflow Fields
 				'lite/includes/workflows/fields/class-es-field.php',
 				'lite/includes/workflows/fields/class-es-text.php',
@@ -783,22 +799,22 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/workflows/fields/class-es-select.php',
 				'lite/includes/workflows/fields/class-es-checkbox.php',
 				'lite/includes/workflows/fields/class-es-wp-editor.php',
-
+				
 				// Workflow Admin
 				'lite/includes/workflows/admin/class-es-workflow-admin.php',
 				'lite/includes/workflows/admin/class-es-workflow-admin-edit.php',
 				'lite/includes/workflows/admin/class-es-workflow-admin-ajax.php',
-
+				
 				// Workflow Triggers.
 				'lite/includes/workflows/triggers/abstracts/class-es-trigger-form-submitted.php',
 				'lite/includes/workflows/triggers/class-es-trigger-user-registered.php',
 				'lite/includes/workflows/triggers/class-es-trigger-user-deleted.php',
 				'lite/includes/workflows/triggers/class-es-trigger-user-updated.php',
 				'lite/includes/workflows/class-es-workflow-triggers.php',
-
+				
 				// Abstracts workflow actions
 				'lite/includes/workflows/actions/abstracts/class-ig-es-action-send-email-abstract.php',
-
+				
 				// Workflow Actions.
 				'lite/includes/workflows/actions/class-es-action-add-to-list.php',
 				'lite/includes/workflows/actions/class-es-action-move-contact.php',
@@ -806,67 +822,29 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				'lite/includes/workflows/actions/class-es-action-delete-contact.php',
 				'lite/includes/workflows/actions/class-es-action-update-contact.php',
 				'lite/includes/workflows/class-es-workflow-actions.php',
-
+				
 				// Workflow Query
 				'lite/includes/workflows/class-es-workflow-query.php',
-
+				
 				// Workflow Queue			
 				'lite/includes/workflows/queue/class-es-workflow-queue.php',
 				'lite/includes/workflows/queue/class-es-workflow-queue-factory.php',
 				'lite/includes/workflows/queue/class-es-workflow-queue-handler.php',
 				'lite/includes/workflows/queue/class-es-workflow-queue-runner.php',
 
-				// Data Types from Starter version
-				'starter/workflows/data-types/class-es-data-type-comment.php',
-				'starter/workflows/data-types/class-es-data-type-wc-order.php',
-				'starter/workflows/data-types/class-es-data-type-edd-payment.php',
-				'starter/workflows/data-types/class-es-data-type-cf7-data.php',
-				'starter/workflows/data-types/class-es-data-type-wpforms-data.php',
-				'starter/workflows/data-types/class-es-data-type-ninja-forms-data.php',
-				'starter/workflows/data-types/class-es-data-type-give-data.php',
-				'starter/workflows/data-types/class-es-data-type-gravity-forms-data.php',
-				'starter/workflows/data-types/class-es-data-type-forminator-forms-data.php',
-
-				// Triggers from Starter version
-				'starter/workflows/triggers/class-es-trigger-comment-added.php',
-				'starter/workflows/triggers/class-es-trigger-cf7-submitted.php',
-				'starter/workflows/triggers/class-es-trigger-wc-order-created.php',
-				'starter/workflows/triggers/class-es-trigger-wc-order-completed.php',
-				'starter/workflows/triggers/class-es-trigger-edd-purchase-completed.php',
-				'starter/workflows/triggers/class-es-trigger-wpforms-submitted.php',
-				'starter/workflows/triggers/class-es-trigger-ninja-forms-submitted.php',
-				'starter/workflows/triggers/class-es-trigger-give-donation-made.php',
-				'starter/workflows/triggers/class-es-trigger-gravity-forms-submitted.php',
-				'starter/workflows/triggers/class-es-trigger-forminator-forms-submitted.php',
-
-				// Triggers from Pro version
-				'pro/workflows/triggers/class-es-trigger-wc-order-refunded.php',
-				'pro/workflows/triggers/class-es-trigger-wc-product-review-approved.php',
-
-				// Trigger Extra fields from Pro version
-				'pro/workflows/triggers/extras/class-es-pro-trigger-user-registered.php',
-
-				// Action Extra fields from Pro version
-				'pro/workflows/actions/extras/class-es-pro-action-add-to-list.php',
-
-				// Data Types from Pro version
-				'pro/workflows/data-types/class-es-data-type-review.php',
-
-				// Actions from Pro version
-				'pro/workflows/actions/class-es-action-move-to-list.php',
-				'pro/workflows/actions/class-es-action-remove-from-list.php',
-				'pro/workflows/actions/class-es-action-send-email.php',
-
 				// Workflow Loader
 				'lite/includes/workflows/class-es-workflow-loader.php',
-
+				
 				// Premium services ui components.
 				'lite/includes/premium-services-ui/class-ig-es-premium-services-ui.php',
 				
 				// Background Process Helper
 				'lite/includes/classes/class-ig-es-background-process-helper.php',
+				
+				'starter/starter-class-email-subscribers.php',
+				'pro/pro-class-email-subscribers.php',
 			);
-
+			
 			foreach ( $files_to_load as $file ) {
 				if ( is_file( ES_PLUGIN_DIR . $file ) ) {
 					require_once ES_PLUGIN_DIR . $file;
@@ -995,6 +973,17 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 		}
 
 		/**
+		 * Get trial start date
+		 *
+		 * @return false|mixed|void
+		 *
+		 * @since 4.6.6
+		 */
+		public function get_trial_start_date() {
+			return get_option( 'ig_es_trial_started_at', '' );
+		}
+
+		/**
 		 * Method to get if trial has expired or not.
 		 * 
 		 * @return bool
@@ -1035,9 +1024,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 		public function is_trial_valid() {
 
 			// Check if user has opted for trial and it has not yet expired.
-			$is_trial_valid = $this->is_trial() && ! $this->is_trial_expired() ? true : false;
-			
-			return $is_trial_valid;
+			return $this->is_trial() && ! $this->is_trial_expired();
 		}
 
 		/**
@@ -1326,6 +1313,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				self::$instance->cron              = new ES_Cron();
 				self::$instance->compatibiloty     = new ES_Compatibility();
 				self::$instance->workflows_db      = new ES_DB_Workflows();
+				self::$instance->carts_db      	   = new IG_ES_DB_WC_Cart();
 				self::$instance->trial             = new IG_ES_Trial();
 
 				// Start-IG-Code.

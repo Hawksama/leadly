@@ -14,7 +14,6 @@ if ( ! class_exists( 'ES_Integrations' ) ) {
 
 			// Sync Comment User
 			add_filter( 'comment_form_fields', array( $this, 'show_comment_consent_opt_in' ), 20, 1 );
-			add_action( 'woocommerce_checkout_after_terms_and_conditions', array( $this, 'show_checkout_opt_in_consent' ) );
 			
 			//add_action( 'wp_insert_comment', array( $this, 'es_handle_insert_comment' ), 10, 2 );
 			//add_action( 'wp_set_comment_status', array( $this, 'es_handle_comment_status' ), 10, 2 );
@@ -262,30 +261,6 @@ if ( ! class_exists( 'ES_Integrations' ) ) {
 
 			return $comment_fields;
 
-		}
-
-		/**
-		 * Hooked to 'woocommerce_checkout_after_terms_and_conditions' action. Add aditional consent for Email Subscribers
-		 *
-		 * @since 4.6.4
-		 */
-		public function show_checkout_opt_in_consent() {
-			
-			$show_opt_in_consent = get_site_option( 'ig_es_show_opt_in_consent', array() );
-
-			// If consent is enabled, show consent checkbox on checkout form.
-			if ( ! empty( $show_opt_in_consent ) && 'yes' === $show_opt_in_consent ) {
-
-				$consent_template_name = 'ig-es-opt-in-consent.php';
-				$default_path          = untrailingslashit( plugin_dir_path( __FILE__ ) ) . '/templates/woocommerce/';
-				
-				wc_get_template(
-					$consent_template_name,
-					array(),
-					'',
-					$default_path
-				);
-			}
 		}
 
 		/**

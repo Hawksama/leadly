@@ -3,7 +3,7 @@ Tags:              change wp-login, rename wp-login, wp-admin, login, wp-login, 
 Contributors:      nunosarmento
 Requires at least: 4.4
 Tested up to:      5.6
-Stable tag:        1.0.4
+Stable tag:        1.0.5
 License:           GPL-2.0+
 
 
@@ -82,3 +82,6 @@ Yes, it does work. You should setup the login URL in each website (Settings-->Pe
 = 1.0.4 =
 * Add redirect custom field.
 * Better instructions in how to use the redirect field
+
+= 1.0.5 =
+* add site URL before the new redirect input field

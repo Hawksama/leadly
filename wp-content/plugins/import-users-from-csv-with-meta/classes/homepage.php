@@ -51,7 +51,7 @@ class ACUI_Homepage{
 					<th scope="row"><label for="role"><?php _e( 'Default role', 'import-users-from-csv-with-meta' ); ?></label></th>
 					<td>
 					<?php 
-						$list_roles = acui_get_editable_roles();
+						$list_roles = ACUI_Helper::get_editable_roles();
 						
 						foreach ($list_roles as $key => $value) {
 							if( in_array( $key, $last_roles_used ) )
@@ -181,7 +181,7 @@ class ACUI_Homepage{
 						<div style="margin-left:25px;">
 							<select id="change_role_not_present_role" name="change_role_not_present_role">
 								<?php
-									$list_roles = acui_get_editable_roles(); 
+									$list_roles = ACUI_Helper::get_editable_roles();
 						
 									foreach ($list_roles as $key => $value) {
 										echo "<option value='$key'>$value</option>";

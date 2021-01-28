@@ -405,4 +405,37 @@ class ES_DB_Actions extends ES_DB {
 
 		return $count;
 	}
+
+	/**
+	 * Get Last opened at based on contact_ids
+	 *
+	 * @param array $contact_ids
+	 *
+	 * @return array
+	 *
+	 * @since 4.6.5
+	 */
+	public function get_last_opened_of_contact_ids( $contact_ids = '', $filter = false ) {
+
+		global $wpbd;
+
+		if ( empty( $contact_ids ) ) {
+			return array();
+		}
+
+		$contact_ids_str = implode( ',', $contact_ids );
+
+		$result =  $wpbd->get_results( $wpbd->prepare( "SELECT contact_id, MAX(created_at) as last_opened_at FROM {$wpbd->prefix}ig_actions WHERE contact_id IN ({$contact_ids_str}) AND type = %d  GROUP BY contact_id", IG_MESSAGE_OPEN ), ARRAY_A );
+	
+		if ( $filter ) {
+			$last_opened_at = array_column($result, 'last_opened_at', 'contact_id');
+			foreach ( $last_opened_at as $contact_id => $timestamp ) {
+				$convert_date_format = get_option( 'date_format' );
+				$convert_time_format = get_option( 'time_format' );
+				$last_opened_at[ $contact_id ] = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $timestamp ), $convert_date_format . ' ' . $convert_time_format );
+			}
+			return $last_opened_at;
+		}
+		return $result;
+	}
 }

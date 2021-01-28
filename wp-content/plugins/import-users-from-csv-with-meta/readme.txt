@@ -4,7 +4,7 @@ Donate link: https://codection.com/go/donate-import-users-from-csv-with-meta/
 Tags: csv, import, importer, meta data, meta, user, users, user meta,  editor, profile, custom, fields, delimiter, update, insert
 Requires at least: 3.4
 Tested up to: 5.6
-Stable tag: 1.16.4.1
+Stable tag: 1.17.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Import and export users and customers using CSV files including custom user meta
 
 == Description ==
 
-Clean and easy-to-use Import users plugin. It includes custom user meta to be included automatically from a CSV file and delimitation auto-detector. It also is able to send a mail to each user imported and all the meta data imported is ready to edit into user profile.
+Clean and easy-to-use import and export users and customer plugin, for WordPress and WooCommerce. It includes custom user meta to be included automatically from a CSV file and delimitation auto-detector. It also is able to send a mail to each user imported and all the meta data imported is ready to edit into user profile.
 
 *	Import CSV file with users directly to your WordPress or customers into WooCommerce
 *	Import thousends of users or customers in only some seconds
@@ -102,6 +102,44 @@ Plugin will automatically detect:
 5. Extra profile information (user meta)
 
 == Changelog ==
+
+= 1.17.1.5 =
+*   Bugs fixed exporting users
+
+= 1.17.1.4 =
+*   Roles are always managed as small letters to minimize problems writing them
+*   Fixed bug exporting metadata that are objects
+*   Included new filter in prepare export value
+
+= 1.17.1.3 =
+*   Fixed bug in mail templates when wp_editor is disabled
+
+= 1.17.1.2 =
+*   In multisite, default role is subscriber if this is not set
+
+= 1.17.1.1 =
+*   In multisite, user is added to current blog with role subscriber if user choose to no update roles but the user does not exist there
+
+= 1.17.1 =
+*   New errors, warnings and notices reporting methods
+*   DataTable used to improve data visualization
+
+= 1.17.0.4 =
+*   Included an addon for LearnDash to explain how to proceed with an import of students 
+
+= 1.17.0.3 =
+*   Fixed problem with BuddyPress addon and BP_Groups_Member class
+
+= 1.17.0.2 =
+*   New version released
+
+= 1.17.0.1 =
+*   Bug fixed importing users
+
+= 1.17 =
+*   Many code changes, making it simpler to include more features and make it easier to debug in a future
+*   Export bug fixed: the plugin exports an empty role column that breaks the CSV
+*   You can now test cron task from the "Cron" settings tab   
 
 = 1.16.4.1 =
 *   Fixed problem in "Mail options" that does not allow to remove attachments

@@ -337,7 +337,9 @@ class ES_Workflow_Admin_Edit {
 		$action_select_box_values = array();
 
 		foreach ( ES_Workflow_Actions::get_all() as $action ) {
-			$action_select_box_values[ $action->get_group() ][ $action->get_name() ] = $action->get_title();
+			if ( $action instanceof ES_Workflow_Action ) {
+				$action_select_box_values[ $action->get_group() ][ $action->get_name() ] = $action->get_title();
+			}
 		}
 
 		ES_Workflow_Admin::get_view(
@@ -467,6 +469,10 @@ class ES_Workflow_Admin_Edit {
 				// Return false if update failed.
 				return false;
 			}
+		}
+
+		if ( $workflow_id ) {
+			do_action( 'ig_es_workflow_updated', $workflow_id, $workflow_data );
 		}
 
 		return $workflow_id;

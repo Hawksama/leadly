@@ -5,8 +5,8 @@ Contributors: ultimatemember, champsupertramp, nsinelnikov
 Donate link: 
 Tags: community, member, membership, user-profile
 Requires at least: 4.9
-Tested up to: 5.4
-Stable tag: 2.1.2
+Tested up to: 5.6
+Stable tag: 2.1.3
 License: GNU Version 2 or Any Later Version
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 Requires UM core at least: 2.0.56
@@ -50,6 +50,10 @@ Got a problem or need help with Ultimate Member? Head over to our [documentation
 == Changelog ==
 
 = Important: Please update to Ultimate Member 2.1 before updating the extension =
+
+= 2.1.3: 8 December, 2020 =
+
+* Fixed: Getting the Privacy page content
 
 = 2.1.2: 11 November, 2019 =
 

@@ -6,6 +6,7 @@ class ACUI_Cron{
 	function __construct(){
 		add_action( 'acui_cron_save_settings', array( $this, 'save_settings' ), 10, 1 );
 		add_action( 'acui_cron_process', array( $this, 'process' ), 10 );
+		add_action( 'wp_ajax_acui_fire_cron', array( $this, 'ajax_fire_cron' ) );
 	}
 
 	function save_settings( $form_data ){
@@ -67,7 +68,8 @@ class ACUI_Cron{
 		$form_data[ "security" ] = wp_create_nonce( "codection-security" );
 
 		ob_start();
-		acui_fileupload_process( $form_data, true );
+		$acui_import = new ACUI_Import();
+		$acui_import->fileupload_process( $form_data, true );
 		$message .= "<br/>" . ob_get_contents() . "<br/>";
 		ob_end_clean();
 
@@ -221,7 +223,7 @@ class ACUI_Cron{
 								else
 									echo "<option value=''>" . __( 'Disable role assignment in cron import', 'import-users-from-csv-with-meta' )  . "</option>";
 
-								$list_roles = acui_get_editable_roles();								
+								$list_roles = ACUI_Helper::get_editable_roles();						
 								foreach ($list_roles as $key => $value) {
 									if($key == $role)
 										echo "<option selected='selected' value='$key'>$value</option>";
@@ -314,7 +316,7 @@ class ACUI_Cron{
 						<div style="margin-left:25px;">
 							<select name="cron-change-role-not-present-role" id="cron-change-role-not-present-role">
 								<?php
-									$list_roles = acui_get_editable_roles();						
+									$list_roles = ACUI_Helper::get_editable_roles();
 									foreach ($list_roles as $key => $value):
 								?>
 									<option value='<?php echo $key; ?>' <?php selected( $cron_change_role_not_present_role, $key ); ?> ><?php echo $value; ?></option>
@@ -358,6 +360,7 @@ class ACUI_Cron{
 			</table>
 			<?php wp_nonce_field( 'codection-security', 'security' ); ?>
 			<input class="button-primary" type="submit" value="<?php _e( 'Save schedule options', 'import-users-from-csv-with-meta'); ?>"/>
+			<input id="cron-execute-cron-task-now" class="button-primary" type="button" value="<?php _e( 'Execute cron task now', 'import-users-from-csv-with-meta'); ?>"/>
 		</form>
 
 		<script>
@@ -367,6 +370,26 @@ class ACUI_Cron{
 			$( '#cron-delete-users' ).on( 'click', function() {
 				check_delete_users_checked();
 			});
+
+			$( '#cron-execute-cron-task-now' ).click( function(){
+				$( this )
+					.prop( 'disabled', true )
+					.val( 'Loading...' );
+
+				var data = {
+					'action': 'acui_fire_cron',
+					'security': '<?php echo wp_create_nonce( "codection-security" ); ?>'
+				};
+
+				$.post( ajaxurl, data, function( response ) {
+					if( response != "OK" )
+						alert( "<?php _e( 'Problems executing cron task: ', 'import-users-from-csv-with-meta' ); ?>" + response );
+					else{
+						alert( "<?php _e( 'Cron task successfully executed', 'import-users-from-csv-with-meta' ); ?>" );
+						document.location.reload();
+					}
+				});
+			} );
 
 			function check_delete_users_checked(){
 				if( $('#cron-delete-users').is(':checked') ){
@@ -410,6 +433,14 @@ class ACUI_Cron{
 		});
 		</script>
 	<?php
+	}
+
+	function ajax_fire_cron(){
+		check_ajax_referer( 'codection-security', 'security' );
+
+		do_action( 'acui_cron_process' );
+		echo "OK";
+		wp_die();
 	}
 }
 

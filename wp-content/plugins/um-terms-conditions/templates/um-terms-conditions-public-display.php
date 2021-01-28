@@ -5,13 +5,13 @@
 		<div class="um-terms-conditions-content" style="display:none">
 			<?php if ( ! empty( $args['use_terms_conditions_content_id'] ) ) {
 				$um_content_query = get_post( $args['use_terms_conditions_content_id'] );
-				if ( isset( $um_content_query ) ) { ?>
-
+				if ( ! empty( $um_content_query ) && ! is_wp_error( $um_content_query ) ) { ?>
 					<a href="javascript:void(0);" class="um-hide-terms">
 						<?php echo ! empty( $args['use_terms_conditions_toggle_hide'] ) ? $args['use_terms_conditions_toggle_hide'] : __( 'Hide Terms', 'um-terms-conditions' ); ?>
 					</a>
 
-					<?php echo apply_filters( 'um_terms_conditions_tc_page_content', $um_content_query->post_content, $args );
+					<?php $content = apply_filters( 'um_terms_conditions_tc_page_content', $um_content_query->post_content, $args );
+					echo apply_filters( 'the_content', $content, $um_content_query->ID );
 				}
 			}  ?>
 		</div>

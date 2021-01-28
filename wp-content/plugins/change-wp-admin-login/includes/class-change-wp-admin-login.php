@@ -231,8 +231,8 @@ if ( defined( 'ABSPATH' ) && ! class_exists( 'Change_WP_Admin_Login' ) ) {
 		// new redirect field
 		public function rwl_redirect_func() {
 			$value = get_option( 'rwl_redirect_field' );
-			echo '<input type="text" value="' . esc_attr( $value ) . '" name="rwl_redirect_field" id="rwl_redirect_field" class="regular-text" />';
-			echo '<p class="description"><strong>' . __( 'Use the slug name, example: "contact-me" - DO NOT USE the full website URL. If you leave the above field empty the plugin will add a redirect to the website homepage.', 'change-wp-admin-login' ) . '</strong></p>';
+			echo '<code>' . trailingslashit( home_url() ) . '</code> <input type="text" value="' . esc_attr( $value ) . '" name="rwl_redirect_field" id="rwl_redirect_field" class="regular-text" /> <code>/</code>';
+			echo '<p class="description"><strong>' . __( 'If you leave the above field empty the plugin will add a redirect to the website homepage.', 'change-wp-admin-login' ) . '</strong></p>';
 		}
 
 		public function rwl_page_input() {

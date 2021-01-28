@@ -153,6 +153,13 @@ class ES_DB_Workflows extends ES_DB {
 			$args[]  = $query_args['trigger_name'];
 		}
 
+		if ( ! empty( $query_args['trigger_names'] ) ) {
+			$trigger_names_count        = count( $query_args['trigger_names'] );
+			$trigger_names_placeholders = array_fill( 0, $trigger_names_count, '%s' );
+			$query[]          = ' trigger_name IN( ' . implode( ',', $trigger_names_placeholders ) . ' )';
+			$args             = array_merge( $args, $query_args['trigger_names'] );
+		}
+
 		if ( isset( $query_args['status'] ) ) {
 			$query[] = ' status = %d ';
 			$args[]  = $query_args['status'];
@@ -324,7 +331,7 @@ class ES_DB_Workflows extends ES_DB {
 	 * @since 4.4.1
 	 */
 	public function update_status( $workflow_ids = array(), $status = 0 ) {
-		global $wpdb;
+		global $wpbd;
 
 		$updated = false;
 		if ( empty( $workflow_ids ) ) {
@@ -342,9 +349,10 @@ class ES_DB_Workflows extends ES_DB {
 		}
 
 		if ( ! empty( $workflow_ids_str ) ) {
-			// Required in WooCommerce Coding Standards when preparing dynamic query.
-			$updated = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}ig_workflows SET status = %d WHERE FIND_IN_SET(id, %s)", $status, $workflow_ids_str ) );
+			$updated = $wpbd->query( $wpbd->prepare( "UPDATE {$wpbd->prefix}ig_workflows SET status = %d WHERE id IN ($workflow_ids_str)", $status ) );
 		}
+
+		do_action( 'ig_es_workflow_status_changed', $workflow_ids );
 
 		return $updated;
 

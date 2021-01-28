@@ -73,7 +73,7 @@ class ACUI_Frontend{
 								else
 									echo "<option value=''>" . __( 'Disable role assignment in frontend import', 'import-users-from-csv-with-meta' )  . "</option>";
 
-								$list_roles = acui_get_editable_roles();								
+								$list_roles = ACUI_Helper::get_editable_roles();		
 								foreach ($list_roles as $key => $value) {
 									if($key == $role)
 										echo "<option selected='selected' value='$key'>$value</option>";
@@ -178,7 +178,7 @@ class ACUI_Frontend{
 						<div style="margin-left:25px;">
 							<select name="change-role-not-present-role-frontend" id="change-role-not-present-role-frontend">
 								<?php
-									$list_roles = acui_get_editable_roles();						
+									$list_roles = ACUI_Helper::get_editable_roles();	
 									foreach ($list_roles as $key => $value):
 								?>
 									<option value='<?php echo $key; ?>' <?php selected( $change_role_not_present_role_frontend, $key ); ?>><?php echo $value; ?></option>
@@ -300,7 +300,9 @@ class ACUI_Frontend{
 			$form_data[ "empty_cell_action" ] = "leave";
 			$form_data[ "activate_users_wp_members" ] = empty( get_option( "acui_frontend_activate_users_wp_members" ) ) ? 'no_activate' : get_option( "acui_frontend_activate_users_wp_members" );
 			$form_data[ "security" ] = wp_create_nonce( "codection-security" );
-			acui_fileupload_process( $form_data, false, true );
+			
+			$acui_import = new ACUI_Import();
+			$acui_import->fileupload_process( $form_data, false, true );
 
 	        wp_delete_attachment( $csv_file_id, true );
 

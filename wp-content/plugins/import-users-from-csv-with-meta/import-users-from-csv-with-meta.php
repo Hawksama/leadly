@@ -3,7 +3,7 @@
 Plugin Name:	Import and export users and customers
 Plugin URI:		https://www.codection.com
 Description:	Using this plugin you will be able to import and export users or customers choosing many options and interacting with lots of other plugins
-Version:		1.16.4.1
+Version:		1.17.1.5
 Author:			codection
 Author URI: 	https://codection.com
 License:     	GPL2
@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) )
 	exit;
 
 class ImportExportUsersCustomers{
+	var $file;
+
 	function __construct(){
 	}
 
@@ -83,7 +85,8 @@ class ImportExportUsersCustomers{
 	
 	public function loader(){
 		add_action( "admin_menu", array( $this, 'menu' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 10, 1 );
+		add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 2 );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'wp_ajax_acui_delete_attachment', array( $this, 'delete_attachment' ) );
 		add_action( 'wp_ajax_acui_bulk_delete_attachment', array( $this, 'bulk_delete_attachment' ) );
@@ -107,8 +110,6 @@ class ImportExportUsersCustomers{
 		foreach ( glob( plugin_dir_path( __FILE__ ) . "addons/*.php" ) as $file ) {
 			include_once( $file );
 		}
-		
-		require_once( "importer.php" );
 	}
 	
 	public static function activate(){
@@ -124,11 +125,27 @@ class ImportExportUsersCustomers{
 	}
 
 	function menu() {
-		add_submenu_page( 'tools.php', __( 'Import and export users and customers', 'import-users-from-csv-with-meta' ), __( 'Import and export users and customers', 'import-users-from-csv-with-meta' ), apply_filters( 'acui_capability', 'create_users' ), 'acui', 'acui_options' );
+		$acui_import = new ACUI_Import();
+		add_submenu_page( 'tools.php', __( 'Import and export users and customers', 'import-users-from-csv-with-meta' ), __( 'Import and export users and customers', 'import-users-from-csv-with-meta' ), apply_filters( 'acui_capability', 'create_users' ), 'acui', array( $acui_import, 'show' ) );
 	}
 	
-	function admin_enqueue_scripts() {
+	function admin_enqueue_scripts( $hook ) {
+		if( 'tools_page_acui' != $hook )
+			return;
+		
 		wp_enqueue_style( 'acui_css', plugins_url( 'assets/style.css', __FILE__ ), false, '1.0.0' );
+		wp_enqueue_style( 'datatable', '//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css' );
+		wp_enqueue_script( 'datatable', '//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js' );
+	}
+
+	function action_links( $links, $file ) {
+		if ($file == 'import-users-from-csv-with-meta/import-users-from-csv-with-meta.php') {
+			$links[] = sprintf( __( '<a href="%s">Export</a>', 'import-users-from-csv-with-meta' ), get_admin_url( null, 'tools.php?page=acui&tab=export' ) );
+			$links[] = sprintf( __( '<a href="%s">Import</a>', 'import-users-from-csv-with-meta' ), get_admin_url( null, 'tools.php?page=acui&tab=homepage' ) );
+			return array_reverse( $links );		
+		}
+		
+		return $links; 
 	}
 
 	function plugin_row_meta( $links, $file ){

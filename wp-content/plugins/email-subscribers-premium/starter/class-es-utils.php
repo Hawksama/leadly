@@ -11,8 +11,8 @@ if ( ! class_exists( 'Email_Subscribers_Utils' ) ) {
 		public function __construct() {
 			// Start-IG-Code.
 			// Include load file.
-			if ( ! class_exists( 'Icegram_Upgrade_v_0_4_6' ) ) {
-				require_once ES_PLUGIN_DIR . 'inc/ig-upgrade-v-0.4.6.php';
+			if ( ! class_exists( 'Icegram_Upgrade_v_0_4_7' ) ) {
+				require_once ES_PLUGIN_DIR . 'inc/ig-upgrade-v-0.4.7.php';
 			}
 
 			$file                 = ES_PLUGIN_FILE;
@@ -24,7 +24,7 @@ if ( ! class_exists( 'Email_Subscribers_Utils' ) ) {
 			$pricing_link         = 'https://www.icegram.com/email-subscribers-pricing/';
 			$plugin_dashboard_url = admin_url( 'admin.php?page=es_dashboard' );
 
-			new Icegram_Upgrade_v_0_4_6( $file, $sku, $prefix, $plugin_name, $text_domain, $documentation_link, $pricing_link, $plugin_dashboard_url );
+			new Icegram_Upgrade_v_0_4_7( $file, $sku, $prefix, $plugin_name, $text_domain, $documentation_link, $pricing_link, $plugin_dashboard_url );
 			// End-IG-Code.
 			if ( ! defined( 'ES_API_URL' ) ) {
 				define( 'ES_API_URL', 'https://api.icegram.com/' );

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '7500933c47984c39a3470ac0cedf8f1a63e4509b',
+    'reference' => 'ebc14f180bd98cb68e3dd63d2f1c5c64d86283b8',
     'name' => 'wedevsofficial/wp-project-manager',
   ),
   'versions' => 
@@ -179,7 +179,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '7500933c47984c39a3470ac0cedf8f1a63e4509b',
+      'reference' => 'ebc14f180bd98cb68e3dd63d2f1c5c64d86283b8',
     ),
   ),
 );

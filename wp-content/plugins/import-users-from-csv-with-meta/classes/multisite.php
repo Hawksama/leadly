@@ -35,10 +35,12 @@ class ACUI_Multisite{
 		if( $pos === FALSE )
 			return;
 
+		if( empty( $role ) )
+			$role = 'subscriber';
+
 		if( is_array( $role ) )
 			$role = reset( $role );
 
-		// blogs that appears in the CSV
 		$user_blogs_csv = explode( ',', $row[ $pos ] );
 		$user_blogs_csv = array_filter( $user_blogs_csv, function( $value ){ return $value !== ''; } );
 
