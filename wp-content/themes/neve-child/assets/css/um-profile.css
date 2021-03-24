@@ -118,7 +118,7 @@
     line-height: 60px;
     height: 60px;
     font-size: 30px;
-    margin: 0px 10px;
+    margin: 10px 10px;
 }
 
 .um-page-user .um-profile-connect.um-member-connect {
@@ -234,10 +234,10 @@
     font-size: 18px;
     margin-bottom: 20px;
     text-transform: uppercase !important;
+    overflow: visible;
 }
 
-.um-page-user .um-form .um-field #share-link {
-    position: relative;
+.um-page-user .um-form .um-field {
     overflow: initial;
 }
 
@@ -250,7 +250,6 @@
     font-size: 0.68em;
     right: 50%;
     margin: 0 0 20px -180px;
-    line-height: 1.4;
     opacity: 0;
     pointer-events: none;
     position: absolute;
@@ -386,8 +385,440 @@
     color: #fff;
 }
 
+.um-profile.um-editing .um-profile-connect.um-member-connect {
+    display: none;
+}
+
+.um-page-user .um-field.um-field-snapchat .um-field-icon i:before,
+.um-page-user .um-field.um-field-venmo .um-field-icon i:before,
+.um-page-user .um-field.um-field-paypal .um-field-icon i:before,
+.um-page-user .um-field.um-field-cashapp .um-field-icon i:before,
+.um-page-user .um-field.um-field-whatsapp .um-field-icon i:before,
+.um-page-user .um-field.um-field-tumblr .um-field-icon i:before,
+.um-page-user .um-field.um-field-tiktok .um-field-icon i:before,
+.um-page-user .um-field.um-field-spotify .um-field-icon i:before,
+.um-page-user .um-field.um-field-musicapple .um-field-icon i:before {
+    content: '';
+}
+
+
+.um-page-user .um-profile.um-viewing .um-field.um-field-snapchat,
+.um-page-user .um-profile.um-viewing .um-field.um-field-venmo,
+.um-page-user .um-profile.um-viewing .um-field.um-field-paypal,
+.um-page-user .um-profile.um-viewing .um-field.um-field-cashapp,
+.um-page-user .um-profile.um-viewing .um-field.um-field-whatsapp,
+.um-page-user .um-profile.um-viewing .um-field.um-field-tumblr,
+.um-page-user .um-profile.um-viewing .um-field.um-field-tiktok,
+.um-page-user .um-profile.um-viewing .um-field.um-field-spotify,
+.um-page-user .um-profile.um-viewing .um-field.um-field-musicapple {
+    display: none !important;
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-snapchat .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-venmo .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-paypal .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-cashapp .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-whatsapp .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-tumblr .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-tiktok .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-spotify .um-field-icon i:after,
+.um-page-user .um-profile.um-editing .um-field.um-field-musicapple .um-field-icon i:after {
+    content: '';
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 5px;
+    top: 3px;
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-snapchat .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/snapchat-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-venmo .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/venmo-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-paypal .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/paypal-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-cashapp .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/cashapp-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-whatsapp .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/whatsapp-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-tumblr .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/tumblr-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-tiktok .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/tiktok-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-spotify .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/spotify-gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field.um-field-musicapple .um-field-icon i:after {
+    background-image: url('../images/ui-icons-social-media/applemusic-gray.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i {
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+    position: relative;
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i:before,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i:before {
+    content: '';
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i:after,
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i:after {
+    content: '';
+    background-size: 27px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i:after {
+    background-image: url('../images/ui-icons-social-media/snapchat.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i:after {
+    background-image: url('../images/ui-icons-social-media/venmo.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i:after {
+    background-image: url('../images/ui-icons-social-media/paypal.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i:after {
+    background-image: url('../images/ui-icons-social-media/cashapp.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i:after {
+    background-image: url('../images/ui-icons-social-media/whatsapp.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i:after {
+    background-image: url('../images/ui-icons-social-media/tumblr.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i:after {
+    background-image: url('../images/ui-icons-social-media/tiktok.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i:after {
+    background-image: url('../images/ui-icons-social-media/spotify.svg');
+}
+
+.um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i:after {
+    background-image: url('../images/ui-icons-social-media/applemusic.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .um-row-heading {
+    position: relative;
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .um-row-heading {
+    border-bottom: 1px solid  !important;
+    padding-bottom: 10px !important;
+    cursor: pointer;
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .um-row-heading:after {
+    content: "\f3d0";
+    font-family: "Ionicons" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    -webkit-font-smoothing: antialiased;
+    font-size: 22px;
+    line-height: 1;
+    position: absolute;
+    right: 5px;
+    top: calc(50% + 7px);
+    transform: translateY(-50%);
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .um-row-heading.opened:after {
+    content: "\f3d8";
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .dropdown-container {
+    padding: 10px 0px !important;
+}
+
+.um-page-user .um-profile.um-editing .um-profile-body .dropdown-container.opened {
+    height: auto;
+}
+
 @media (hover: none) and (pointer: coarse) { 
     .tipsy {
         display: none !important;
+    }
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon input {
+    padding: 0px;
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon input:hover[type=submit],
+.um-profile.um-editing .um-form .um-button-wrapper-icon input:focus[type=submit] {
+    background: #D4AF37 !important;
+    border-color: #D4AF37 !important;
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon input,
+.um-profile.um-editing .um-form .um-button.cancel-button {
+    font-size: 15px;
+    text-transform: capitalize;
+    color: #fff;
+    font-weight: bold !important;
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon,
+.um-profile.um-editing .um-form .um-button.cancel-button,
+.um-profile .um-form .um-button.save-contact,
+.um-profile .um-form .um-button.share-button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon.save-button:before,
+.um-profile.um-editing .um-form .um-button.cancel-button:before,
+.um-profile .um-form .um-button.save-contact:before,
+.um-profile .um-form .um-button.share-button:before {
+    content: '';
+    background-size: 23px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin-top: -13px;
+    margin-bottom: -13px;
+}
+
+.um-profile .um-form .um-button.save-contact:before,
+.um-profile .um-form .um-button.share-button:before {
+    margin-right: 5px;
+    background-size: 27px;
+}
+
+.um-profile.um-editing .um-form .um-button-wrapper-icon.save-button:before {
+    background-image: url('../images/ui-icons/check.svg');
+}
+
+.um-profile.um-editing .um-form .um-button.cancel-button:before {
+    background-image: url('../images/ui-icons/cancel.svg');
+}
+
+.um-profile .um-form .um-button.save-contact:before {
+    background-image: url('../images/ui-icons/arrow_circle_down.svg');    
+}
+
+.um-profile .um-form .um-button.share-button:before {
+    background-image: url('../images/ui-icons/arrow_circle_up.svg');    
+}
+
+.um-profile:not(.um-editing) .um-row-heading {
+    display: none;
+}
+
+.um-field-phone_number .um-field-value {
+    cursor: pointer;
+}
+
+.um-page-user .um-profile .um-field-job-title .um-field-label-icon i,
+.um-page-user .um-profile .um-field-job-title i,
+.um-page-user .um-profile .um-field-company-name i,
+.um-page-user .um-profile .um-field-birth_date i,
+.um-page-user .um-profile .um-field-phone_number i,
+.um-page-user .um-profile .um-field-user_url i {
+    display: inline-block;
+    height: 30px;
+    width: 50px;
+    position: relative;
+}
+
+.um-page-user .um-profile .um-field-birth_date i,
+.um-page-user .um-profile .um-field-phone_number i,
+.um-page-user .um-profile .um-field-user_url i {
+    width: 30px;
+    height: 30px;
+}
+
+.um-page-user .um-profile .um-field-job-title i,
+.um-page-user .um-profile .um-field-company-name i,
+.um-page-user .um-profile.um-editing .um-field-birth_date i,
+.um-page-user .um-profile.um-editing .um-field-phone_number i,
+.um-page-user .um-profile.um-editing .um-field-user_url i {
+    height: 36px;
+}
+
+.um-page-user .um-profile .um-field-job-title i:before,
+.um-page-user .um-profile .um-field-company-name i:before,
+.um-page-user .um-profile .um-field-birth_date i:before,
+.um-page-user .um-profile .um-field-phone_number i:before,
+.um-page-user .um-profile .um-field-user_url i:before,
+.um-page-user .um-profile-edit i.um-faicon-cog:before {
+    content: '';
+}
+
+.um-page-user .um-profile .um-field-job-title .um-field-label-icon i:after,
+.um-page-user .um-profile.um-editing .um-field-job-title i:after,
+.um-page-user .um-profile .um-field-company-name .um-field-label-icon i:after,
+.um-page-user .um-profile.um-editing .um-field-company-name i:after,
+.um-page-user .um-profile .um-field-birth_date i:after,
+.um-page-user .um-profile .um-field-phone_number i:after,
+.um-page-user .um-profile .um-field-user_url i:after,
+.um-page-user .um-profile-edit i.um-faicon-cog:after {
+    content: '';
+    background-size: 27px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.um-page-user .um-profile .um-field-job-title i:after {
+    background-image: url('../images/ui-icons/account_circle.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field-job-title i:after {
+    background-image: url('../images/ui-icons/account_circle_gray.svg');
+}
+
+.um-page-user .um-profile .um-field-company-name i:after {
+    background-image: url('../images/ui-icons/supervised_user_circle.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field-company-name i:after {
+    background-image: url('../images/ui-icons/supervised_user_circle_gray.svg');
+}
+
+.um-page-user .um-profile-edit i.um-faicon-cog:after {
+    background-image: url('../images/ui-icons/setting-button.svg');
+    transform: translate(-80%, -50%);
+}
+
+.um-page-user .um-profile .um-field-birth_date i:after {
+    background-image: url('../images/ui-icons/date_range.svg');
+}
+
+.um-page-user .um-profile .um-field-phone_number i:after {
+    background-image: url('../images/ui-icons/phone.svg');
+}
+
+.um-page-user .um-profile .um-field-user_url i:after {
+    background-image: url('../images/ui-icons/website.svg');
+}
+
+.um-page-user .um-profile .um-field-birth_date i:after,
+.um-page-user .um-profile .um-field-phone_number i:after,
+.um-page-user .um-profile .um-field-user_url i:after {
+    background-size: 32px;
+}
+
+.um-page-user .um-profile.um-editing .um-field-birth_date i:after {
+    background-image: url('../images/ui-icons/date_range_gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field-phone_number i:after {
+    background-image: url('../images/ui-icons/phone_gray.svg');
+}
+
+.um-page-user .um-profile.um-editing .um-field-user_url i:after {
+    background-image: url('../images/ui-icons/website_gray.svg');
+}
+
+.um-page-user .um-profile.um-viewing .um-field-birth_date,
+.um-page-user .um-profile.um-viewing .um-field-phone_number,
+.um-page-user .um-profile.um-viewing .um-field-user_email,
+.um-page-user .um-profile.um-viewing .um-field-secondary_user_email,
+.um-page-user .um-profile.um-viewing .um-field-user_url {
+    border-bottom: 2px solid #e0e0e0;
+}
+
+@media screen and (max-width: 520px) {
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i:after,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i:after {
+        background-size: 22px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-snapchat i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-venmo i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-paypal i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-cashapp i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-whatsapp i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-tumblr i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-tiktok i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-spotify i,
+    .um-page-user .um-profile-connect.um-member-connect .redirect-social-musicapple i {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .um-page-user .um-profile-edit .um-dropdown {
+        right: 0px !important;
+        transform: translateX(44%) ;
+        top: 40px !important;
     }
 }
