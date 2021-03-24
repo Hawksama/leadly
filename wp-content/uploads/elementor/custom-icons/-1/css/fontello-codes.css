@@ -1,0 +1,5 @@
+
+.icon-phone:before { content: '\e800'; } /* '' */
+.icon-globe:before { content: '\e801'; } /* '' */
+.icon-building:before { content: '\f0f7'; } /* '' */
+.icon-calendar-empty:before { content: '\f133'; } /* '' */

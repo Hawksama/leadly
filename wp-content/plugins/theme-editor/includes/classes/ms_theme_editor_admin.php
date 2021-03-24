@@ -296,10 +296,10 @@ class ms_theme_editor_admin {
 		$version = sanitize_text_field($_POST['child_version']);//child theme version
         
 		//child theme handler parameter
-		$repairheader = sanitize_text_field($_POST['repairheader']);
-        $ignoreparnt = sanitize_text_field($_POST['ignoreparnt']);
-        $handling = sanitize_text_field($_POST['handling']);
-        $enqueue = sanitize_text_field($_POST['enqueue']);	
+		$repairheader = isset($_POST['repairheader']) ? sanitize_text_field($_POST['repairheader']) : '';
+        $ignoreparnt = isset($_POST['ignoreparnt']) ? sanitize_text_field($_POST['ignoreparnt']) : '';
+        $handling = isset($_POST['handling']) ? sanitize_text_field($_POST['handling']) : '';
+        $enqueue = isset($_POST['enqueue']) ? sanitize_text_field($_POST['enqueue']) : '';	
 		
 		if (isset( $type) )
 		{

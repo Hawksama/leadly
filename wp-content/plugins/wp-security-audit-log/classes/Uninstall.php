@@ -22,14 +22,10 @@ class WSAL_Uninstall {
 	public static function uninstall() {
 		// Drop the tables.
 		if ( self::should_uninstall() ) {
-			if ( self::table_exists( 'options' ) ) {
-				self::drop_table( 'options' );
-			}
+			self::drop_table( 'options' );
 			self::drop_table( 'occurrences' );
 			self::drop_table( 'metadata' );
-			if ( self::table_exists( 'sessions' ) ) {
-				self::drop_table( 'sessions' );
-			}
+			self::drop_table( 'sessions' );
 		}
 
 		// Check if we have set things to delete upon uninstall.
@@ -38,6 +34,7 @@ class WSAL_Uninstall {
 		}
 
 		// Clear scheduled hooks.
+		wp_clear_scheduled_hook( 'wsal_delete_logins' );
 		wp_clear_scheduled_hook( 'wsal_cleanup' );
 	}
 
@@ -47,24 +44,11 @@ class WSAL_Uninstall {
 	 * @return bool
 	 */
 	private static function should_uninstall() {
-		return self::should_data_be_deleted() && self::table_exists( 'occurrences' );
+		return self::should_data_be_deleted();
 	}
 
 	private static function should_data_be_deleted() {
 		return in_array( get_option( 'wsal_delete-data' ), [ 'yes', 1, '1', 'y', 'true', true ] );
-	}
-
-	/**
-	 * Check if a table exists.
-	 *
-	 * @param string $table - Name of the WSAL table (without prefix).
-	 *
-	 * @return bool
-	 */
-	private static function table_exists( $table ) {
-		global $wpdb;
-
-		return (bool) count( $wpdb->get_results( $wpdb->prepare( 'SHOW TABLES LIKE %s', self::get_table( $table ) ) ) );
 	}
 
 	/**
@@ -86,7 +70,7 @@ class WSAL_Uninstall {
 	private static function drop_table( $name ) {
 		global $wpdb;
 		$table_name = self::get_table( $name );
-		$wpdb->query( 'DROP TABLE ' . $table_name );
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . $table_name );
 	}
 
 	/**
@@ -99,6 +83,9 @@ class WSAL_Uninstall {
 		foreach ( $plugin_options as $option ) {
 			delete_option( $option->option_name );
 		}
+
+		// Remove wsal specific freemius entry.
+		delete_option( 'fs_wsalp' );
 
 		//  @todo delete also options from site-level tables in multisite context
 	}

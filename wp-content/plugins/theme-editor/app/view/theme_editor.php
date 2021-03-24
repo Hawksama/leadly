@@ -94,8 +94,10 @@ if ( is_object( $data['wp_theme'] ) && $data['wp_theme']->name == $theme->name )
 					   $logoImage = MK_THEME_EDITOR_URL.'app/view/images/def.png';  
 				     }
 				 //folder	
-				 if($parent_file['filetype'] == 'folder') { ?>
-					<li class="<?php echo $parent_file['extension'];?> small_icons"><a href="javascript:void(0)" class="open_folder" data-path="<?php echo $parent_file['path']?>" data-name="<?php echo $parent_file['extension'].$parent_file['name']?>"><img src="<?php echo MK_THEME_EDITOR_URL.'app/view/images/'.$parent_file['extension']?>.png" /> <?php echo $parent_file['name']?></a>
+				 if($parent_file['filetype'] == 'folder') { 
+					 $folder_path = str_replace(get_theme_root()."/", '', $parent_file['path']);
+					 ?>
+					<li class="<?php echo $parent_file['extension'];?> small_icons"><a href="javascript:void(0)" class="open_folder" data-path="<?php echo $folder_path;?>" data-name="<?php echo $parent_file['extension'].$parent_file['name']?>"><img src="<?php echo MK_THEME_EDITOR_URL.'app/view/images/'.$parent_file['extension']?>.png" /> <?php echo $parent_file['name']?></a>
                       <span class="<?php echo $parent_file['extension'].$parent_file['name'];?>"></span>               
                     </li> 
 				   <?php  }
@@ -112,7 +114,7 @@ if ( is_object( $data['wp_theme'] ) && $data['wp_theme']->name == $theme->name )
                     </li>	
 					<?php } else { ?>
 					<li class="<?php echo $parent_file['extension'];?> small_icons">
-                    <a href="javascript:void(0)" class="open_file" data-path="<?php echo $parent_file['path']?>" data-name="<?php echo $parent_file['extension'].$parent_file['name']?>" data-file="<?php echo $parent_file['file'];?>" data-downloadfile="<?php echo $parent_file['url'];?>"><img src="<?php echo $logoImage;?>" /> <?php echo $parent_file['name']?></a>
+                    <a href="javascript:void(0)" class="open_file" data-path="<?php echo str_replace(get_theme_root()."/", '', $parent_file['path'])?>" data-name="<?php echo $parent_file['extension'].$parent_file['name']?>" data-file="<?php echo $parent_file['file'];?>" data-downloadfile="<?php echo str_replace(WP_CONTENT_URL."/themes", '', $parent_file['url']);?>"><img src="<?php echo $logoImage;?>" /> <?php echo $parent_file['name']?></a>
                     </li>	
 				<?php }					
 				} // end parent foreach
@@ -132,8 +134,9 @@ if ( is_object( $data['wp_theme'] ) && $data['wp_theme']->name == $theme->name )
 		<?php //wp_nonce_field( 'edit-theme_' . $data['real_file'] ); ?>
 		<div>
 			<textarea cols="70" rows="25" name="new-content" id="new-content" tabindex="1"><?php echo $data['content'] ?></textarea>
-			<input type="hidden" id="path" name="path" value="<?php echo esc_attr( $data['real_file'] ); ?>" />
-            <input type="hidden" id="file_url" name="file_url" value="<?php echo get_theme_root_uri().'/'.esc_attr( $data['file'] ); ?>" />
+			<input type="hidden" id="path" name="path" value="<?php echo str_replace(get_theme_root()."/", '', esc_attr( $data['real_file'] )); ?>" />
+			<input type="hidden" id="et_type" name="et_type" value="<?php echo base64_encode('themes');?>" />
+            <input type="hidden" id="file_url" name="file_url" value="<?php echo esc_attr( $data['file'] ); ?>" />
             <input type="hidden" id="theme_name" name="theme_name" value="<?php echo esc_attr( $data['file'] ); ?>" />
 			<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo $nonce;?>">
 			<?php
@@ -162,10 +165,12 @@ if ( is_object( $data['wp_theme'] ) && $data['wp_theme']->name == $theme->name )
 </div>	
 <?php $nonce = wp_create_nonce( 'mk-fd-nonce' ); 
 $current_theme = str_replace('\\','/',$data['current_theme_root']); 
+$crrunt_path = pathinfo($current_theme);
 ?>
    <script>
 	   var mk_nonce = "<?php echo $nonce; ?>";
-	   var mk_current_theme = "<?php echo $current_theme; ?>";
+	   var mk_current_theme = "<?php echo $crrunt_path["basename"]; ?>";
+	   var mk_current_type = "<?php echo base64_encode("themes");?>";
 	   var current_cm_theme = "<?php echo $this->theme_controller->defcmt;?>";
    </script>
    <?php $this->theme_controller->load_js(); ?>  
@@ -178,7 +183,7 @@ $current_theme = str_replace('\\','/',$data['current_theme_root']);
 							<p class="description">
 								<?php _e( 'To', 'theme-editor' ); ?>: <?php echo basename( dirname( $data['current_theme_root'] ) ) . '/' . basename( $data['current_theme_root'] ) . '/'; ?>
 							</p>
-							<input type="hidden" name="current_theme_root" value="<?php echo $data['current_theme_root']; ?>" id="current_theme_root" />
+							<input type="hidden" name="current_theme_root" value="<?php echo $crrunt_path["basename"]; ?>" id="current_theme_root" />
 							<input type="text" name="directory" id="file_directory" placeholder="<?php _e( 'Optional: Sub-Directory', 'theme-editor' ); ?>" class="regular-text" />
 							<input name="file" type="file" id="upload_file" style="width:180px" />
 					        <input id="submit" class="button button-primary" name="submit" value="Upload File" type="submit">

@@ -583,7 +583,7 @@ elFinder.prototype.commands.preference = function() {
 		description : this.title
 	}];
 
-	this.alwaysEnabled  = true;
+	this.alwaysEnabled  = false;
 	
 	this.getstate = function() {
 		return 0;

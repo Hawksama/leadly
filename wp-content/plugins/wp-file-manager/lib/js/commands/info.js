@@ -292,6 +292,7 @@
                     href +
                     '" class="mk_elfinder_share_button" title="Share"><button class="button button-primary">Share</button></a>'
                 )
+                .replace("{class}", "elfinder-info-link")
             );
         }
       }
@@ -362,62 +363,6 @@
         content.push(
           row.replace(l, msg.perm).replace(v, fm.formatFileMode(file.perm))
         );
-
-      // Get MD5, SHA hashes
-      if (
-        window.ArrayBuffer &&
-        (fm.options.cdns.sparkmd5 || fm.options.cdns.jssha) &&
-        file.mime !== "directory" &&
-        file.size > 0 &&
-        (!o.showHashMaxsize || file.size <= o.showHashMaxsize)
-      ) {
-        getHashAlgorisms = [];
-        jQuery.each(fm.storage("hashchekcer") || o.showHashAlgorisms, function (
-          i,
-          n
-        ) {
-          if (!file[n]) {
-            content.push(
-              row
-                .replace(l, fm.i18n(n))
-                .replace(
-                  v,
-                  tpl.spinner.replace("{text}", msg.calc).replace("{name}", n)
-                )
-            );
-            getHashAlgorisms.push(n);
-          } else {
-            content.push(
-              row
-                .replace(l, fm.i18n(n))
-                .replace(v, file[n])
-                .replace("{class}", hashClass)
-            );
-          }
-        });
-
-        if (getHashAlgorisms.length) {
-          hashProg = jQuery('<div class="elfinder-quicklook-info-progress"></div>');
-          reqs.push(
-            fm
-              .getContentsHashes(file.hash, getHashAlgorisms, o.showHashOpts, {
-                progressBar: hashProg,
-              })
-              .progress(function (hashes) {
-                jQuery.each(getHashAlgorisms, function (i, n) {
-                  if (hashes[n]) {
-                    replSpinner(hashes[n], n, hashClass);
-                  }
-                });
-              })
-              .always(function () {
-                jQuery.each(getHashAlgorisms, function (i, n) {
-                  replSpinner(msg.unknown, n);
-                });
-              })
-          );
-        }
-      }
 
       // Add custom info fields
       if (o.custom) {

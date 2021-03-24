@@ -25,7 +25,7 @@ class ACUI_Buddypress{
 		add_action( 'acui_documentation_after_plugins_activated', array( $this, 'documentation' ) );
 		add_filter( 'acui_export_columns', array( $this, 'export_columns' ), 10, 1 );
 		add_filter( 'acui_export_data', array( $this, 'export_data' ), 10, 3 );
-		add_action( 'post_acui_import_single_user', array( $this, 'import' ), 10, 3 );	
+		add_action( 'post_acui_import_single_user', array( $this, 'import' ), 10, 6 );	
 		add_action( 'post_acui_import_single_user', array( $this, 'import_avatar' ), 10, 3 );	
 	}
 
@@ -66,6 +66,20 @@ class ACUI_Buddypress{
 		}
 	}
 
+	function get_type_import_help( $type ){
+		switch( $type ){
+			case 'datebox':
+				$help = __( sprintf( 'Format should be like this: %s-01-01 00:00:00', date( 'Y' ) ), 'import-users-from-csv-with-meta' );
+				break;
+				
+			case 'checkbox':
+				$help = __( 'If you use more than one value, please use commas to separate each item', 'import-users-from-csv-with-meta' );
+				break;
+		}
+
+		return empty( $help ) ? '' : " <em>($help)</em>";
+	}
+
 	function get_groups( $user_id ){
 		if( !class_exists( "BP_Groups_Member" ) ){
 			require_once( WP_PLUGIN_DIR . "/buddypress/bp-groups/classes/class-bp-groups-member.php" );
@@ -89,11 +103,12 @@ class ACUI_Buddypress{
 				<th scope="row"><label><?php _e( 'BuddyPress/BuddyBoss users', 'import-users-from-csv-with-meta' ); ?></label></th>
 				<td><?php _e( 'You can insert any profile from BuddyPress using his name as header. Plugin will check, before import, which fields are defined in BuddyPress and will assign it in the update. You can use this fields:', 'import-users-from-csv-with-meta' ); ?>
 				<ul style="list-style:disc outside none;margin-left:2em;">
-					<?php foreach ( $this->get_fields() as $buddypress_field ): ?><li><?php echo $buddypress_field; ?></li><?php endforeach; ?>
+					<?php foreach ( $this->get_fields() as $buddypress_field ): 
+						$type = $this->get_field_type( $buddypress_field ); 
+					?>
+					<li><?php echo $buddypress_field; ?> - <?php echo $type . $this->get_type_import_help( $type ); ?></li>
+					<?php endforeach; ?>
 				</ul>
-				<?php _e( 'Remember that all date fields have to be imported using a format like this: 2016-01-01 00:00:00', 'import-users-from-csv-with-meta' ); ?>
-	
-				<p class="description"><strong>(<?php _e( 'Only for', 'import-users-from-csv-with-meta' ); ?> <a href="https://wordpress.org/plugins/buddypress/">BuddyPress</a> <?php _e( 'users', 'import-users-from-csv-with-meta' ); ?></strong>.)</p>
 				</td>					
 			</tr>
 			</tbody>
@@ -118,9 +133,11 @@ class ACUI_Buddypress{
 				<ul style="list-style:disc outside none; margin-left:2em;">
 					<li><?php _e( "If you want to assign an user to a group you have to create a column 'bp_group' and a column 'bp_group_role'", 'import-users-from-csv-with-meta' ); ?></li>
 					<li><?php _e( "Then in each cell you have to fill with the BuddyPress <strong>group slug</strong>", 'import-users-from-csv-with-meta' ); ?></li>
-					<li><?php _e( "And the role assigned in this group: <em>Administrator, Moderator or Member</em>", 'import-users-from-csv-with-meta' ); ?></li>
+                    <li><?php _e( "And the role assigned in this group:", 'import-users-from-csv-with-meta' ); ?>  <em>Administrator, Moderator or Member</em></li>
+					<li><?php _e( "You can also use group ids if you know it using a column 'bp_group_id' instead of 'bp_group'", 'import-users-from-csv-with-meta' ); ?></li>
 					<li><?php _e( "You can do it with multiple groups at the same time using commas to separate different groups, in bp_group column, i.e.: <em>group_1, group_2, group_3</em>", 'import-users-from-csv-with-meta' ); ?></li>
-					<li><?php _e( "But you will have to assign a role for each group: <em>Moderator,Moderator,Member,Member</em>", 'import-users-from-csv-with-meta' ); ?></li>
+					<li><?php _e( "But you will have to assign a role for each group:", 'import-users-from-csv-with-meta' ); ?> <em>Moderator,Moderator,Member,Member</em></li>
+                    <li><?php _e( "If you choose to update roles and group role is empty, user will be removed from the group", 'import-users-from-csv-with-meta' ); ?></li>
 					<li><?php _e( "If you get some error of this kind:", 'import-users-from-csv-with-meta' ); ?> <code>Fatal error: Class 'BP_XProfile_Group'</code> <?php _e( "please enable Buddypress Extended Profile then import the csv file. You can then disable this afterwards", 'import-users-from-csv-with-meta' ); ?></li>
 				</ul>
 			</td>
@@ -133,7 +150,7 @@ class ACUI_Buddypress{
 			$row[] = $key;
 		}
 
-		$row[] = 'bp_group';
+		$row[] = 'bp_group_id';
 		$row[] = 'bp_member_type';
 
 		return $row;
@@ -150,7 +167,9 @@ class ACUI_Buddypress{
 		return $row;
 	}
 
-	function import( $headers, $row, $user_id ){
+	function import( $headers, $row, $user_id, $role, $positions, $form_data ){
+        $update_roles_existing_users = isset( $form_data["update_roles_existing_users"] ) ? sanitize_text_field( $form_data["update_roles_existing_users"] ) : '';
+
 		foreach( $this->fields as $field ){
 			$pos = array_search( $field, $headers );
 
@@ -179,29 +198,42 @@ class ACUI_Buddypress{
 					xprofile_set_field_data( $field, $user_id, date( 'Y-m-d H:i:s', $datebox ) );
 					unset( $datebox );
 					break;
+				
+				case 'checkbox':
+					xprofile_set_field_data( $field, $user_id, explode( ',', $row[ $pos ] ) );
+					break;
+
 				default:
 					xprofile_set_field_data( $field, $user_id, $row[$pos] );
 			}	
 		}
 
 		$pos_bp_group = array_search( 'bp_group', $headers );
+        $pos_bp_group_id = array_search( 'bp_group_id', $headers );
 		$pos_bp_group_role = array_search( 'bp_group_role', $headers );
-		if( $pos_bp_group !== FALSE ){
+		
+        if( $pos_bp_group !== FALSE ){
 			$groups = explode( ',', $row[ $pos_bp_group ] );
 			$groups_role = explode( ',', $row[ $pos_bp_group_role ] );
 
-			for( $j = 0; $j < count( $groups ); $j++ ){
-				$group_id = BP_Groups_Group::group_exists( $groups[ $j ] );
+            for( $j = 0; $j < count( $groups ); $j++ ){
+				$group_id = BP_Groups_Group::group_exists( intval( $groups[ $j ] ) );
 
 				if( !empty( $group_id ) ){
-					groups_join_group( $group_id, $user_id );
+					$this->add_user_group( $user_id, $group_id, $groups_role[ $j ], $update_roles_existing_users );
+				}
+			}
+		}
 
-					if( $groups_role[ $j ] == 'Moderator' ){
-						groups_promote_member( $user_id, $group_id, 'mod' );
-					}
-					elseif( $groups_role[ $j ] == 'Administrator' ){
-						groups_promote_member( $user_id, $group_id, 'admin' );
-					}
+        if( $pos_bp_group_id !== FALSE ){
+			$groups_id = explode( ',', $row[ $pos_bp_group_id ] );
+			$groups_role = explode( ',', $row[ $pos_bp_group_role ] );
+
+            for( $j = 0; $j < count( $groups_id ); $j++ ){
+				$group_id = intval( $groups_id[ $j ] );
+
+				if( !empty( $group_id ) ){
+					$this->add_user_group( $user_id, $group_id, $groups_role[ $j ], $update_roles_existing_users );
 				}
 			}
 		}
@@ -211,6 +243,25 @@ class ACUI_Buddypress{
 			bp_set_member_type( $user_id, $row[$pos_member_type] );
 		}
 	}
+
+    function add_user_group( $user_id, $group_id, $group_role, $update_roles_existing_users ){
+        if( $update_roles_existing_users == 'yes' || $update_roles_existing_users == 'yes_no_override' ){
+            $member = new BP_Groups_Member( $user_id, $group_id );
+            $member->remove();
+        }
+        
+        if( ( $update_roles_existing_users == 'yes' || $update_roles_existing_users == 'yes_no_override' ) && empty( $group_role ) )
+            return;
+
+        groups_join_group( $group_id, $user_id );
+
+        if( $group_role == 'Moderator' ){
+            groups_promote_member( $user_id, $group_id, 'mod' );
+        }
+        elseif( $group_role == 'Administrator' ){
+            groups_promote_member( $user_id, $group_id, 'admin' );
+        }
+    }
 
 	function import_avatar( $headers, $row, $user_id ){
 		$pos = array_search( 'bp_avatar', $headers );

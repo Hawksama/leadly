@@ -4036,7 +4036,8 @@ abstract class elFinderVolumeDriver
         }
 
         if ($checkNum && preg_match('/(' . preg_quote($suffix, '/') . ')(\d*)$/i', $name, $m)) {
-            $i = (int)$m[2];
+            //$i = (int)$m[2];
+            $i = $m[2];
             $name = substr($name, 0, strlen($name) - strlen($m[2]));
         } else {
             $i = $start;
@@ -4049,7 +4050,9 @@ abstract class elFinderVolumeDriver
         }
 
         while ($i <= $max) {
-            $n = $name . ($i > 0 ? sprintf($this->options['uniqueNumFormat'], $i) : '') . $ext;
+            //$n = $name . ($i > 0 ? sprintf($this->options['uniqueNumFormat'], $i) : '') . $ext;
+
+            $n = $name . ($i >= 0 ? $i : '') . $ext;
 
             if (!$this->isNameExists($this->joinPathCE($dir, $n))) {
                 $this->clearcache();

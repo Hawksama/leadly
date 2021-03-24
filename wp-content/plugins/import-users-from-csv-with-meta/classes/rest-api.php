@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class ACUI_REST_API{
 	function __construct(){
 		add_action( 'rest_api_init', array( $this, 'init' ) );
+        add_filter( 'acui_rest_api_permission_callback', function(){ return true; } );
 	}
 
 	function init() {
@@ -12,7 +13,7 @@ class ACUI_REST_API{
 			'methods' => 'GET',  
 			'callback' => array( $this, 'fire_cron' ),
 			'permission_callback' => function () {
-				return current_user_can( apply_filters( 'acui_capability', 'create_users' ) );
+				return apply_filters( 'acui_rest_api_permission_callback', current_user_can( apply_filters( 'acui_capability', 'create_users' ) ) );
 			}
 		) );
 	}

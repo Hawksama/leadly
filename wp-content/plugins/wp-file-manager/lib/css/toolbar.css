@@ -92,7 +92,6 @@
 .elfinder-button-icon {
     width: 16px;
     height: 16px;
-    /*display:block;*/
     display: inline-block;
     background: url('../img/toolbar.png') no-repeat;
 }
@@ -537,7 +536,6 @@
 .elfinder-button-search input[type=text] {
     box-sizing: border-box;
     width: 100%;
-/*    height: 26px;*/
     height: 25px;
     min-height: 25px;
     padding: 0 20px;
@@ -610,3 +608,18 @@
     rgba(0, 0, 0, 0) 100%);
 }
 
+/* Theme Search Fix */
+.elfinder-toolbar .elfinder-button-search .ui-icon-search{ 
+    background-image: url('../img/black-search.png');
+    background-position: 7px 3px;
+} 
+.elfinder-toolbar .elfinder-button-search .ui-icon-close{
+    background-image: url('../img/black-close.png');
+    background-position: 2px 3px;
+}
+
+/* Grid View Hover */
+.elfinder-cwd-wrapper .elfinder-cwd-file.ui-corner-all:hover .ui-state-active,
+.elfinder-cwd-wrapper .elfinder-cwd-file.ui-corner-all .ui-state-active:hover{color: inherit;}
+.elfinder-cwd-wrapper .elfinder-cwd-file.ui-corner-all.ui-selected:hover .ui-state-hover.ui-state-active{ color: #fff; }
+div.tool-op-getfile{display:none !important;}

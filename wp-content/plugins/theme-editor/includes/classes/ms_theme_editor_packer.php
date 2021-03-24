@@ -306,7 +306,7 @@ class ms_theme_editor_packer {
         $o = '';
         $b = 0;
         for ( $i = 0; $i < $l; ++$i ):
-            $c = $this->dectab[ $d{ $i } ];
+            $c = $this->dectab[ $d[ $i ] ];
             if ( !isset( $c ) )
                 continue;
             if ( $v < 0 ):
@@ -335,7 +335,7 @@ class ms_theme_editor_packer {
         $o = '';
         $b = 0;
         for ( $i = 0; $i < $l; ++$i ):
-            $b |= ord( $d{ $i } ) << $n;
+            $b |= ord( $d[ $i ] ) << $n;
             $n += 8;
             if ( $n > 13 ):
                 $v = $b & 8191;

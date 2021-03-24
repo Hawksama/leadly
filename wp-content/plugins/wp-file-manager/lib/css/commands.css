@@ -434,7 +434,8 @@
 
 .ui-dialog-buttonpane .ui-dialog-buttonset.elfinder-edit-extras select {
     font-size: 12px;
-    margin-top: 8px;
+    margin-top: 1px;
+    min-height: 28px;
 }
 
 .elfinder-dialog-edit .ui-dialog-buttonpane .ui-icon {
@@ -921,5 +922,8 @@ ul.elfinder-help-integrations a:hover {
     padding: 0 8px;
     font-size: 1.1em;
     min-height: 4ex;
+}
+.CodeMirror {
+    background: inherit !important;
 }
 

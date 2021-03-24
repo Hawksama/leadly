@@ -98,7 +98,7 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 		$is_plugins = 'plugins' === $actype;
 
 		// Install plugin.
-		if ( in_array( $action, array( 'install-plugin', 'upload-plugin' ) ) && current_user_can( 'install_plugins' ) ) {
+		if ( in_array( $action, array( 'install-plugin', 'upload-plugin', 'run_addon_install' ) ) && current_user_can( 'install_plugins' ) ) {
 			$plugin = array_values( array_diff( array_keys( get_plugins() ), array_keys( $this->old_plugins ) ) );
 			if ( count( $plugin ) != 1 ) {
 				$this->LogError(
@@ -281,12 +281,14 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 					$plugin_name = str_replace( array( '_', '-', '  ' ), ' ', $plugin_name );
 					$plugin_name = ucwords( $plugin_name );
 					$plugin_file = WP_PLUGIN_DIR . '/' . $plugin_file;
+					$plugin_data = get_plugin_data( $plugin_file, false, true );
 					$this->plugin->alerts->Trigger(
 						5003,
 						array(
 							'PluginFile' => $plugin_file,
 							'PluginData' => (object) array(
-								'Name' => $plugin_name,
+								'Name'    => $plugin_name,
+								'Version' => $plugin_data['Version'],
 							),
 						)
 					);
@@ -302,12 +304,14 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 				$plugin_name = basename( $plugin_file, '.php' );
 				$plugin_name = str_replace( array( '_', '-', '  ' ), ' ', $plugin_name );
 				$plugin_name = ucwords( $plugin_name );
+				$plugin_data = $this->old_plugins[ $post_array['plugin'] ];
 				$this->plugin->alerts->Trigger(
 					5003,
 					array(
 						'PluginFile' => $plugin_file,
 						'PluginData' => (object) array(
-							'Name' => $plugin_name,
+							'Name'    => $plugin_name,
+							'Version' => $plugin_data['Version'],
 						),
 					)
 				);
@@ -335,7 +339,7 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 			}
 			if ( isset( $plugins ) ) {
 				foreach ( $plugins as $plugin_file ) {
-					WSAL_Sensors_PluginsThemes::LogPluginUpdatedEvent( $plugin_file );
+					WSAL_Sensors_PluginsThemes::LogPluginUpdatedEvent( $plugin_file, $this->old_plugins );
 				}
 			}
 		}
@@ -585,7 +589,7 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 						$new_plugin_filenames = $plugin_filename;
 					}
 					$this->plugin->SetGlobalSetting( 'installed_plugin_addon_available', $new_plugin_filenames );
-					$this->plugin->DeleteSettingByName( WpSecurityAuditLog::OPTIONS_PREFIX . '_addon_available_notice_dismissed' );
+					$this->plugin->DeleteGlobalSetting( 'addon_available_notice_dismissed' );
 				}
 			}
 		}
@@ -647,27 +651,33 @@ class WSAL_Sensors_PluginsThemes extends WSAL_AbstractSensor {
 	 * Log plugin updated event.
 	 *
 	 * @param string $plugin_file Relative path to the plugin filename.
+	 * @param array  $old_plugins (Optional) Array of old plugins which we can use for comparison.
 	 *
 	 * @since 4.1.4
 	 */
-	public static function LogPluginUpdatedEvent( $plugin_file ) {
-		$plugin_file = WP_PLUGIN_DIR . '/' . $plugin_file;
-		$plugin_data = get_plugin_data( $plugin_file, false, true );
+	public static function LogPluginUpdatedEvent( $plugin_file, $old_plugins = '' ) {
+		$plugin_file_full = WP_PLUGIN_DIR . '/' . $plugin_file;
+		$plugin_data      = get_plugin_data( $plugin_file_full, false, true );
 
-		$wsal = WpSecurityAuditLog::GetInstance();
-		$wsal->alerts->Trigger(
-			5004,
-			array(
-				'PluginFile' => $plugin_file,
-				'PluginData' => (object) array(
-					'Name'      => $plugin_data['Name'],
-					'PluginURI' => $plugin_data['PluginURI'],
-					'Version'   => $plugin_data['Version'],
-					'Author'    => $plugin_data['Author'],
-					'Network'   => $plugin_data['Network'] ? 'True' : 'False',
-				),
-			)
-		);
+		$old_version = ( isset( $old_plugins[ $plugin_file ] ) ) ? $old_plugins[ $plugin_file ]['Version'] : false;
+		$new_version = $plugin_data['Version'];
+
+		if ( $old_version !== $new_version ) {
+			$wsal = WpSecurityAuditLog::GetInstance();
+			$wsal->alerts->Trigger(
+				5004,
+				array(
+					'PluginFile' => $plugin_file,
+					'PluginData' => (object) array(
+						'Name'      => $plugin_data['Name'],
+						'PluginURI' => $plugin_data['PluginURI'],
+						'Version'   => $new_version,
+						'Author'    => $plugin_data['Author'],
+						'Network'   => $plugin_data['Network'] ? 'True' : 'False',
+					),
+				)
+			);
+		}
 	}
 
     /**

@@ -17,12 +17,9 @@ class theme_editor_theme_controller {
 		* Theme Data
 		*/
 		public function te_get_theme_data() {
-      	if ( WP_34 ) {
-			$themes = wp_get_themes();
-		}
-		else {
-			$themes = get_themes();
-		}
+			
+		$themes = wp_get_themes();
+
 		if ( empty( $themes ) ) {
 			wp_die( '<p>' . __( 'There are no themes installed on this site.', 'tm-editor' ) . '</p>' );
 		}
@@ -35,12 +32,7 @@ class theme_editor_theme_controller {
 		}
 		
 		if ( empty( $theme ) ) {
-			if ( WP_34 ) {
-				$theme = wp_get_theme();
-			}
-			else {
-				$theme = get_current_theme();
-			}
+			$theme = wp_get_theme();
 		}
 			$stylesheet = '';
 		if ( $theme && WP_34 ) {
@@ -346,19 +338,20 @@ class theme_editor_theme_controller {
 				$slash = '\\';
 			  }
 			  if ( file_exists( $file_path ) ) {
-				$content = file_get_contents( $file_path );
+				$etag = md5_file($file_path);
 				$filename = basename( $file_path );
-				$filesize = strlen( $content);
-				header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
-				header( 'Content-Description: File Transfer' );
-				header( 'Content-Disposition: attachment; filename=' . $filename );
-				header( 'Content-Length: ' . $filesize );
-				header( 'Expires: 0' );
-				header( 'Pragma: public' );
-				ob_clean();
-				flush();
-				echo $content;
-				exit;
+				header('Pragma: public');
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+				header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($file_path)) . ' GMT');
+				header("Etag: ".$etag);
+				header('Content-Type: application/Octet-stream');
+				header('Content-Disposition: attachment; filename="'.$filename.'"');
+				header('Content-Transfer-Encoding: binary');
+				header('Content-Length: ' . filesize($file_path));
+				header('Connection: close');
+				readfile($file_path);
+				exit();
 			  }
 		}
 	}

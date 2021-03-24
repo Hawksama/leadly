@@ -3996,7 +3996,6 @@ var elFinder = function(elm, opts, bootCallback) {
 				.data('orgStyle', elm.attr('style'))
 				.addClass(cls)
 				.css(self.getMaximizeCss());
-			jQuery('body').css('overflow', 'hidden');
 			jQuery(window).on('resize.' + namespace, {elm: elm}, resize);
 			elm.trigger('resize', {maximize: 'on'});
 		};

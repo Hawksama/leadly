@@ -1,7 +1,7 @@
 <?php
 
 class ACUI_Helper{
-    public function detect_delimiter( $file ) {
+    function detect_delimiter( $file ) {
         $delimiters = array(
             ';' => 0,
             ',' => 0,
@@ -19,14 +19,14 @@ class ACUI_Helper{
         return array_search(max($delimiters), $delimiters);
     }
 
-    public function user_id_exists( $user_id ){
+    function user_id_exists( $user_id ){
         if ( get_userdata( $user_id ) === false )
             return false;
         else
             return true;
     }
 
-    public function get_roles_by_user_id( $user_id ){
+    function get_roles_by_user_id( $user_id ){
         $roles = array();
         $user = new WP_User( $user_id );
     
@@ -38,7 +38,7 @@ class ACUI_Helper{
         return $roles;
     }
 
-    public static function get_editable_roles() {
+    static function get_editable_roles() {
         global $wp_roles;
     
         $all_roles = $wp_roles->roles;
@@ -51,7 +51,7 @@ class ACUI_Helper{
         return $list_editable_roles;
     }
 
-    public static function get_errors_by_row( $errors, $row, $type = 'error' ){
+    static function get_errors_by_row( $errors, $row, $type = 'error' ){
         $errors_found = array();
 
         foreach( $errors as $error ){
@@ -63,7 +63,7 @@ class ACUI_Helper{
         return $errors_found;
     }
 
-    public function string_conversion( $string ){
+    function string_conversion( $string ){
         if(!preg_match('%(?:
         [\xC2-\xDF][\x80-\xBF]        # non-overlong 2-byte
         |\xE0[\xA0-\xBF][\x80-\xBF]               # excluding overlongs
@@ -79,7 +79,7 @@ class ACUI_Helper{
             return $string;
     }
 
-    public function get_wp_users_fields(){
+    function get_wp_users_fields(){
         return array( "id", "user_email", "user_nicename", "user_url", "display_name", "nickname", "first_name", "last_name", "description", "jabber", "aim", "yim", "user_registered", "password", "user_pass", "locale", "show_admin_bar_front", "user_login" );
     }
 
@@ -95,7 +95,7 @@ class ACUI_Helper{
         return apply_filters( 'acui_not_meta_fields', array() );
     }
 
-    public function get_random_unique_username( $prefix = '' ){
+    function get_random_unique_username( $prefix = '' ){
         do {
             $rnd_str = sprintf("%06d", mt_rand(1, 999999));
         } while( username_exists( $prefix . $rnd_str ) );
@@ -107,7 +107,7 @@ class ACUI_Helper{
         return array( 'row' => $row, 'message' => $message, 'type' => $type );
     }
 
-    public function maybe_update_email( $user_id, $email, $password, $update_emails_existing_users ){
+    function maybe_update_email( $user_id, $email, $password, $update_emails_existing_users ){
         $user_object = get_user_by( 'id', $user_id );
 
         if( $user_object->user_email == $email )
@@ -135,7 +135,7 @@ class ACUI_Helper{
         return $user_id;
     }
 
-    public static function get_attachment_id_by_url( $url ) {
+    static function get_attachment_id_by_url( $url ) {
         $wp_upload_dir = wp_upload_dir();
         // Strip out protocols, so it doesn't fail because searching for http: in https: dir.
         $dir = set_url_scheme( trailingslashit( $wp_upload_dir['baseurl'] ), 'relative' );
@@ -175,6 +175,49 @@ class ACUI_Helper{
     
         return false;
     }
+
+    static function get_post_id_by_slug( $slug ){
+		global $wpdb;
+
+		$page_path     = rawurlencode( urldecode( $slug ) );
+		$page_path     = str_replace( '%2F', '/', $page_path );
+		$page_path     = str_replace( '%20', ' ', $page_path );
+		$parts         = explode( '/', trim( $page_path, '/' ) );
+		$parts         = array_map( 'sanitize_title_for_query', $parts );
+		$escaped_parts = esc_sql( $parts );
+
+		$in_string = "'" . implode( "','", $escaped_parts ) . "'";
+
+		$pages = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_name, post_parent, post_type FROM $wpdb->posts WHERE post_name IN (%s)", $in_string ), OBJECT_K );
+		$revparts = array_reverse( $parts );
+
+		$foundid = 0;
+
+		foreach ( (array) $pages as $page ) {
+			if ( $page->post_name == $revparts[0] ) {
+				$count = 0;
+				$p     = $page;
+
+				while ( 0 != $p->post_parent && isset( $pages[ $p->post_parent ] ) ) {
+					$count++;
+					$parent = $pages[ $p->post_parent ];
+					if ( ! isset( $revparts[ $count ] ) || $parent->post_name != $revparts[ $count ] ) {
+						break;
+					}
+					$p = $parent;
+				}
+
+				if ( 0 == $p->post_parent && count( $revparts ) == $count + 1 && $p->post_name == $revparts[ $count ] ) {
+					$foundid = $page->ID;
+					if ( $page->post_type == $p->post_type ) {
+						break;
+					}
+				}
+			}
+		}
+
+		return $foundid;
+	}
 
     function print_table_header_footer( $headers ){
         ?>
@@ -219,8 +262,20 @@ class ACUI_Helper{
         foreach ( $data as $element ){
             if( is_wp_error( $element ) )
                 $element = $element->get_error_message();
-            elseif( is_array( $element ) )
-                $element = implode ( ',' , $element );
+            elseif( is_array( $element ) ){
+                $element_string = '';
+                $i = 0;
+
+                foreach( $element as $it => $el ){
+                    $element_string .= ( is_wp_error( $el ) ? $el->get_error_message() : $el );
+
+                    if(++$i !== count( $element ) ){
+                        $element_string .= ',';
+                    }
+                }
+
+                $element = $element_string;
+            }
 
             $element = sanitize_textarea_field( $element );
             echo "<td>$element</td>";
@@ -264,6 +319,32 @@ class ACUI_Helper{
         <?php
     }
 
+    function print_results( $results, $errors ){
+        ?>
+        <h3><?php _e( 'Results', 'import-users-from-csv-with-meta' ); ?></h3>
+        <table id="acui_errors">
+            <tbody>
+                <tr>
+                    <th><?php _e( 'Users processed', 'import-users-from-csv-with-meta' ); ?></th>
+                    <td><?php echo $results['created'] + $results['updated']; ?></td>
+                </tr>
+                <tr>
+                    <th><?php _e( 'Users created', 'import-users-from-csv-with-meta' ); ?></th>
+                    <td><?php echo $results['created']; ?></td>
+                </tr>
+                <tr>
+                    <th><?php _e( 'Users updated', 'import-users-from-csv-with-meta' ); ?></th>
+                    <td><?php echo $results['updated']; ?></td>
+                </tr>
+                <tr>
+                    <th><?php _e( 'Errors, warnings and notices found', 'import-users-from-csv-with-meta' ); ?></td>
+                    <td><?php echo count( $errors ); ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
+    }
+
     function execute_datatable(){
         ?>
         <script>
@@ -274,7 +355,7 @@ class ACUI_Helper{
         <?php
     }
     
-    public function basic_css(){
+    function basic_css(){
         ?>
         <style type="text/css">
             .wrap{
@@ -291,5 +372,15 @@ class ACUI_Helper{
             }
         </style>
         <?php
+    }
+
+    static function get_value_from_row( $key, $headers, $row, $user_id = 0 ){
+        $pos = array_search( $key, $headers );
+
+        if( $pos === false ){
+            return ( $user_id == 0 ) ? false : get_user_meta( $user_id, $key, true );
+        }
+
+        return $row[ $pos ];
     }
 }

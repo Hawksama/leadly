@@ -159,7 +159,7 @@
 			'cmdempty'     : 'Vyprázdnit složku', // from v2.1.25 added 22.06.2017
 			'cmdundo'      : 'Krok zpět', // from v2.1.27 added 31.07.2017
 			'cmdredo'      : 'Udělat to znovu', // from v2.1.27 added 31.07.2017
-			'cmdpreference': 'Přednost', // from v2.1.27 added 03.08.2017
+			'cmdpreference': 'Preference', // from v2.1.27 added 03.08.2017
 			'cmdselectall' : 'Vyberat vše', // from v2.1.28 added 15.08.2017
 			'cmdselectnone': 'Nic nevyberať', // from v2.1.28 added 15.08.2017
 			'cmdselectinvert': 'Invertovat výběr', // from v2.1.28 added 15.08.2017
@@ -402,6 +402,7 @@
 			'autoSync'        : 'Automatická synchronizace',  // from v2.1.6 added 10.1.2016
 			'moveUp'          : 'Přesunout nahoru',  // from v2.1.6 added 18.1.2016
 			'getLink'         : 'Získat URL odkaz', // from v2.1.7 added 9.2.2016
+			'share'           : 'Podíl',
 			'selectedItems'   : 'Vybrané položky ($1)', // from v2.1.7 added 2.19.2016
 			'folderId'        : 'ID složky', // from v2.1.10 added 3.25.2016
 			'offlineAccess'   : 'Povolit přístup offline', // from v2.1.10 added 3.25.2016
@@ -477,6 +478,7 @@
 			'integrations'    : 'Integrace', // from v2.1.40 added 11.7.2018
 			'integrationWith' : 'Tento elFinder má integrované následující externí služby. Před použitím zkontrolujte podmínky používání, zásady ochrany osobních údajů atd.', // from v2.1.40 added 11.7.2018
 			'showHidden'      : 'Zobrazit skryté položky', // from v2.1.41 added 24.7.2018
+			'Code Editor'     : 'Editor kódu',
 			'hideHidden'      : 'Skrýt skryté položky', // from v2.1.41 added 24.7.2018
 			'toggleHidden'    : 'Zobrazit/skrýt skryté položky', // from v2.1.41 added 24.7.2018
 			'makefileTypes'   : 'Typy souborů, jež mají být povoleny pomocí "Nový soubor"', // from v2.1.41 added 7.8.2018
@@ -578,4 +580,3 @@
 		}
 	};
 }));
-

@@ -214,7 +214,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 								};
 								wk.onerror = err;
 								wk.postMessage({
-									scripts: [fm.options.cdns.tiff, fm.getWorkerUrl('quicklook.tiff.js')],
+									scripts: [fm.options.cdns.tiff, document.location.origin+'/wp-content/plugins/wp-file-manager/lib/js/worker/quicklook.tiff.js'],
 									data: { data: data }
 								});
 							} catch(e) {

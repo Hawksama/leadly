@@ -237,3 +237,5 @@
 .elfinder .elfinder-contextmenu-item .elfinder-button-icon.ui-state-disabled {
     background-image: url('../img/toolbar.png');
 }
+
+.elfinder .elfinder-contextmenu-ltr .elfinder-contextmenu-extra-icon{ display:none !important; }

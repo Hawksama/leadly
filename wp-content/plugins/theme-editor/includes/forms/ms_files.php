@@ -441,8 +441,12 @@ jQuery(document).ready(function (e) {
 					return xhr;
 				},
 				success: function(data){
-					alert('<?php _e('Image uploaded successfully!', 'theme-editor');?>');
-					window.location.reload();
+					jQuery("#photouploads").closest("div").find(".percen").html('');
+					var responsedata = jQuery.parseJSON(data);
+					alert(responsedata.msg);
+					if(responsedata.status == '1') {
+						window.location.reload();
+					}					
 				},        
 			});
 		}

@@ -168,6 +168,20 @@ Happy Organizing! 😍
 
 == Changelog ==
 
+= 4.5 ==
+Fix draggable for tablet
+Fix Edit Gallery
+Fix Over The Max Number Of attachmentID
+Fix FileBird Gallery selector in Guntenberg
+Disable draggable attachment in Mobile
+Add download folder feature
+Fix duplicate folder when import
+Improve perfomence
+Fix folder scroll
+Fix counter folder bug when moving images in folder each user mode
+Fix conflict with Picu plugin
+Fix conflict with TutorLMS plugin
+
 = Dec 21, 2020 - Version 4.3.1 =
 - Added: Support shortcode for Document Gallery
 - Added: API - Get folder detail by folder_id

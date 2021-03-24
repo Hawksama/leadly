@@ -458,7 +458,6 @@
     transition: all 0.4s;
     background: #fff;
     color: #222;
-    /* border: none;*/
 }
 .ui-button .ui-icon,
 .ui-button:active .ui-icon,
@@ -473,7 +472,6 @@ a.ui-button:active,
 .ui-button.ui-state-active {
     background: #3498DB;
     color: #fff;
-/*border: none;*/
 }
 .ui-button:hover .ui-icon,
 a.ui-button:active .ui-icon,
@@ -498,4 +496,13 @@ a.ui-button:active .ui-icon,
 }
 div.elfinder-cwd-wrapper-list tr.ui-state-default td span.ui-icon {
     margin-right:5px;
+}
+
+.std42-dialog,
+.std42-dialog .ui-widget-content{
+    background:#fff;
+}
+.std42-dialog,
+.std42-dialog .ui-dialog-buttonpane.ui-widget-content{
+    background: #ededed;
 }

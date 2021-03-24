@@ -239,7 +239,7 @@
     width: 32px;
     height: 32px;
     left: 10px;
-    top: 50%;
+    bottom: 8%;
     margin-top: -15px;
     background: url("../img/dialogs.png") 0 0 no-repeat;
 }
@@ -283,7 +283,6 @@
 }
 
 .elfinder-dialog-notify .ui-dialog-titlebar {
-    height: 5px;
     overflow: hidden;
 }
 
@@ -291,23 +290,14 @@
     height: 10px;
 }
 
-.elfinder > .elfinder-dialog-notify .ui-dialog-titlebar .elfinder-titlebar-button {
-    top: 2px;
-}
-
 .elfinder.elfinder-touch > .elfinder-dialog-notify .ui-dialog-titlebar .elfinder-titlebar-button {
     top: 4px;
 }
 
 .elfinder > .elfinder-dialog-notify .ui-dialog-titlebar .elfinder-titlebar-button {
-    left: -18px;
     right: 18px;
 }
 
-.elfinder > .elfinder-dialog-notify .ui-dialog-titlebar .elfinder-titlebar-button.elfinder-titlebar-button-right {
-    left: 18px;
-    right: -18px;
-}
 
 .ui-dialog-titlebar .elfinder-ui-progressbar {
     position: absolute;
@@ -550,6 +540,16 @@
     text-decoration: underline;
 }
 
+.ui-front.ui-dialog.elfinder-dialog-info.ui-resizable.elfinder-frontmost.elfinder-dialog-active {
+    max-width: 400px !important;
+    width: 400px !important;
+    overflow: hidden !important;
+}
+.ui-front.ui-dialog .ui-helper-clearfix.elfinder-rm-title {
+    margin-left: -49px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
 .elfinder-info-tb a:hover {
     text-decoration: none;
 }
@@ -666,7 +666,6 @@ button.elfinder-info-button {
 
 .elfinder-rm-title strong {
     display: block;
-    /*word-wrap: break-word;*/
     white-space: pre-wrap;
     word-break: normal;
     overflow: hidden;
@@ -675,4 +674,16 @@ button.elfinder-info-button {
 
 .elfinder-rm-title + br {
     display: none;
-}
+} 
+
+.elfinder .elfinder-dialog .ui-dialog-content.elfinder-edit-editor{ padding: 0; }
+.elfinder-ltr .elfinder-info-tb tr td:first-child{ text-align:left; }
+
+.elfinder-dialog-info table.elfinder-info-tb tr{ display:block !important; }
+.elfinder-dialog-info table.elfinder-info-tb tr td:first-child{width: 96px;}
+
+
+/* New css Added here  */
+.ui-front.ui-dialog.elfinder-dialog.elfinder-dialog-notify .ui-widget-content .elfinder-dialog-icon{ bottom: inherit; top:25px; }
+.ui-front.ui-dialog.elfinder-dialog.elfinder-dialog-notify .ui-widget-content .elfinder-notify{ padding-left:50px; font-size: 12px; }
+.ui-front.ui-dialog.elfinder-dialog.elfinder-dialog-notify .ui-widget-content .elfinder-notify-progressbar{  margin-left: 5px;  margin-top: 10px; }

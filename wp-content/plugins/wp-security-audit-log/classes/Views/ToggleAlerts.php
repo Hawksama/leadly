@@ -86,12 +86,16 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 		$enabled           = array_map( 'intval', $post_array['alert'] );
 		$disabled          = array();
 		$registered_alerts = $this->_plugin->alerts->GetAlerts();
-		$disabled = apply_filters( 'wsal_save_settings_disabled_events', $disabled, $registered_alerts, $frontend_events, $enabled );
+		$disabled          = apply_filters( 'wsal_save_settings_disabled_events', $disabled, $registered_alerts, $frontend_events, $enabled );
 
 		// Save the disabled events.
-		$this->_plugin->alerts->SetDisabledAlerts( $disabled );
+		$this->_plugin->alerts->SetDisabledAlerts( $disabled ); // Save the disabled events.
 
-		// Allow 3rd parties to process and save more of the posted data
+		// Update failed login limits.
+		$this->_plugin->settings()->set_failed_login_limit( $post_array['log_failed_login_limit'] );
+		$this->_plugin->settings()->set_visitor_failed_login_limit( $post_array['log_visitor_failed_login_limit'] );
+
+		// Allow 3rd parties to process and save more of the posted data.
 		do_action( 'wsal_togglealerts_process_save_settings', $post_array );
 
 	}
@@ -132,27 +136,31 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 		}
 
 		// Log level form submission.
-		$log_level       = isset( $post_array['wsal-log-level'] ) ? sanitize_text_field( $post_array['wsal-log-level'] ) : false;
+		$log_level_to_set       = isset( $post_array['wsal-log-level'] ) ? sanitize_text_field( $post_array['wsal-log-level'] ) : false;
 		$log_level_nonce = isset( $post_array['wsal-log-level-nonce'] ) ? sanitize_text_field( $post_array['wsal-log-level-nonce'] ) : false;
 
 		if ( wp_verify_nonce( $log_level_nonce, 'wsal-log-level' ) ) {
-			$this->_plugin->SetGlobalSetting( 'details-level', $log_level );
+			$this->_plugin->SetGlobalSetting( 'details-level', $log_level_to_set );
 
-			if ( 'basic' === $log_level ) {
+			if ( 'basic' === $log_level_to_set ) {
 				$this->_plugin->settings()->set_basic_mode();
-			} elseif ( 'geek' === $log_level ) {
+			} elseif ( 'geek' === $log_level_to_set ) {
 				$this->_plugin->settings()->set_geek_mode();
 			}
 		}
 
 		$disabled_events = $this->_plugin->GetGlobalSetting( 'disabled-alerts' ); // Get disabled events.
 		$disabled_events = explode( ',', $disabled_events );
-		$events_diff     = array_diff( $disabled_events, $this->_plugin->settings()->geek_alerts ); // Calculate the difference of events.
-		$events_diff     = array_filter( $events_diff ); // Remove empty values.
-		$is_custom       = ! empty( $events_diff ) ? true : false; // If difference is not empty then mode is custom.
-		$log_details     = $this->_plugin->GetGlobalSetting( 'details-level', false ); // Get log level option.
 
-		$subcat_alerts   = array( 1004, 2010, 2111 );
+		//  check if the log level is custom
+		$log_level = $this->get_log_level_based_on_events( $disabled_events );
+		$log_level_options = [
+			'basic'  => esc_html__( 'Basic', 'wp-security-audit-log' ),
+			'geek'   => esc_html__( 'Geek', 'wp-security-audit-log' ),
+			'custom' => esc_html__( 'Custom', 'wp-security-audit-log' ),
+		];
+
+		$subcat_alerts   = array( 1000, 1004, 2010, 2111 );
 
 		// Allow further items to be added externally.
 		$subcat_alerts = apply_filters( 'wsal_togglealerts_sub_category_events', $subcat_alerts );
@@ -170,19 +178,9 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 				<fieldset>
 					<label for="wsal-log-level"><?php esc_html_e( 'Log Level: ', 'wp-security-audit-log' ); ?></label>
 					<select name="wsal-log-level" id="wsal-log-level" onchange="this.form.submit()"<?php if ( $disabled_events_enforced_by_mainwp ): ?> disabled="disabled"<?php endif; ?>>
-						<option value="basic"
-							<?php echo ( ! empty( $log_details ) && 'basic' === $log_details ) ? esc_attr( 'selected' ) : false; ?>
-						>
-							<?php esc_html_e( 'Basic', 'wp-security-audit-log' ); ?>
-						</option>
-						<option value="geek"
-							<?php echo ( ! empty( $log_details ) && 'geek' === $log_details ) ? esc_attr( 'selected' ) : false; ?>
-						>
-							<?php esc_html_e( 'Geek', 'wp-security-audit-log' ); ?>
-						</option>
-						<option value="custom" <?php echo ( $is_custom ) ? esc_attr( 'selected' ) : false; ?>>
-							<?php esc_html_e( 'Custom', 'wp-security-audit-log' ); ?>
-						</option>
+						<?php foreach ( $log_level_options as $log_level_id => $log_level_label ): ?>
+                            <option value="<?php echo $log_level_id; ?>" <?php echo selected( $log_level, $log_level_id ); ?>><?php echo $log_level_label; ?></option>
+						<?php endforeach; ?>
 					</select>
 					<p class="description">
 						<?php echo wp_kses( __( 'Use the Log level drop down menu above to use one of our preset log levels. Alternatively you can enable or disable any of the individual events from the below tabs. Refer to <a href="https://wpactivitylog.com/support/kb/list-wordpress-activity-log-event-ids/" target="_blank">the complete list of WordPress activity log event IDs</a> for reference on all the events the plugin can keep a log of.', 'wp-security-audit-log' ), $this->_plugin->allowed_html_tags ); ?>
@@ -224,15 +222,16 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 						foreach ( $group as $subname => $alerts ) {
 							$active    = array();
 							$allactive = true;
+							/** @var WSAL_Alert $alert */
 							foreach ( $alerts as $alert ) {
-								if ( $alert->type <= 0006 ) {
+								if ( $alert->code <= 0006 ) {
 									continue; // <- Ignore php alerts.
 								}
-								if ( in_array( $alert->type, $obsolete_events, true ) ) {
+								if ( in_array( $alert->code, $obsolete_events, true ) ) {
 									continue; // <- Ignore promo alerts.
 								}
-								$active[ $alert->type ] = $this->_plugin->alerts->IsEnabled( $alert->type );
-								if ( ! $active[ $alert->type ] ) {
+								$active[ $alert->code ] = $this->_plugin->alerts->IsEnabled( $alert->code );
+								if ( ! $active[ $alert->code ] ) {
 									$allactive = false;
 								}
 							}
@@ -346,7 +345,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 									<?php
 									// Events sections loop.
 									foreach ( $alerts as $alert ) {
-										if ( $alert->type <= 0006 ) {
+										if ( $alert->code <= 0006 ) {
 											continue; // <- Ignore php alerts.
 										}
 
@@ -354,7 +353,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 											break;
 										}
 
-										if ( in_array( $alert->type, $obsolete_events, true ) ) {
+										if ( in_array( $alert->code, $obsolete_events, true ) ) {
 											continue; // <- Ignore promo alerts.
 										}
 
@@ -370,36 +369,39 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 	                                            //  fallback for any other cases would go here
 	                                            break;
 										}
-										if ( in_array( $alert->type, $subcat_alerts, true ) ) {
+										if ( in_array( $alert->code, $subcat_alerts, true ) ) {
 											?>
 											<tr>
-												<td colspan="4">
-													<h3 class="sub-category">
+                                                <td colspan="4">
+                                                    <h3 class="sub-category">
 														<?php
-                            $subcat_title = '';
-                            switch ( $alert->type ) {
-                                case 1004:
-                                    $subcat_title = esc_html__( 'User Sessions', 'wp-security-audit-log' );
-                                    break;
-                                    case 2010:
-                                    $subcat_title = esc_html__( 'Files', 'wp-security-audit-log' );
-                                    break;
-                                case 2011:
-                                    $subcat_title = esc_html__( 'Post Settings', 'wp-security-audit-log' );
-                                    break;
-                                default:
-                                    break;
-                            }
+														$subcat_title = '';
+														switch ( $alert->code ) {
+															case 1000:
+																$subcat_title = esc_html__( 'User Logins/Logouts', 'wp-security-audit-log' );
+																break;
+															case 1004:
+																$subcat_title = esc_html__( 'User Sessions', 'wp-security-audit-log' );
+																break;
+															case 2010:
+																$subcat_title = esc_html__( 'Files', 'wp-security-audit-log' );
+																break;
+															case 2011:
+																$subcat_title = esc_html__( 'Post Settings', 'wp-security-audit-log' );
+																break;
+															default:
+																break;
+														}
 
 														// Allow further titles to be added externally.
-														$subcat_title = apply_filters( 'wsal_togglealerts_sub_category_titles', $subcat_title, $alert->type );
+														$subcat_title = apply_filters( 'wsal_togglealerts_sub_category_titles', $subcat_title, $alert->code );
 														if ( $subcat_title ) {
 															echo esc_html( $subcat_title );
 														}
 														?>
-													</h3>
-												</td>
-											</tr>
+                                                    </h3>
+                                                </td>
+                                            </tr>
 											<?php
 										}
 										?>
@@ -409,8 +411,8 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 													name="alert[]"
 													type="checkbox"
 													class="alert"
-													<?php checked( $active[ $alert->type ] ); ?>
-													value="<?php echo esc_attr( (int) $alert->type ); ?>"
+													<?php checked( $active[ $alert->code ] ); ?>
+													value="<?php echo esc_attr( (int) $alert->code ); ?>"
 													<?php
 													if ( ! empty( $disable_inputs ) ) {
 														echo esc_attr( $disable_inputs );
@@ -419,10 +421,10 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 													<?php echo ( __( 'File Changes', 'wp-security-audit-log' ) === $subname ) ? 'onclick="wsal_toggle_file_changes(this)"' : false; ?>
 												/>
 											</th>
-											<td><?php echo esc_html( str_pad( $alert->type, 4, '0', STR_PAD_LEFT ) ); ?></td>
+											<td><?php echo esc_html( str_pad( $alert->code, 4, '0', STR_PAD_LEFT ) ); ?></td>
 											<td>
 												<?php
-												$severity_obj = $this->_plugin->constants->GetConstantBy( 'value', $alert->code );
+												$severity_obj = $this->_plugin->constants->GetConstantBy( 'value', $alert->severity );
 												if ( 'E_CRITICAL' === $severity_obj->name ) {
 													esc_html_e( 'Critical', 'wp-security-audit-log' );
 												} elseif ( 'E_WARNING' === $severity_obj->name ) {
@@ -447,20 +449,8 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 											<td><?php echo esc_html( $alert->desc ); ?></td>
 										</tr>
 										<?php
-										if ( 1000 === $alert->type ) {
-											$frontend_events        = WSAL_Settings::get_frontend_events();
-											?>
-											<tr>
-												<td></td>
-												<td><input type="checkbox" name="frontend-events[login]" id="frontend-events-login" value="1" <?php checked( $frontend_events['login'] ); ?>></td>
-												<td colspan="2">
-													<label for="frontend-events-login"><?php esc_html_e( 'Keep a log when users login to the website from other login pages / forms other than the default WordPress login page.', 'wp-security-audit-log' ); ?></label>
-												</td>
-											</tr>
-											<?php
-										}
 
-										if ( 4000 === $alert->type ) {
+										if ( 4000 === $alert->code ) {
 											$frontend_events        = WSAL_Settings::get_frontend_events();
 											?>
 											<tr>
@@ -473,7 +463,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 											<?php
 										}
 
-										if ( 1002 === $alert->type ) {
+										if ( 1002 === $alert->code ) {
 											$log_failed_login_limit = (int) $this->_plugin->GetGlobalSetting( 'log-failed-login-limit', 10 );
 											$log_failed_login_limit = ( -1 === $log_failed_login_limit ) ? '0' : $log_failed_login_limit;
 											?>
@@ -486,7 +476,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 											</tr>
 											<?php
 										}
-										if ( 1003 === $alert->type ) {
+										if ( 1003 === $alert->code ) {
 											$log_visitor_failed_login_limit = (int) $this->_plugin->GetGlobalSetting( 'log-visitor-failed-login-limit', 10 );
 											$log_visitor_failed_login_limit = ( -1 === $log_visitor_failed_login_limit ) ? '0' : $log_visitor_failed_login_limit;
 											?>
@@ -500,7 +490,21 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 											<?php
 										}
 
-										do_action( 'wsal_togglealerts_append_content_to_toggle', $alert->type );
+										if ( 1003 === $alert->code ) {
+											$frontend_events        = WSAL_Settings::get_frontend_events();
+											?>
+											<tr>
+												<th>
+													<input type="checkbox" name="frontend-events[login]" id="frontend-events-login" value="1" <?php checked( $frontend_events['login'] ); ?>>
+												</th>
+												<td colspan="3">
+													<label for="frontend-events-login"><?php esc_html_e( 'Keep a log of user log in activity on custom login forms (such as WooCommerce & membership plugins)', 'wp-security-audit-log' ); ?></label>
+												</td>
+											</tr>
+											<?php
+										}
+
+										do_action( 'wsal_togglealerts_append_content_to_toggle', $alert->code );
 									}
 
 									// File integrity scan link.
@@ -543,7 +547,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 			<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr( __( 'Save Changes', 'wp-security-audit-log' ) ); ?>"></p>
 		</form>
 
-		<?php if ( ! empty( $log_level ) ) : ?>
+		<?php if ( ! empty( $log_level_to_set ) ) : ?>
 			<!-- Log level updated modal -->
 			<div class="remodal" data-remodal-id="wsal-log-level-updated">
 				<button data-remodal-action="close" class="remodal-close"></button>
@@ -551,7 +555,7 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 				<p>
 					<?php
 					/* translators: Alerts log level. */
-					echo sprintf( esc_html__( 'The %s log level has been successfully loaded and applied.', 'wp-security-audit-log' ), $log_level );
+					echo sprintf( esc_html__( 'The %s log level has been successfully loaded and applied.', 'wp-security-audit-log' ), $log_level_to_set );
 					?>
 				</p>
 				<br>
@@ -652,24 +656,43 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 			table#tab-frontend-events tr:nth-child(12) td:first-child {
 				padding-left: 10px;
 			}
-			[href="#tab-0" i], [data-parent="tab-wpforms"] {
+			/* Extensions tab */
+			[href="#tab-0" i], [data-parent="tab-wpforms"], [data-parent="tab-gravity-forms"] {
 				display: none;
+			}
+			#extension-wrapper {
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: row;
+				justify-content: space-between;
 			}
 			.addon-wrapper img {
 				max-width: 200px;
 			}
 			.addon-wrapper {
-				max-width: calc( 25% - 45px );
-				display: inline-block;
-				border: 1px solid #eee;
-				padding: 20px;
-				text-align: center;
-				float: left;
-				margin-right: 3px;
-				min-height: 250px;
+				flex: 1 0 30%;
+		    margin: 0 5px 11px 5px;
+		    border: 1px solid #eee;
+		    padding: 20px;
 			}
 			.addon-wrapper:hover {
 				border: 1px solid #ccc;
+			}
+			.addon-wrapper .button-primary {
+				position: relative;
+		    padding: 13px 26px !important;
+		    font-weight: 500;
+		    font-size: 16px;
+		    line-height: 1;
+		    color: white;
+		    background: #007cba;
+		    border: none;
+		    outline: none;
+		    overflow: hidden;
+		    cursor: pointer;
+		    filter: drop-shadow(0 2px 8px rgba(39, 94, 254, 0.32));
+		    transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+		    line-height: 1 !important;
 			}
 		</style>
 		<?php
@@ -745,5 +768,31 @@ class WSAL_Views_ToggleAlerts extends WSAL_AbstractView {
 			}
 		</script>
 		<?php
+	}
+
+	/**
+	 * Determine the log level setting by checking the list of enabled/disabled events.
+	 *
+	 * @param int[] $disabled_events Currently disabled events.
+	 *
+	 * @return string Log level setting value.
+	 * @since 4.2.0
+	 */
+	private function get_log_level_based_on_events( $disabled_events ) {
+		$events_to_cross_check = $this->_plugin->settings()->always_disabled_alerts;
+		$events_diff           = array_diff( $disabled_events, $events_to_cross_check );
+		$events_diff           = array_filter( $events_diff ); // Remove empty values.
+		if ( empty( $events_diff ) ) {
+			return 'geek';
+		}
+
+		$events_to_cross_check = array_merge( $events_to_cross_check, $this->_plugin->settings()->geek_alerts );
+		$events_diff           = array_diff( $disabled_events, $events_to_cross_check );
+		$events_diff           = array_filter( $events_diff ); // Remove empty values.
+		if ( empty( $events_diff ) ) {
+			return 'basic';
+		}
+
+		return 'custom';
 	}
 }

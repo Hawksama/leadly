@@ -1,5 +1,14 @@
-.editor-styles-wrapper > * {
+.editor-styles-wrapper, .editor-styles-wrapper > * {
   background-color: var(--nv-site-bg);
+}
+
+.editor-styles-wrapper .editor-post-title__input::placeholder, .editor-styles-wrapper .block-list-appender textarea::placeholder {
+  color: var(--nv-text-color);
+  opacity: .5;
+}
+
+.editor-styles-wrapper .block-list-appender textarea {
+  color: var(--nv-text-color);
 }
 
 .editor-styles-wrapper h1.wp-block, .editor-styles-wrapper h1, .editor-styles-wrapper h2.wp-block, .editor-styles-wrapper h2, .editor-styles-wrapper h3.wp-block, .editor-styles-wrapper h3, .editor-styles-wrapper h4.wp-block, .editor-styles-wrapper h4, .editor-styles-wrapper h5.wp-block, .editor-styles-wrapper h5, .editor-styles-wrapper h6.wp-block, .editor-styles-wrapper h6 {
@@ -44,6 +53,10 @@
   line-height: 1.68421;
   text-transform: none;
   letter-spacing: normal;
+}
+
+.editor-styles-wrapper .wp-block.components-placeholder {
+  color: initial;
 }
 
 .editor-styles-wrapper .wp-block strong {
@@ -175,7 +188,7 @@
 }
 
 .editor-styles-wrapper .has-neve-link-color-color {
-  color: var(--nv-primary-accent);
+  color: var(--nv-primary-accent) !important;
 }
 
 .editor-styles-wrapper .has-neve-link-color-background-color {
@@ -183,7 +196,7 @@
 }
 
 .editor-styles-wrapper .has-neve-link-hover-color-color {
-  color: var(--nv-secondary-accent);
+  color: var(--nv-secondary-accent) !important;
 }
 
 .editor-styles-wrapper .has-neve-link-hover-color-background-color {
@@ -191,7 +204,7 @@
 }
 
 .editor-styles-wrapper .has-neve-text-color-color {
-  color: var(--nv-text-color);
+  color: var(--nv-text-color) !important;
 }
 
 .editor-styles-wrapper .has-neve-text-color-background-color {
@@ -199,7 +212,7 @@
 }
 
 .editor-styles-wrapper .has-nv-site-bg-color {
-  color: var(--nv-site-bg);
+  color: var(--nv-site-bg) !important;
 }
 
 .editor-styles-wrapper .has-nv-site-bg-background-color {
@@ -207,7 +220,7 @@
 }
 
 .editor-styles-wrapper .has-nv-light-bg-color {
-  color: var(--nv-light-bg);
+  color: var(--nv-light-bg) !important;
 }
 
 .editor-styles-wrapper .has-nv-light-bg-background-color {
@@ -215,7 +228,7 @@
 }
 
 .editor-styles-wrapper .has-nv-dark-bg-color {
-  color: var(--nv-dark-bg);
+  color: var(--nv-dark-bg) !important;
 }
 
 .editor-styles-wrapper .has-nv-dark-bg-background-color {
@@ -223,7 +236,7 @@
 }
 
 .editor-styles-wrapper .has-nv-text-dark-bg-color {
-  color: var(--nv-text-dark-bg);
+  color: var(--nv-text-dark-bg) !important;
 }
 
 .editor-styles-wrapper .has-nv-text-dark-bg-background-color {
@@ -231,7 +244,7 @@
 }
 
 .editor-styles-wrapper .has-nv-c-1-color {
-  color: var(--nv-c-1);
+  color: var(--nv-c-1) !important;
 }
 
 .editor-styles-wrapper .has-nv-c-1-background-color {
@@ -239,7 +252,7 @@
 }
 
 .editor-styles-wrapper .has-nv-c-2-color {
-  color: var(--nv-c-2);
+  color: var(--nv-c-2) !important;
 }
 
 .editor-styles-wrapper .has-nv-c-2-background-color {
@@ -309,6 +322,30 @@
 .editor-styles-wrapper .editor-writing-flow .wp-block-pullquote blockquote .wp-block-pullquote__citation {
   padding-top: 20px;
   font-size: .85em;
+}
+
+.editor-styles-wrapper .wp-block code {
+  background-color: #d0effb;
+  border-radius: 5px;
+  border: 1px solid var(--nv-light-bg);
+  padding: 0 3px;
+  color: #333;
+}
+
+.editor-styles-wrapper .wp-block-code {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 5px;
+  border: 1px solid var(--nv-light-bg);
+  white-space: pre-wrap;
+  font-size: .9em;
+  line-height: 2em;
+}
+
+.editor-styles-wrapper .wp-block-code code {
+  background: transparent;
+  border: none;
+  color: #333;
 }
 
 @media (min-width: 769px) {
