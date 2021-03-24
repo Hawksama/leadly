@@ -102,7 +102,7 @@ if( !class_exists('leadlyCards') ) :
         }
 
         function registerActions() {
-            add_action( 'um_user_register', array($this, 'ultimateMemberRegisterCardSave'), 10, 2 );
+            add_action( 'um_registration_set_extra_data', array($this, 'ultimateMemberRegisterCardSave'), 10, 2 );
         }
 
         function ultimateMemberRegisterCardSave( $user_id, $args ) {

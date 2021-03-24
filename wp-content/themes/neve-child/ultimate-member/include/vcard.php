@@ -148,8 +148,10 @@ class vcard {
                 . $this->vcardInformation['additional_name'] . ";"
                 . $this->vcardInformation['name_prefix'] . ";"
                 . $this->vcardInformation['name_suffix'] . "\r\n";
-        if ($this->vcardInformation['nickname']) {
-            $this->card .= "NICKNAME:" . $this->vcardInformation['nickname'] . "\r\n";
+        if(false) { //Remove account username from vCard 
+            if ($this->vcardInformation['nickname']) {
+                $this->card .= "NICKNAME:" . $this->vcardInformation['nickname'] . "\r\n";
+            }
         }
         if ($this->vcardInformation['title']) {
             $this->card .= "TITLE:" . $this->vcardInformation['title'] . "\r\n";

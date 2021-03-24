@@ -224,7 +224,7 @@
 
 .um-request-button {
 	display: inline-block;
-	background-color: #3ba1da;
+	background-color: #d4af37;
 	border-radius: 5px;
 	color: #fff;
 	margin: 10px 0 0;
@@ -233,7 +233,7 @@
 }
 
 .um-request-button:hover {
-	background-color: #44b0ec;
+	background-color: #e2c246;
 	color: #fff;
 	text-decoration: none;
 }

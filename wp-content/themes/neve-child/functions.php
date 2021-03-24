@@ -1,6 +1,6 @@
 <?php
 
-define( 'NEVE_CHILD_VERSION', '1.0' );
+define( 'NEVE_CHILD_VERSION', '1.0.5' );
 
 
 function nevechild_enqueue_scripts() {
@@ -644,9 +644,9 @@ function vcard_function( $data ) {
 	}
 	
 	if ($wpUserData->user_email) {
-		$vc->vcardInformation['email1'] = $wpUserData->user_email; 
+		$vc->vcardInformation['secondary_user_email'] = $wpUserData->user_email;
 	}
-
+    
 	if (!empty($vpost['work-email'][0])) {
 		$vc->vcardInformation['email2'] = $vpost['work-email'][0]; 
 	}
@@ -770,7 +770,6 @@ function vcard_function( $data ) {
     $vc->download();
 }
 
-
 add_action( 'rest_api_init', function () {
     register_rest_route( 'vcard/v1', '/user/id=(?P<id>\d+)', array(
         'methods' => 'GET',
@@ -788,7 +787,7 @@ add_action( 'rest_api_init', function () {
 // function that runs when shortcode is called
 function wpb_demo_shortcode() { 
     $message = '<a href="' . esc_url( $_SERVER['SERVER_NAME'] ) . '/wp-json/vcard/v1/user/id=' . um_profile_id() . '"';
-    $message .= 'class="um-button um-alt"';
+    $message .= 'class="um-button um-alt save-contact"';
     $message .= 'target="_blank"';
     $message .= 'title="SAVE CONTACT">';
 	$message .= 'SAVE CONTACT';
@@ -818,7 +817,7 @@ function my_show_social_urls() {
 	foreach ( $social as $k => $arr ) {
 		if ( um_profile( $k ) ) {
 
-			$message .=	'<a href="' . esc_url( um_filtered_social_link( $k, $arr['match'] ) ) . '"';
+			$message .=	'<a class="redirect-social-' . esc_attr( $arr['metakey']) . '" href="' . esc_url( um_filtered_social_link( $k, $arr['match'] ) ) . '"';
 			$message .=	'style="background: ' . esc_attr( $arr['color'] ) . '" target="_blank" class="um-tip-n"';
 			$message .= 'title="' . esc_attr( $arr['title'] ) . '">';
 			
@@ -857,10 +856,783 @@ function link_to_clipboard() {
 
 	$message .=	'<a href="#"';
 	$message .=	'id="share-link"';
-	$message .= 'target="_blank" class="um-button um-alt"';
-	$message .= 'title="Share me"><i class="um-faicon-share-alt" aria-hidden="true"></i> Share profile</a>';
+	$message .= 'target="_blank" class="um-button um-alt share-button"';
+	$message .= 'title="Share me">Share profile</a>';
 
 	return $message;
 }
 
 add_shortcode('link-clipboard', 'link_to_clipboard');
+
+
+add_filter( 'um_predefined_fields_hook', 'my_predefined_fields', 10, 1 );
+function my_predefined_fields( $predefined_fields ) {
+	$builtin = new um\core\Builtin();
+
+
+	global $wp_roles;
+	$role_keys = get_option( 'um_roles' );
+	if ( ! empty( $role_keys ) && is_array( $role_keys ) ) {
+		$role_keys = array_map( function( $item ) {
+			return 'um_' . $item;
+		}, $role_keys );
+	} else {
+		$role_keys = array();
+	}
+
+	$exclude_roles = array_diff( array_keys( $wp_roles->roles ), array_merge( $role_keys, array( 'subscriber' ) ) );
+
+	$um_roles = UM()->roles()->get_roles( false, $exclude_roles );
+
+	$profile_privacy = apply_filters( 'um_profile_privacy_options', array(
+		'Everyone'  => __( 'Everyone', 'ultimate-member' ),
+		'Only me'   => __( 'Only me', 'ultimate-member' )
+	) );
+
+	$predefined_fields = array(
+		//COPIED FROM wp-content/plugins/ultimate-member/includes/core/class-builtin.php
+		
+		'user_login' => array(
+			'title' => __('Username','ultimate-member'),
+			'metakey' => 'user_login',
+			'type' => 'text',
+			'label' => __('Username','ultimate-member'),
+			'required' => 1,
+			'public' => 1,
+			'editable' => 0,
+			'validate' => 'unique_username',
+			'min_chars' => 3,
+			'max_chars' => 24
+		),
+
+		'username' => array(
+			'title' => __('Username or E-mail','ultimate-member'),
+			'metakey' => 'username',
+			'type' => 'text',
+			'label' => __('Username or E-mail','ultimate-member'),
+			'required' => 1,
+			'public' => 1,
+			'editable' => 0,
+			'validate' => 'unique_username_or_email',
+		),
+
+		'user_password' => array(
+			'title' => __('Password','ultimate-member'),
+			'metakey' => 'user_password',
+			'type' => 'password',
+			'label' => __('Password','ultimate-member'),
+			'required' => 1,
+			'public' => 1,
+			'editable' => 1,
+			'min_chars' => 8,
+			'max_chars' => 30,
+			'force_good_pass' => 1,
+			'force_confirm_pass' => 1,
+		),
+
+		'first_name' => array(
+			'title' => __('First Name','ultimate-member'),
+			'metakey' => 'first_name',
+			'type' => 'text',
+			'label' => __('First Name','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+		),
+
+		'last_name' => array(
+			'title' => __('Last Name','ultimate-member'),
+			'metakey' => 'last_name',
+			'type' => 'text',
+			'label' => __('Last Name','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+		),
+
+		'nickname' => array(
+			'title' => __('Nickname','ultimate-member'),
+			'metakey' => 'nickname',
+			'type' => 'text',
+			'label' => __('Nickname','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+		),
+
+		'user_url' => array(
+			'title' => __('Website URL','ultimate-member'),
+			'metakey' => 'user_url',
+			'type' => 'url',
+			'label' => __('Website URL','ultimate-member'),
+			'required' => 1,
+			'public' => 1,
+			'editable' => 1,
+			'validate' => 'url'
+		),
+
+		'user_registered' => array(
+			'title' => __('Registration Date','ultimate-member'),
+			'metakey' => 'user_registered',
+			'type' => 'text',
+			'label' => __('Registration Date','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'edit_forbidden' => 1,
+		),
+
+		'_um_last_login' => array(
+			'title' => __('Last Login','ultimate-member'),
+			'metakey' => '_um_last_login',
+			'type' => 'text',
+			'label' => __('Last Login','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'edit_forbidden' => 1,
+		),
+
+		'user_email' => array(
+			'title' => __('E-mail Address','ultimate-member'),
+			'metakey' => 'user_email',
+			'type' => 'text',
+			'label' => __('E-mail Address','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'validate' => 'unique_email',
+			'autocomplete' => 'off'
+		),
+
+		'secondary_user_email' => array(
+			'title' => __('Secondary E-mail Address','ultimate-member'),
+			'metakey' => 'secondary_user_email',
+			'type' => 'text',
+			'label' => __('Secondary E-mail Address','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'validate' => 'unique_email',
+			'autocomplete' => 'off'
+		),
+
+		'description' => array(
+			'title' => __('Biography','ultimate-member'),
+			'metakey' => 'description',
+			'type' => 'textarea',
+			'label' => __('Biography','ultimate-member'),
+			'html' => 0,
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'max_words' => 40,
+			'placeholder' => __('Enter a bit about yourself...','ultimate-member'),
+		),
+
+		'birth_date' => array(
+			'title' => __('Birth Date','ultimate-member'),
+			'metakey' => 'birth_date',
+			'type' => 'date',
+			'label' => __('Birth Date','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'pretty_format' => 1,
+			'years' => 115,
+			'years_x' => 'past',
+			'icon' => 'um-faicon-calendar'
+		),
+
+		'gender' => array(
+			'title' => __('Gender','ultimate-member'),
+			'metakey' => 'gender',
+			'type' => 'radio',
+			'label' => __('Gender','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'options' => array( __('Male','ultimate-member'), __('Female','ultimate-member') )
+		),
+
+		'country' => array(
+			'title' => __('Country','ultimate-member'),
+			'metakey' => 'country',
+			'type' => 'select',
+			'label' => __('Country','ultimate-member'),
+			'placeholder' => __('Choose a Country','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'options' => $builtin->get('countries')
+		),
+
+		'facebook' => array(
+			'title' => __('Facebook','ultimate-member'),
+			'metakey' => 'facebook',
+			'type' => 'url',
+			'label' => __('Facebook','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-facebook',
+			'validate' => 'facebook_url',
+			'url_text' => 'Facebook',
+			'advanced' => 'social',
+			'color' => '#3B5999',
+			'match' => 'https://facebook.com/',
+		),
+
+		'twitter' => array(
+			'title' => __('Twitter','ultimate-member'),
+			'metakey' => 'twitter',
+			'type' => 'url',
+			'label' => __('Twitter','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-twitter',
+			'validate' => 'twitter_url',
+			'url_text' => 'Twitter',
+			'advanced' => 'social',
+			'color' => '#4099FF',
+			'match' => 'https://twitter.com/',
+		),
+
+		'linkedin' => array(
+			'title' => __('LinkedIn','ultimate-member'),
+			'metakey' => 'linkedin',
+			'type' => 'url',
+			'label' => __('LinkedIn','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-linkedin',
+			'validate' => 'linkedin_url',
+			'url_text' => 'LinkedIn',
+			'advanced' => 'social',
+			'color' => '#0976b4',
+			'match' => 'https://linkedin.com/in/',
+		),
+
+		'instagram' => array(
+			'title' => __('Instagram','ultimate-member'),
+			'metakey' => 'instagram',
+			'type' => 'url',
+			'label' => __('Instagram','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-instagram',
+			'validate' => 'instagram_url',
+			'url_text' => 'Instagram',
+			'advanced' => 'social',
+			'color' => 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)',
+			'match' => 'https://instagram.com/',
+		),
+
+		'skype' => array(
+			'title' => __('Skype ID','ultimate-member'),
+			'metakey' => 'skype',
+			'type' => 'url',
+			'label' => __('Skype ID','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-skype',
+			'validate' => 'skype',
+			'url_text' => 'Skype',
+		),
+
+		'youtube' => array(
+			'title' => __('YouTube','ultimate-member'),
+			'metakey' => 'youtube',
+			'type' => 'url',
+			'label' => __('YouTube','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-youtube',
+			'validate' => 'youtube_url',
+			'url_text' => 'YouTube',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://youtube.com/',
+		),
+
+		'soundcloud' => array(
+			'title' => __('SoundCloud','ultimate-member'),
+			'metakey' => 'soundcloud',
+			'type' => 'url',
+			'label' => __('SoundCloud','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-soundcloud',
+			'validate' => 'soundcloud_url',
+			'url_text' => 'SoundCloud',
+			'advanced' => 'social',
+			'color' => '#f50',
+			'match' => 'https://soundcloud.com/',
+		),
+
+		'vkontakte' => array(
+			'title' => __('VKontakte','ultimate-member'),
+			'metakey' => 'vkontakte',
+			'type' => 'url',
+			'label' => __('VKontakte','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-vk',
+			'validate' => 'vk_url',
+			'url_text' => 'VKontakte',
+			'advanced' => 'social',
+			'color' => '#2B587A',
+			'match' => 'https://vk.com/',
+		),
+
+		'role_select' => array(
+			'title' => __('Roles (Dropdown)','ultimate-member'),
+			'metakey' => 'role_select',
+			'type' => 'select',
+			'label' => __('Account Type','ultimate-member'),
+			'placeholder' => 'Choose account type',
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'options' => $um_roles,
+		),
+
+		'role_radio' => array(
+			'title' => __('Roles (Radio)','ultimate-member'),
+			'metakey' => 'role_radio',
+			'type' => 'radio',
+			'label' => __('Account Type','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'options' => $um_roles,
+		),
+
+		'languages' => array(
+			'title' => __('Languages','ultimate-member'),
+			'metakey' => 'languages',
+			'type' => 'multiselect',
+			'label' => __('Languages Spoken','ultimate-member'),
+			'placeholder' => __('Select languages','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'options' => $builtin->get('languages'),
+		),
+
+		'phone_number' => array(
+			'title' => __('Phone Number','ultimate-member'),
+			'metakey' => 'phone_number',
+			'type' => 'text',
+			'label' => __('Phone Number','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'validate' => 'phone_number',
+			'icon' => 'um-faicon-phone',
+		),
+
+		'mobile_number' => array(
+			'title' => __('Mobile Number','ultimate-member'),
+			'metakey' => 'mobile_number',
+			'type' => 'text',
+			'label' => __('Mobile Number','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'validate' => 'phone_number',
+			'icon' => 'um-faicon-mobile',
+		),
+
+		// private use ( not public list )
+
+		'profile_photo' => array(
+			'title' => __('Profile Photo','ultimate-member'),
+			'metakey' => 'profile_photo',
+			'type' => 'image',
+			'label' => __('Change your profile photo','ultimate-member'),
+			'upload_text' => __('Upload your photo here','ultimate-member'),
+			'icon' => 'um-faicon-camera',
+			'crop' => 1,
+			'max_size' => ( UM()->options()->get('profile_photo_max_size') ) ? UM()->options()->get('profile_photo_max_size') : 999999999,
+			'min_width' => str_replace('px','',UM()->options()->get('profile_photosize')),
+			'min_height' => str_replace('px','',UM()->options()->get('profile_photosize')),
+			'private_use' => true,
+		),
+
+		'cover_photo' => array(
+			'title' => __('Cover Photo','ultimate-member'),
+			'metakey' => 'cover_photo',
+			'type' => 'image',
+			'label' => __('Change your cover photo','ultimate-member'),
+			'upload_text' => __('Upload profile cover here','ultimate-member'),
+			'icon' => 'um-faicon-picture-o',
+			'crop' => 2,
+			'max_size' => ( UM()->options()->get('cover_photo_max_size') ) ? UM()->options()->get('cover_photo_max_size') : 999999999,
+			'modal_size' => 'large',
+			'ratio' => str_replace(':1','',UM()->options()->get('profile_cover_ratio')),
+			'min_width' => UM()->options()->get('cover_min_width'),
+			'private_use' => true,
+		),
+
+		'username_b' => array(
+			'title' => __('Username or E-mail','ultimate-member'),
+			'metakey' => 'username_b',
+			'type' => 'text',
+			'placeholder' => __('Enter your username or email','ultimate-member'),
+			'required' => 1,
+			'public' => 1,
+			'editable' => 0,
+			'private_use' => true,
+		),
+
+		// account page use ( not public )
+
+		'profile_privacy'       => array(
+			'title'         => __( 'Profile Privacy', 'ultimate-member' ),
+			'metakey'       => 'profile_privacy',
+			'type'          => 'select',
+			'label'         => __( 'Profile Privacy', 'ultimate-member' ),
+			'help'          => __( 'Who can see your public profile?', 'ultimate-member' ),
+			'required'      => 0,
+			'public'        => 1,
+			'editable'      => 1,
+			'default'       => 'Everyone',
+			'options'       => $profile_privacy,
+			'allowclear'    => 0,
+			'account_only'  => true,
+			'required_perm' => 'can_make_private_profile',
+		),
+
+		'profile_noindex'       => array(
+			'title'         => __( 'Avoid indexing my profile by search engines', 'ultimate-member' ),
+			'metakey'       => 'profile_noindex',
+			'type'          => 'select',
+			'label'         => __( 'Avoid indexing my profile by search engines', 'ultimate-member' ),
+			'help'          => __( 'Hide my profile for robots?', 'ultimate-member' ),
+			'required'      => 0,
+			'public'        => 1,
+			'editable'      => 1,
+			'default'       => '0',
+			'options'       => array(
+				'0'     => __( 'No', 'ultimate-member' ),
+				'1'     => __( 'Yes', 'ultimate-member' ),
+			),
+			'allowclear'    => 0,
+			'account_only'  => true,
+			'required_perm' => 'can_make_private_profile',
+		),
+
+		'hide_in_members'       => array(
+			'title'         => __( 'Hide my profile from directory', 'ultimate-member' ),
+			'metakey'       => 'hide_in_members',
+			'type'          => 'radio',
+			'label'         => __( 'Hide my profile from directory', 'ultimate-member' ),
+			'help'          => __( 'Here you can hide yourself from appearing in public directory', 'ultimate-member' ),
+			'required'      => 0,
+			'public'        => 1,
+			'editable'      => 1,
+			'default'       => UM()->member_directory()->get_hide_in_members_default() ? 'Yes' : 'No',
+			'options'       => array(
+				'No'    => __( 'No', 'ultimate-member' ),
+				'Yes'   => __( 'Yes', 'ultimate-member' ),
+			),
+			'account_only'  => true,
+			'required_opt'  => array( 'members_page', 1 ),
+		),
+
+		'delete_account'        => array(
+			'title'         => __( 'Delete Account', 'ultimate-member' ),
+			'metakey'       => 'delete_account',
+			'type'          => 'radio',
+			'label'         => __( 'Delete Account', 'ultimate-member'),
+			'help'          => __( 'If you confirm, everything related to your profile will be deleted permanently from the site', 'ultimate-member' ),
+			'required'      => 0,
+			'public'        => 1,
+			'editable'      => 1,
+			'default'       => __( 'No', 'ultimate-member' ),
+			'options'       => array(
+				__( 'Yes', 'ultimate-member' ),
+				__( 'No', 'ultimate-member' )
+			),
+			'account_only'  => true,
+		),
+
+		'single_user_password'  => array(
+			'title'         => __( 'Password', 'ultimate-member' ),
+			'metakey'       => 'single_user_password',
+			'type'          => 'password',
+			'label'         => __( 'Password', 'ultimate-member' ),
+			'required'      => 1,
+			'public'        => 1,
+			'editable'      => 1,
+			'account_only'  => true,
+		),
+
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+		// CUSTOM --------------------------------------------------------------------------------
+
+		'snapchat' => array(
+			'title' => __('Snapchat','ultimate-member'),
+			'metakey' => 'snapchat',
+			'type' => 'url',
+			'label' => __('Snapchat','ultimate-member'),
+			'required' => 0,
+			'public' => 0,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Snapchat',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://snapchat.com/',
+		),
+		'venmo' => array(
+			'title' => __('Venmo','ultimate-member'),
+			'metakey' => 'venmo',
+			'type' => 'url',
+			'label' => __('Venmo','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Venmo',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://venmo.com/',
+		),
+		'paypal' => array(
+			'title' => __('PayPal','ultimate-member'),
+			'metakey' => 'paypal',
+			'type' => 'url',
+			'label' => __('PayPal','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'PayPal',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://paypal.com/',
+		),
+		'cashapp' => array(
+			'title' => __('Cash App','ultimate-member'),
+			'metakey' => 'cashapp',
+			'type' => 'url',
+			'label' => __('Cash App','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Cash App',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://cash.app/',
+		),
+		'whatsapp' => array(
+			'title' => __('WhatsApp','ultimate-member'),
+			'metakey' => 'whatsapp',
+			'type' => 'url',
+			'label' => __('WhatsApp','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'WhatsApp',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://whatsapp.com/',
+		),
+		'tumblr' => array(
+			'title' => __('Tumblr','ultimate-member'),
+			'metakey' => 'tumblr',
+			'type' => 'url',
+			'label' => __('Tumblr','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Tumblr',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://tumblr.com/',
+		),
+		'tiktok' => array(
+			'title' => __('TikTok','ultimate-member'),
+			'metakey' => 'tiktok',
+			'type' => 'url',
+			'label' => __('TikTok','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'TikTok',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://tiktok.com/',
+		),
+		'spotify' => array(
+			'title' => __('Spotify','ultimate-member'),
+			'metakey' => 'spotify',
+			'type' => 'url',
+			'label' => __('Spotify','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Spotify',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://spotify.com/',
+		),
+		'musicapple' => array(
+			'title' => __('Apple Music','ultimate-member'),
+			'metakey' => 'musicapple',
+			'type' => 'url',
+			'label' => __('Apple Music','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'url_target' => '_blank',
+			'url_rel' => 'nofollow',
+			'icon' => 'um-faicon-circle-thin',
+			'validate' => 'custom',
+			'url_text' => 'Apple Music',
+			'advanced' => 'social',
+			'color' => '#e52d27',
+			'match' => 'https://music.apple.com/',
+		),
+	);
+	
+	return $predefined_fields;
+}
+
+add_action( 'um_custom_field_validation_social_url', 'my_custom_field_validation_social_url', 10, 3 );
+function my_custom_field_validation_social_url( $key, $field, $args ) {
+	if ( 
+		! UM()->validation()->is_url( $args[ $key ], 'snapchat.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'snapchat.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'paypal.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'cash.app' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'whatsapp.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'tumblr.com' )  &&
+		! UM()->validation()->is_url( $args[ $key ], 'tiktok.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'spotify.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'venmo.com' ) &&
+		! UM()->validation()->is_url( $args[ $key ], 'music.apple.com' )
+	) {
+		UM()->form()->add_error( $key, sprintf( __( 'Please enter a valid %s username or profile URL', 'ultimate-member' ), $field['label'] ) );
+	}
+}
+
+
+
+/**
+ * Show the submit button (highest priority)
+ *
+ * @param $args
+ */
+function my_add_submit_button_to_profile( $args ) {
+	// DO NOT add when reviewing user's details
+	if ( UM()->user()->preview == true && is_admin() ) {
+		return;
+	}
+
+	// only when editing
+	if ( UM()->fields()->editing == false ) {
+		return;
+	}
+
+	if ( ! isset( $args['primary_btn_word'] ) || $args['primary_btn_word'] == '' ){
+		$args['primary_btn_word'] = UM()->options()->get( 'profile_primary_btn_word' );
+	}
+	if ( ! isset( $args['secondary_btn_word'] ) || $args['secondary_btn_word'] == '' ){
+		$args['secondary_btn_word'] = UM()->options()->get( 'profile_secondary_btn_word' );
+	} ?>
+
+	<div class="um-col-alt">
+
+		<?php if ( isset( $args['secondary_btn'] ) && $args['secondary_btn'] != 0 ) { ?>
+
+			<div class="um-left um-half ">
+				<div class="um-button-wrapper-icon save-button um-button save-button">
+					<span class="um-button-icon"> </span>
+					<input type="submit" value="<?php esc_attr_e( wp_unslash( $args['primary_btn_word'] ), 'ultimate-member' ); ?>" />
+				</div>
+			</div>
+			<div class="um-right um-half">
+				<a href="<?php echo esc_url( um_edit_my_profile_cancel_uri() ); ?>" class="um-button um-alt cancel-button">
+					<?php _e( wp_unslash( $args['secondary_btn_word'] ), 'ultimate-member' ); ?>
+				</a>
+			</div>
+
+		<?php } else { ?>
+
+			<div class="um-center">
+				<div class="um-button-wrapper-icon save-button um-button save-button">
+					<span class="um-button-icon"> </span>
+					<input type="submit" value="<?php esc_attr_e( wp_unslash( $args['primary_btn_word'] ), 'ultimate-member' ); ?>" />
+				</div>
+			</div>
+
+		<?php } ?>
+
+		<div class="um-clear"></div>
+
+	</div>
+
+	<?php
+}
+remove_action( 'um_after_profile_fields', 'um_add_submit_button_to_profile', 1000);
+add_action( 'um_after_profile_fields', 'my_add_submit_button_to_profile', 1001 );

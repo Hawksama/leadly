@@ -40,6 +40,8 @@ class reCAPTCHA_Enqueue {
 			default:
 
 				$language_code = UM()->options()->get( 'g_recaptcha_language_code' );
+				$language_code = apply_filters( 'um_recaptcha_language_code', $language_code );
+
 				$site_key = UM()->options()->get( 'g_recaptcha_sitekey' );
 
 				wp_register_script( 'google-recapthca-api-v2', "https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=$language_code" );
@@ -51,8 +53,8 @@ class reCAPTCHA_Enqueue {
 		wp_enqueue_script( 'um-recaptcha' );
 
 		wp_localize_script( 'um-recaptcha', 'umRecaptchaData', array(
-				'version'	 => $version,
-				'site_key' => $site_key
+			'version'   => $version,
+			'site_key'  => $site_key,
 		) );
 	}
 
