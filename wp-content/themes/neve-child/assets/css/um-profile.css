@@ -614,6 +614,8 @@
     text-transform: capitalize;
     color: #fff;
     font-weight: bold !important;
+    font-family: Graphik,-apple-system,BlinkMacSystemFont,Segoe UI,var(--nv-fallback-ff);
+    line-height: 1;
 }
 
 .um-profile.um-editing .um-form .um-button-wrapper-icon,

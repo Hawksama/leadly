@@ -56,7 +56,7 @@
 
         if($(".um-field-phone_number")[0]) {
             $(".um-field-phone_number").on( "click", function(event) {
-                window.location = "tel:" + $(this).text();
+                window.location = "tel:" + $(this).find('.um-field-value').text();
             });
         }
 

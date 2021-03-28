@@ -639,8 +639,16 @@ function vcard_function( $data ) {
 		$vc->vcardInformation['title'] = $vpost['job-title'][0]; 
 	}
 
+	if (!empty($vpost['office_phone_number'][0])) {
+		$vc->vcardInformation['office_tel'] = $vpost['office_phone_number'][0]; 
+	}
+
+	if (!empty($vpost['home_phone_number'][0])) {
+		$vc->vcardInformation['home_tel'] = $vpost['home_phone_number'][0]; 
+	}
+
 	if (!empty($vpost['phone_number'][0])) {
-		$vc->vcardInformation['office_tel'] = $vpost['phone_number'][0]; 
+		$vc->vcardInformation['cell_tel'] = $vpost['phone_number'][0]; 
 	}
 	
 	if ($wpUserData->user_email) {
@@ -1243,10 +1251,10 @@ function my_predefined_fields( $predefined_fields ) {
 		),
 
 		'phone_number' => array(
-			'title' => __('Phone Number','ultimate-member'),
+			'title' => __('Cell Phone Number','ultimate-member'),
 			'metakey' => 'phone_number',
 			'type' => 'text',
-			'label' => __('Phone Number','ultimate-member'),
+			'label' => __('Cell Phone Number','ultimate-member'),
 			'required' => 0,
 			'public' => 1,
 			'editable' => 1,
@@ -1254,16 +1262,28 @@ function my_predefined_fields( $predefined_fields ) {
 			'icon' => 'um-faicon-phone',
 		),
 
-		'mobile_number' => array(
-			'title' => __('Mobile Number','ultimate-member'),
-			'metakey' => 'mobile_number',
+		'office_phone_number' => array(
+			'title' => __('Work Phone Number','ultimate-member'),
+			'metakey' => 'office_phone_number',
 			'type' => 'text',
-			'label' => __('Mobile Number','ultimate-member'),
+			'label' => __('Work phone','ultimate-member'),
 			'required' => 0,
 			'public' => 1,
 			'editable' => 1,
 			'validate' => 'phone_number',
-			'icon' => 'um-faicon-mobile',
+			'icon' => 'um-faicon-phone',
+		),
+
+		'home_phone_number' => array(
+			'title' => __('Main Phone Number','ultimate-member'),
+			'metakey' => 'home_phone_number',
+			'type' => 'text',
+			'label' => __('Main Phone Number','ultimate-member'),
+			'required' => 0,
+			'public' => 1,
+			'editable' => 1,
+			'validate' => 'phone_number',
+			'icon' => 'um-faicon-phone',
 		),
 
 		// private use ( not public list )
