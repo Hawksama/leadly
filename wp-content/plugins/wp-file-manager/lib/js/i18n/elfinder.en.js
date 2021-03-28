@@ -332,7 +332,7 @@ if (typeof elFinder === "function" && elFinder.prototype.i18) {
       viewLarge: "Large icons", // from v2.1.39 added 22.5.2018
       viewExtraLarge: "Extra large icons", // from v2.1.39 added 22.5.2018
       places: "Places",
-      calc: "Calculate",
+      calc: "Calculating",
       path: "Path",
       aliasfor: "Alias for",
       locked: "Locked",
@@ -408,6 +408,7 @@ if (typeof elFinder === "function" && elFinder.prototype.i18) {
       autoSync: "Auto sync", // from v2.1.6 added 10.1.2016
       moveUp: "Move up", // from v2.1.6 added 18.1.2016
       getLink: "Get URL link", // from v2.1.7 added 9.2.2016
+      share: 'Share',
       selectedItems: "Selected items ($1)", // from v2.1.7 added 2.19.2016
       folderId: "Folder ID", // from v2.1.10 added 3.25.2016
       offlineAccess: "Allow offline access", // from v2.1.10 added 3.25.2016

@@ -328,7 +328,7 @@ if(!function_exists('mk_theme_editor_file_move'))
 		}
 		else
 		{
-			echo 'demo';
+			echo 'Invalid security key!';
 		}
 		die();
 	}
@@ -351,8 +351,10 @@ if(!function_exists('mk_theme_editor_child_file_delete'))
 			{
 				foreach($file_select as $value)
 				{
-					$child_file_dir = str_replace("/\\",'/',urldecode(htmlspecialchars_decode($value)));
-					unlink($child_file_dir);
+					if(strpos($value, '..') == false){
+						$child_file_dir = str_replace("/\\",'/',urldecode(htmlspecialchars_decode($value)));
+						unlink($child_file_dir);
+					}
 				}
 			}
 		}
@@ -374,32 +376,45 @@ if(!function_exists('webphoto_upload'))
 			$theme_path = get_theme_root().'/';//theme root dir path
 			$permission = '0755';
 			$fullPath = $theme_path.$ctd.'/images';
+			$allowed_types = array( 'image/jpeg', 'image/png', 'image/gif' );
 			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
 			require_once(ABSPATH . "wp-admin" . '/includes/file.php');
 			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
-			if (!file_exists($fullPath)) 
-			{
-				$createFolder = mkdir($fullPath);
-				if($createFolder) {
-					$go_head = true;
+			if(strpos($fullPath, '..') == false){
+				if(!in_array($_FILES['webphotos']['type'], $allowed_types)){
+					$response = json_encode(array('status' => '2', 'msg' => __('Invalid file type!', 'theme-editor')));
+				} else {
+					if (!file_exists($fullPath)) 
+					{
+						$createFolder = mkdir($fullPath);
+						if($createFolder) {
+							$go_head = true;
+						}
+						else
+						{
+							$go_head = false;
+						}
+					}
+					else{
+						$go_head = true;
+					}
+					
+					if($go_head){
+						$uploads_dir = $fullPath;
+						$file    = $_FILES['webphotos']['name'];
+						$source      = $_FILES['webphotos']['tmp_name'];
+						$newfilename = $file;
+						$destination = trailingslashit( $uploads_dir ) . $newfilename;
+						move_uploaded_file( $source, $destination );
+						$response = json_encode(array('status' => '1', 'msg' => __('Image uploaded successfully!', 'theme-editor')));
+					} else {
+						$response = json_encode(array('status' => '2', 'msg' => __('There is a problem in uploading file!', 'theme-editor')));
+					}
 				}
-				else
-				{
-					$go_head = false;
-				}
+			} else {
+				$response = json_encode(array('status' => '2', 'msg' => __('Invalid request!', 'theme-editor')));
 			}
-			else{
-				$go_head = true;
-			}
-			
-			if($go_head){
-			 $uploads_dir = $fullPath;
-			 $file    = $_FILES['webphotos']['name'];
-			 $source      = $_FILES['webphotos']['tmp_name'];
-			 $newfilename = $file;
-			 $destination = trailingslashit( $uploads_dir ) . $newfilename;
-			 move_uploaded_file( $source, $destination );
-			}
+			echo $response;
 			die();
 		}
 	}
@@ -421,44 +436,47 @@ if(!function_exists('screenshot_upload')){
 			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
 			require_once(ABSPATH . "wp-admin" . '/includes/file.php');
 			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
-			if (!file_exists($fullPath)){
-				$createFolder = mkdir($fullPath);
-				if($createFolder) {
-					$go_head = true;
+			if(strpos($fullPath, '..') == false){
+				if (!file_exists($fullPath)){
+					$createFolder = mkdir($fullPath);
+					if($createFolder) {
+						$go_head = true;
+					}
+					else{
+						$go_head = false;
+					}
 				}
 				else{
-					$go_head = false;
+					$go_head = true;
 				}
-			}
-			else{
-				$go_head = true;
-			}
-			$image = array('jpg','jpeg','png','gif');
-			foreach($image as $img_key => $img_value){
-				$full_child_dir = get_theme_root().'/'.$ctd."/screenshot.".$img_value;
-				$extension = pathinfo($full_child_dir, PATHINFO_EXTENSION);
-				$child_image_url = get_theme_root_uri().'/'.$ctd.'/screenshot.'.$img_value;
-				if (file_exists($full_child_dir)){
-					unlink($full_child_dir);
+				$image = array('jpg','jpeg','png','gif');
+				foreach($image as $img_key => $img_value){
+					$full_child_dir = get_theme_root().'/'.$ctd."/screenshot.".$img_value;
+					$extension = pathinfo($full_child_dir, PATHINFO_EXTENSION);
+					$child_image_url = get_theme_root_uri().'/'.$ctd.'/screenshot.'.$img_value;
+					if (file_exists($full_child_dir)){
+						unlink($full_child_dir);
+					}
 				}
-			}
 
-			$uploads_dir = $fullPath;
-			$file    = $_FILES['ms_theme_screenshot']['name'];
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			$source      = $_FILES['ms_theme_screenshot']['tmp_name'];
-			$newfilename = $file;
-			$extension ='jpg';
-			$file = 'screenshot.'.$extension;
-			$destination = trailingslashit( $uploads_dir ).$file;
-			$ms_move = move_uploaded_file( $source, $destination );
-			if($ms_move){
-				echo $extension;
+				$uploads_dir = $fullPath;
+				$file    = $_FILES['ms_theme_screenshot']['name'];
+				$extension = pathinfo($file, PATHINFO_EXTENSION);
+				$source      = $_FILES['ms_theme_screenshot']['tmp_name'];
+				$newfilename = $file;
+				$extension ='jpg';
+				$file = 'screenshot.'.$extension;
+				$destination = trailingslashit( $uploads_dir ).$file;
+				$ms_move = move_uploaded_file( $source, $destination );
+				if($ms_move){
+					echo $extension;
+				}
+				else{
+					echo 0;
+				}
+			} else {
+				echo 12;
 			}
-			else{
-				echo 0;
-			}
-			
 		}
 		else{
 			
@@ -481,13 +499,17 @@ if(!function_exists('mk_theme_editor_delete_images')){
 			//print_r($images_array);
 
 			foreach($images_array as $dkey => $dvalue){
-				$dvalue= str_replace("/\\",'/',$dvalue);
-				$success = unlink($dvalue);
-				if($success){
-					echo 'deleted';
-				}
-				else{
-					echo 'notdeleted';
+				if(strpos($dvalue, '..') == false){
+					$dvalue= str_replace("/\\",'/',$dvalue);
+					$success = unlink($dvalue);
+					if($success){
+						echo 'deleted';
+					}
+					else{
+						echo 'notdeleted';
+					}
+				} else {
+					echo 'Invalid request!';
 				}
 			}
 		}
@@ -507,17 +529,21 @@ if(!function_exists('ms_new_directory')){
 			$permission = '0755';
 			$theme_path = get_theme_root().'/';
 			$fullPath = $theme_path.$ctd.'/'.$ms_new_directory;
-			if (!file_exists($fullPath)){
-				$createFolder = mkdir($fullPath);
-				if($createFolder) {
-					echo ' Created';
+			if(strpos($fullPath, '..') == false){
+				if (!file_exists($fullPath)){
+					$createFolder = mkdir($fullPath);
+					if($createFolder) {
+						echo ' Created';
+					}
+					else{
+						echo 'Not Created';
+					}
 				}
 				else{
-					echo 'Not Created';
+					echo 'Already Exists';
 				}
-			}
-			else{
-				echo 'Already Exists';
+			} else {
+				echo 'Invalid Request!';
 			}
 		}
 		die();
@@ -544,34 +570,46 @@ function ms_new_file()
 		$permission = '0755';
 		$theme_path = get_theme_root().'/';
 		$fullPath = $theme_path.$ctd.'/'.$ms_new_file.$ms_file_type;
-		if (!file_exists($fullPath)) 
-		{
-			$createFile = fopen($fullPath, "w");
-			
-			if($ms_file_type == '.php')
+		if(strpos($fullPath, '..') == false){
+			if (!file_exists($fullPath)) 
 			{
-				if($ms_template  != '' && $ms_php_type !='simple')
+				$createFile = fopen($fullPath, "w");
+				
+				if($ms_file_type == '.php')
 				{
-$template_contents ="<?php
-/*
-Template Name: $ms_template
-*/
-?>";
-					$createFile = fopen($fullPath, "w"); 
-					$twrite = fwrite($createFile,$template_contents);
-					if($twrite)
+					if($ms_template  != '' && $ms_php_type !='simple')
 					{
-						echo 'Wordpress Template File Created';
+	$template_contents ="<?php
+	/*
+	Template Name: $ms_template
+	*/
+	?>";
+						$createFile = fopen($fullPath, "w"); 
+						$twrite = fwrite($createFile,$template_contents);
+						if($twrite)
+						{
+							echo 'Wordpress Template File Created';
+						}
+						else
+						{
+							echo 'Wordpress Template Not Created';
+						}
 					}
 					else
 					{
-						echo 'Wordpress Template Not Created';
+						if($createFile) {
+							echo 'PHP Created File';
+						}
+						else
+						{
+							echo 'Not Created';
+						}
 					}
 				}
-				else
+				else 
 				{
 					if($createFile) {
-						echo 'PHP Created File';
+						echo 'Created';
 					}
 					else
 					{
@@ -579,20 +617,12 @@ Template Name: $ms_template
 					}
 				}
 			}
-			else 
+			else
 			{
-				if($createFile) {
-					echo 'Created';
-				}
-				else
-				{
-					echo 'Not Created';
-				}
+				echo 'Already Exists';
 			}
-		}
-		else
-		{
-			echo 'Already Exists';
+		} else {
+			echo 'Invalid Request!';
 		}
 	}
 	die();

@@ -390,12 +390,13 @@ if ( ! class_exists( 'PostmanViewController' ) ) {
                 print '<div class="ps-welcome-panel-column welcome-panel-last">';
                 printf( '<h4>%s</h4>', _x( 'Troubleshooting', 'Main Menu', 'post-smtp' ) );
                 print '<ul>';
+                printf( '<li><a target="blank" class="align-middle" href="https://postmansmtp.com/help-configure-post-smtp/" class="welcome-icon postman_guides">%s</a></li>', __( 'Need help setup everything? (paid)', 'post-smtp' ) );
                 printf( '<li><a href="%s" class="welcome-icon run-port-test">%s</a></li>', $this->getPageUrl( PostmanConnectivityTestController::PORT_TEST_SLUG ), __( 'Connectivity Test', 'post-smtp' ) );
                 printf( '<li><a href="%s" class="welcome-icon run-port-test">%s</a></li>', $this->getPageUrl( PostmanDiagnosticTestController::DIAGNOSTICS_SLUG ), __( 'Diagnostic Test', 'post-smtp' ) );
                 printf( '<li><a href="%s" data-security="%s" class="welcome-icon release-lock-file">%s</a></li>', '#', wp_create_nonce( "postman" ), __( 'Release Lock File Error', 'post-smtp' ) );
                 printf( '<li><a href="https://wordpress.org/support/plugin/post-smtp/" class="welcome-icon postman_support">%s</a></li>', __( 'Online Support', 'post-smtp' ) );
                 printf( '<li><a target="blank" class="align-middle" href="https://www.facebook.com/groups/post.smtp" class="welcome-icon postman_guides">%s</a></li>', __( 'Facebook Group', 'post-smtp' ) );
-			    printf( '<li><a target="blank" class="align-middle" href="https://postmansmtp.com/category/guides/" class="welcome-icon postman_guides">%s</a></li>', __( 'Guides', 'post-smtp' ) );
+                printf( '<li><a target="blank" class="align-middle" href="https://postmansmtp.com/category/guides/" class="welcome-icon postman_guides">%s</a></li>', __( 'Guides', 'post-smtp' ) );
                 print '</ul></div></div></div></div>';
                 ?>
             </div>

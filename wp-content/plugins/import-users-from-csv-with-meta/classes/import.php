@@ -104,7 +104,7 @@ class ACUI_Import{
                 'donate' => __( 'Donate/Patreon', 'import-users-from-csv-with-meta' ), 
                 'shop' => __( 'Shop', 'import-users-from-csv-with-meta' ), 
                 'help' => __( 'Hire an expert', 'import-users-from-csv-with-meta' ),
-                'new_features' => __( 'New features', 'import-users-from-csv-with-meta' )
+               // 'new_features' => __( 'New features', 'import-users-from-csv-with-meta' )
         );
     
         $tabs = apply_filters( 'acui_tabs', $tabs );
@@ -170,9 +170,7 @@ class ACUI_Import{
                 do_action( 'before_acui_import_users' );
     
                 $acui_helper = new ACUI_Helper();
-                $wp_users_fields = $acui_helper->get_wp_users_fields();
-                $acui_not_meta_fields = $acui_helper->get_not_meta_fields();
-                $acui_restricted_fields = $acui_helper->get_restricted_fields();
+                $restricted_fields = $acui_helper->get_restricted_fields();
                 $all_roles = array_keys( wp_roles()->roles );
                 $editable_roles = array_keys( get_editable_roles() );
     
@@ -221,6 +219,7 @@ class ACUI_Import{
                 $row = 0;
                 $positions = array();
                 $errors = array();
+                $results = array( 'created' => 0, 'updated' => 0 );
     
                 ini_set('auto_detect_line_endings',TRUE);
     
@@ -267,17 +266,17 @@ class ACUI_Import{
                         $password_position = false;
                         $id_position = false;
                         
-                        foreach ( $acui_restricted_fields as $acui_restricted_field ) {
+                        foreach ( $restricted_fields as $acui_restricted_field ) {
                             $positions[ $acui_restricted_field ] = false;
                         }
     
                         foreach( $data as $element ){
                             $headers[] = $element;
     
-                            if( in_array( strtolower( $element ) , $acui_restricted_fields ) )
+                            if( in_array( strtolower( $element ) , $restricted_fields ) )
                                 $positions[ strtolower( $element ) ] = $i;
     
-                            if( !in_array( strtolower( $element ), $acui_restricted_fields ) )
+                            if( !in_array( strtolower( $element ), $restricted_fields ) )
                                 $headers_filtered[] = $element;
     
                             $i++;
@@ -322,7 +321,10 @@ class ACUI_Import{
                                 $roles_cells = array( $roles_cells );
     
                             array_walk( $roles_cells, 'trim' );
-                            array_walk( $roles_cells, 'strtolower' );
+                            
+                            foreach( $roles_cells as $it => $role_cell )
+                                $roles_cells[ $it ] = strtolower( $role_cell );
+                            
                             $role = $roles_cells;
                         }
     
@@ -490,7 +492,7 @@ class ACUI_Import{
                                         if( is_array( $role ) ){
                                             foreach ($role as $single_role) {
                                                 $user_object->add_role( $single_role );
-                                            }	
+                                            }
                                         }
                                         else{
                                             $user_object->add_role( $role );
@@ -562,7 +564,7 @@ class ACUI_Import{
                                         wp_cache_delete( $user_id, 'users' );
                                         continue;
                                     }
-                                    elseif( in_array( $headers[ $i ], $wp_users_fields ) ){ // wp_user data									
+                                    elseif( in_array( $headers[ $i ], $acui_helper->get_wp_users_fields() ) ){ // wp_user data									
                                         if( $data[ $i ] === '' && $empty_cell_action == "leave" ){
                                             continue;
                                         }
@@ -571,7 +573,7 @@ class ACUI_Import{
                                             continue;
                                         }										
                                     }
-                                    elseif( in_array( $headers[ $i ], $acui_not_meta_fields ) ){
+                                    elseif( in_array( $headers[ $i ], $acui_helper->get_not_meta_fields() ) ){
                                         continue;
                                     }
                                     else{				
@@ -593,7 +595,7 @@ class ACUI_Import{
 
                         $acui_helper->print_row_imported( $row, $data, $errors );
     
-                        do_action('post_acui_import_single_user', $headers, $data, $user_id, $role, $positions, $form_data );
+                        do_action('post_acui_import_single_user', $headers, $data, $user_id, $role, $positions, $form_data, $is_frontend, $is_cron );
     
                         $mail_for_this_user = false;
                         if( $is_cron ){
@@ -611,24 +613,25 @@ class ACUI_Import{
                         }
     
                         // wordpress default user created and edited emails
-                        if( get_option('acui_automatic_created_edited_wordpress_email') == 'true' && $created ){
-                            do_action( 'register_new_user', $user_id );
-                        }
-    
-                        if( get_option('acui_automatic_created_edited_wordpress_email') == 'true' && !$created ){
-                            do_action( 'edit_user_created_user', $user_id, 'both' );
+                        if( get_option('acui_automatic_created_edited_wordpress_email') === 'true' ){
+                            ( $created ) ? do_action( 'register_new_user', $user_id ) : do_action( 'edit_user_created_user', $user_id, 'both' );
                         }
                             
                         // send mail
                         if( isset( $mail_for_this_user ) && $mail_for_this_user ){
                             ACUI_Email_Options::send_email( $user_object, $positions, $headers, $data, $created, $password );
                         }
+
+                        // results
+                        ( $created ) ? $results['created']++ : $results['updated']++;
                     endif;
                 endwhile;
 
                 $acui_helper->print_table_end();
 
                 $acui_helper->print_errors( $errors );
+
+                $acui_helper->print_results( $results, $errors );
     
                 // let the filter of default WordPress emails as it were before deactivating them
                 if( !get_option('acui_automatic_wordpress_email') ){

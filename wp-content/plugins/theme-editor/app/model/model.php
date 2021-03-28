@@ -35,7 +35,7 @@ class theme_editor_model {
 		public function mk_theme_editor_verify_email_callback() {
 			$current_user = wp_get_current_user();
 			$nonce = $_REQUEST['vle_nonce'];
-            if ( wp_verify_nonce( $nonce, 'verify-theme-editor-email' ) ) {			
+            if ( wp_verify_nonce( $nonce, 'verify-theme-editor-email' ) && is_admin()) {			
 				$action = sanitize_text_field($_POST['todo']);
 				$lokhal_email = sanitize_text_field($_POST['lokhal_email']);
 				$lokhal_fname = sanitize_text_field($_POST['lokhal_fname']);
@@ -146,33 +146,41 @@ class theme_editor_model {
 											 'e_w_d_p_e' => 'yes',
 											 );
 					$opt = get_option('mk_te_settings_options');
-					if(!$opt['e_w_d_p_e']) {
+					if(!isset($opt['e_w_d_p_e'])) {
 						update_option('mk_te_settings_options', $defaultsettings);
 					}    
 	}
 	//theme file save
 	public function mk_theme_editor_theme_files() {
 		
-		if(wp_verify_nonce($_POST['wpnonce'],'ms_theme_editor') && current_user_can('manage_options'))
+		if(wp_verify_nonce(sanitize_text_field($_POST['wpnonce']),'ms_theme_editor') && current_user_can('manage_options') && is_admin())
 		{
-			$real_file = $_POST['path'];
-			if ( isset( $_POST['theme_content'] ) && file_exists( $real_file ) && is_writable( $real_file ) ) {
-				  $new_content = stripslashes( $_POST['theme_content'] );
-				if ( file_get_contents( $real_file ) === $new_content ) {
-					$response = json_encode(array('status' => '2', 'msg' => 'No change in file!'));	
-				}
-				else {
-					$f = fopen( $real_file, 'w+' );
-					$save = fwrite( $f, $new_content );
-					fclose( $f );
-					if($save) {
-					 $response = json_encode(array('status' => '1', 'msg' => 'File Saved Successfully!'));	
-					} else {
-					 $response = json_encode(array('status' => '2', 'msg' => 'File Not Saved!'));		
+			$real_file = sanitize_text_field($_POST['path']);
+			if(strpos($real_file, '..') !== false){
+				$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+			} else{
+				$type = base64_decode($_REQUEST["type"]);
+				
+				$real_file = $type == "plugins" ? WP_PLUGIN_DIR."/".ltrim($real_file,'/') : get_theme_root()."/".ltrim($real_file,'/');
+				
+				if ( isset( $_POST['theme_content'] ) && file_exists( $real_file ) && is_writable( $real_file ) ) {
+					$new_content = stripslashes( $_POST['theme_content'] );
+					if ( file_get_contents( $real_file ) === $new_content ) {
+						$response = json_encode(array('status' => '2', 'msg' => 'No change in file!'));	
 					}
+					else {
+						$f = fopen( $real_file, 'w+' );
+						$save = fwrite( $f, $new_content );
+						fclose( $f );
+						if($save) {
+							$response = json_encode(array('status' => '1', 'msg' => 'File Saved Successfully!'));	
+						} else {
+							$response = json_encode(array('status' => '2', 'msg' => 'File Not Saved!'));		
+						}
+					}
+				} else {
+					$response = json_encode(array('status' => '2', 'msg' => 'File not exists!'));
 				}
-			} else {
-				 $response = json_encode(array('status' => '2', 'msg' => 'File not exists!'));
 			}
 		}
 		else{
@@ -183,53 +191,59 @@ class theme_editor_model {
 	}
 	public function mk_theme_editor_folder_open() {
 		
-		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options'))
+		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options') && is_admin())
 		{
 			$folder_path = str_replace('\\\\','\\',$_POST['path']);
-			$child_files = $this->theme_controller->get_files_and_folders( $folder_path, '0', 'theme' );
-			$return = '';
-			if(!empty($child_files[-1])) {
-			  $return .= $child_files[-1];	
-			} else {
-			$return .= '<ul class="subfolders">';	
-			foreach($child_files as $child_file) {
-					  $logoImagePath = MK_THEME_EDITOR_PATH.'app/view/images/'.$child_file['extension'].'.png';
-					  $logoImage = MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png';
-					  if(!file_exists($logoImagePath)) {
-						$logoImage = MK_THEME_EDITOR_URL.'app/view/images/def.png';  
-					  }
-				 //folder	  
-				 if($child_file['filetype'] == 'folder') {
-					$return .= '<li class="'.$child_file['extension'].'">';
-					$return .= '<a href="javascript:void(0)" class="open_folder" data-path="'.$child_file['path'].'" data-name="'.$child_file['extension'].$child_file['name'].'"><img src="'.MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png">';
-					$return .= $child_file['name'];
-					$return .= '</a> <span class="'.$child_file['extension'].$child_file['name'].'"></span>'; 
-					$return .= '</li>';
-				  } 
-				  //img
-				  else if(in_array($child_file['extension'], $this->theme_controller->image_type_posibilities)) {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="'.$child_file['url'].'" class="open_image thickbox" target="_blank"><img src="'.$child_file['url'].'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>';    
-				  }	
-				  // dwn
-				  else if(in_array($child_file['extension'], $this->theme_controller->download_type_possibilities))	 {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="'.$child_file['url'].'" class="dwn_file" target="_blank" download><img src="'.$logoImage.'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>';   
-				  } else {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="javascript:void(0)" class="open_file" data-path="'.$child_file['path'].'" data-name="'.$child_file['extension'].$child_file['name'].'" data-file="'.$child_file['file'].'" data-downloadfile="'.$child_file['url'].'"><img src="'.$logoImage.'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>'; 
-				 }
-			}
-			$return .= '</ul>';
+			if(strpos($folder_path, '..') !== false){
+				$return = '<ul class="subfolders"><li class="invalid">Invalid request!</li></ul>';
+			} else{
+				$folder_path = get_theme_root()."/".$folder_path;
+				$child_files = $this->theme_controller->get_files_and_folders( $folder_path, '0', 'theme' );
+				$return = '';
+				if(!empty($child_files[-1])) {
+					$return .= $child_files[-1];	
+				} else {
+					$return .= '<ul class="subfolders">';	
+					foreach($child_files as $child_file) {
+							$logoImagePath = MK_THEME_EDITOR_PATH.'app/view/images/'.$child_file['extension'].'.png';
+							$logoImage = MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png';
+							if(!file_exists($logoImagePath)) {
+								$logoImage = MK_THEME_EDITOR_URL.'app/view/images/def.png';  
+							}
+						//folder	  
+						if($child_file['filetype'] == 'folder') {
+							$folder_path = str_replace(get_theme_root()."/", '', $child_file['path']);
+							$return .= '<li class="'.$child_file['extension'].'">';
+							$return .= '<a href="javascript:void(0)" class="open_folder" data-path="'.$folder_path.'" data-name="'.$child_file['extension'].$child_file['name'].'"><img src="'.MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png">';
+							$return .= $child_file['name'];
+							$return .= '</a> <span class="'.$child_file['extension'].$child_file['name'].'"></span>'; 
+							$return .= '</li>';
+						} 
+						//img
+						else if(in_array($child_file['extension'], $this->theme_controller->image_type_posibilities)) {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="'.$child_file['url'].'" class="open_image thickbox" target="_blank"><img src="'.$child_file['url'].'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>';    
+						}	
+						// dwn
+						else if(in_array($child_file['extension'], $this->theme_controller->download_type_possibilities))	 {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="'.$child_file['url'].'" class="dwn_file" target="_blank" download><img src="'.$logoImage.'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>';   
+						} else {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="javascript:void(0)" class="open_file" data-path="'.$child_file['path'].'" data-name="'.$child_file['extension'].$child_file['name'].'" data-file="'.$child_file['file'].'" data-downloadfile="'.str_replace(WP_CONTENT_URL."/themes", '', $child_file['url']).'"><img src="'.$logoImage.'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>'; 
+						}
+					}
+					$return .= '</ul>';
+				}
 			}
 			echo $return;
 		}		
@@ -237,138 +251,165 @@ class theme_editor_model {
 	}
 	
 	public function mk_plugin_editor_folder_open() {
-			
-		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options'))
+		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options') && is_admin())
 		{
 			$folder_path = str_replace('\\\\','\\',$_POST['path']);
-			$child_files = $this->theme_controller->get_files_and_folders( $folder_path, '0', 'plugin' );
-			$return = '';
-			if(!empty($child_files[-1])) {
-			  $return .= $child_files[-1];	
-			} else {
-			$return .= '<ul class="subfolders">';	
-			foreach($child_files as $child_file) {
-					  $logoImagePath = MK_THEME_EDITOR_PATH.'app/view/images/'.$child_file['extension'].'.png';
-					  $logoImage = MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png';
-					  if(!file_exists($logoImagePath)) {
-						$logoImage = MK_THEME_EDITOR_URL.'app/view/images/def.png';  
-					  }
-				 //folder	  
-				 if($child_file['filetype'] == 'folder') {
-					$return .= '<li class="'.$child_file['extension'].'">';
-					$return .= '<a href="javascript:void(0)" class="open_folder" data-path="'.$child_file['path'].'" data-name="'.$child_file['extension'].$child_file['name'].'"><img src="'.MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png">';
-					$return .= $child_file['name'];
-					$return .= '</a> <span class="'.$child_file['extension'].$child_file['name'].'"></span>'; 
-					$return .= '</li>';
-				  } 
-				  //img
-				  else if(in_array($child_file['extension'], $this->theme_controller->image_type_posibilities)) {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="'.$child_file['url'].'" class="open_image thickbox" target="_blank"><img src="'.$child_file['url'].'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>';    
-				  }	
-				  // dwn
-				  else if(in_array($child_file['extension'], $this->theme_controller->download_type_possibilities))	 {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="'.$child_file['url'].'" class="dwn_file" target="_blank" download><img src="'.$logoImage.'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>';   
-				  } else {
-					$return .= '<li class="'.$child_file['extension'].' small_icons">';
-					$return .= '<a href="javascript:void(0)" class="open_file" data-path="'.$child_file['path'].'" data-name="'.$child_file['extension'].$child_file['name'].'" data-file="'.$child_file['file'].'" data-downloadfile="'.$child_file['url'].'"><img src="'.$logoImage.'"> ';
-					$return .= $child_file['name'];
-					$return .= '</a>'; 
-					$return .= '</li>'; 
-				 }
-			}
-			$return .= '</ul>';
+			if(strpos($folder_path, '..') !== false){
+				$return = '<ul class="subfolders"><li class="invalid">Invalid request!</li></ul>';
+			} else{
+				$folder_path = WP_PLUGIN_DIR."/".$folder_path;
+				$child_files = $this->theme_controller->get_files_and_folders( $folder_path, '0', 'plugin' );
+				$return = '';
+				if(!empty($child_files[-1])) {
+					$return .= $child_files[-1];	
+				} else {
+					$return .= '<ul class="subfolders">';	
+					foreach($child_files as $child_file) {
+						$logoImagePath = MK_THEME_EDITOR_PATH.'app/view/images/'.$child_file['extension'].'.png';
+						$logoImage = MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png';
+						if(!file_exists($logoImagePath)) {
+							$logoImage = MK_THEME_EDITOR_URL.'app/view/images/def.png';  
+						}
+						//folder	  
+						if($child_file['filetype'] == 'folder') {
+							$folder_path = str_replace(WP_PLUGIN_DIR."/", '', $child_file['path']);
+							$return .= '<li class="'.$child_file['extension'].'">';
+							$return .= '<a href="javascript:void(0)" class="open_folder" data-path="'.$folder_path.'" data-name="'.$child_file['extension'].$child_file['name'].'"><img src="'.MK_THEME_EDITOR_URL.'app/view/images/'.$child_file['extension'].'.png">';
+							$return .= $child_file['name'];
+							$return .= '</a> <span class="'.$child_file['extension'].$child_file['name'].'"></span>'; 
+							$return .= '</li>';
+						} 
+						//img
+						else if(in_array($child_file['extension'], $this->theme_controller->image_type_posibilities)) {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="'.$child_file['url'].'" class="open_image thickbox" target="_blank"><img src="'.$child_file['url'].'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>';    
+						}	
+						// dwn
+						else if(in_array($child_file['extension'], $this->theme_controller->download_type_possibilities))	 {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="'.$child_file['url'].'" class="dwn_file" target="_blank" download><img src="'.$logoImage.'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>';   
+						} else {
+							$return .= '<li class="'.$child_file['extension'].' small_icons">';
+							$return .= '<a href="javascript:void(0)" class="open_file" data-path="'.str_replace(WP_PLUGIN_DIR."/", '', $child_file['path']).'" data-name="'.$child_file['extension'].$child_file['name'].'" data-file="'.$child_file['file'].'" data-downloadfile="'.str_replace(WP_PLUGIN_URL,'',$child_file['url']).'"><img src="'.$logoImage.'"> ';
+							$return .= $child_file['name'];
+							$return .= '</a>'; 
+							$return .= '</li>'; 
+						}
+					}
+					$return .= '</ul>';
+				}
 			}
 			echo $return;
 		}
 		die;
 	}
 	public function mk_theme_editor_file_open() {
-		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options'))
+		if(wp_verify_nonce($_POST['_wpnonce'],'ms_theme_editor') && current_user_can('manage_options') && is_admin())
 		{
-			$real_file = $_POST['path'];
-			$data = file_get_contents( $real_file );
-			echo $data;
+			$real_file = sanitize_text_field($_POST['path']);
+			if(strpos($real_file, '..') !== false){
+				$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+			} else{
+				$type = base64_decode($_REQUEST["type"]);
+				$real_file = $type == "themes" ? get_theme_root()."/".ltrim($real_file,'/') : WP_PLUGIN_DIR."/".ltrim($real_file,'/');
+				$data = file_get_contents( $real_file );
+				$response = json_encode(array('status' => '1', "content" => $data));
+			}
+			echo $response;
 		}
 		die;
 	}
 	public function mk_theme_editor_folder_create() {
 		$nonce = $_POST['_nonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-		$theme_path = $_POST['theme_path'];
-		$folder_path = $_POST['nfafn'];
-		$permission = '0777';
-		$fullPath = $theme_path.$folder_path;
-		if (!file_exists($fullPath)) {
-         $createFolder = mkdir($fullPath);
-			 if($createFolder) {
-				 
-				 $response = json_encode(array('status' => '1', 'msg' => 'Folder Created Successfully!'));
-				 
-			 } else {
-				 
-				 $response = json_encode(array('status' => '2', 'msg' => 'Unable to create folder! Try again.'));
-	
-			 }
-		 } else {
-			 
-			 $response = json_encode(array('status' => '2', 'msg' => 'Folder already Exists!'));
-			 
-		 }
-		 echo $response;
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+			$type = base64_decode($_POST['type']);
+			$theme_path = $type == "themes" ? get_theme_root()."/".sanitize_text_field($_POST['theme_path']) : WP_PLUGIN_DIR."/".ltrim(sanitize_text_field($_POST['theme_path']), "/");
+			$folder_path = sanitize_text_field($_POST['nfafn']);
+			$permission = '0777';
+			$fullPath = rtrim($theme_path,'/')."/".$folder_path;
+			if(strpos($fullPath, '..') !== false){
+				$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+			} else{
+				if (!file_exists($fullPath)) {
+					$createFolder = mkdir($fullPath);
+					if($createFolder) {
+						
+						$response = json_encode(array('status' => '1', 'msg' => 'Folder Created Successfully!'));
+						
+					} else {
+						
+						$response = json_encode(array('status' => '2', 'msg' => 'Unable to create folder! Try again.'));
+			
+					}
+				} else {
+					
+					$response = json_encode(array('status' => '2', 'msg' => 'Folder already Exists!'));
+					
+				}
+			}
+			echo $response;
 		}
 		die;
 	}
 	public function mk_theme_editor_file_create() {
 		$nonce = $_POST['_nonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-		$theme_path = $_POST['theme_path'];
-		$file_path = $_POST['nfafn'];
-		$fullPath = $theme_path.$file_path;
-		if (!file_exists($fullPath)) {
-          $createFile = fopen($fullPath, "w"); 
-			 if(!empty($createFile)) {
-				 
-				 $response = json_encode(array('status' => '1', 'msg' => 'File Created Successfully!'));
-				 
-			 } else {
-				 
-				 $response = json_encode(array('status' => '2', 'msg' => 'Unable to create file! Try again.'));
-	
-			 }
-		 } else {
-			 
-			 $response = json_encode(array('status' => '2', 'msg' => 'File already Exists!'));
-			 
-		 } 
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+		$type = base64_decode($_POST['type']);
+		$theme_path = $type == "themes" ? get_theme_root()."/".ltrim(sanitize_text_field($_POST['theme_path']),"/") : WP_PLUGIN_DIR."/".ltrim(sanitize_text_field($_POST['theme_path']), "/");
+		$file_path = sanitize_text_field($_POST['nfafn']);
+		$fullPath = rtrim($theme_path,'/')."/".$file_path;
+		if(strpos($fullPath, '..') !== false){
+			$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+		} else{
+			if (!file_exists($fullPath)) {
+				$createFile = fopen($fullPath, "w"); 
+				if(!empty($createFile)) {
+					
+					$response = json_encode(array('status' => '1', 'msg' => 'File Created Successfully!'));
+					
+				} else {
+					
+					$response = json_encode(array('status' => '2', 'msg' => 'Unable to create file! Try again.'));
+		
+				}
+			} else {
+				
+				$response = json_encode(array('status' => '2', 'msg' => 'File already Exists!'));
+				
+			}
+		}
 		 echo $response;
 		}
 		die;
 	}
 	
   public function mk_theme_editor_folder_remove() {
-	    $nonce = $_POST['_nonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-		$theme_path = $_POST['theme_path'];
-		$folder_path = $_POST['rfafn'];
-		$fullPath = $theme_path.$folder_path;
-		  if (!file_exists($fullPath)) {
-			 $response = json_encode(array('status' => '2', 'msg' => 'Folder Not Exists!'));  
-		  } else {
-			 $deleteFolderwithfiles = $this->theme_controller->deleteDir($fullPath); 
-			 if($deleteFolderwithfiles) {
-			   $response = json_encode(array('status' => '1', 'msg' => 'Folder Deleted Successfully!')); 
-			 } else {
-			   $response = json_encode(array('status' => '2', 'msg' => 'Unable to Delete Folder!'));  
-			 }
-		  }
+	    $nonce = sanitize_text_field($_POST['_nonce']);
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+			$type = base64_decode($_POST['type']);
+			$theme_path = $type == "themes" ? get_theme_root()."/".ltrim(sanitize_text_field($_POST['theme_path']),"/") : WP_PLUGIN_DIR."/".ltrim(sanitize_text_field($_POST['theme_path']), "/");
+			$folder_path = sanitize_text_field($_POST['rfafn']);
+			$fullPath = rtrim($theme_path,'/')."/".$folder_path;
+			if(strpos($fullPath, '..') !== false){
+				$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+			} else{
+				if (!file_exists($fullPath)) {
+					$response = json_encode(array('status' => '2', 'msg' => 'Folder Not Exists!'));  
+				} else {
+					$deleteFolderwithfiles = $this->theme_controller->deleteDir($fullPath); 
+					if($deleteFolderwithfiles) {
+						$response = json_encode(array('status' => '1', 'msg' => 'Folder Deleted Successfully!')); 
+					} else {
+						$response = json_encode(array('status' => '2', 'msg' => 'Unable to Delete Folder!'));  
+					}
+				}
+			}
 		} else {
 			$response = json_encode(array('status' => '2', 'msg' => 'Unable to verify nonce!'));  
 		}
@@ -396,21 +437,26 @@ class theme_editor_model {
 		   die;
 	   }
    public function mk_theme_editor_file_remove() {
-	    $nonce = $_POST['_nonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-		$theme_path = $_POST['theme_path'];
-		$file_path = $_POST['rfanf'];
-		$fullPath = $theme_path.$file_path;
-		  if (!file_exists($fullPath)) {
-			 $response = json_encode(array('status' => '2', 'msg' => 'File Not Exists!'));  
-		  } else {
-			 $deletefile = $this->theme_controller->deleteFile($fullPath); 
-			if($deletefile) {
-			   $response = json_encode(array('status' => '1', 'msg' => 'File Deleted Successfully!')); 
-			 } else {
-			   $response = json_encode(array('status' => '2', 'msg' => 'Unable to Delete File!'));  
-			 }
-		  }
+	    $nonce = sanitize_text_field($_POST['_nonce']);
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+			$type = base64_decode($_POST['type']);
+			$theme_path = $type == "themes" ? get_theme_root()."/".ltrim(sanitize_text_field($_POST['theme_path']),"/") : WP_PLUGIN_DIR."/".ltrim(sanitize_text_field($_POST['theme_path']), "/");
+			$file_path = sanitize_text_field($_POST['rfanf']);
+			$fullPath = rtrim($theme_path,"/")."/".$file_path;
+			if(strpos($fullPath, '..') !== false){
+				$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+			} else{
+				if (!file_exists($fullPath)) {
+					$response = json_encode(array('status' => '2', 'msg' => 'File Not Exists!'));  
+				} else {
+					$deletefile = $this->theme_controller->deleteFile($fullPath); 
+					if($deletefile) {
+						$response = json_encode(array('status' => '1', 'msg' => 'File Deleted Successfully!')); 
+					} else {
+						$response = json_encode(array('status' => '2', 'msg' => 'Unable to Delete File!'));  
+					}
+				}
+			}
 		} else {
 			$response = json_encode(array('status' => '2', 'msg' => 'Unable to verify nonce!'));  
 		}
@@ -418,56 +464,65 @@ class theme_editor_model {
 	  die;
   }
     public function mk_theme_editor_file_upload() {
-		$nonce = $_POST['_nonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {			
-		// Theme file upload
-		$slash = '/';
-		if ( WPWINDOWS ) {
-		  $slash = '\\';
-		}
-    if ( isset( $_FILES["file-0"] ) && isset( $_POST['current_theme_root'] ) ) {
-      $current_theme_root = $_POST['current_theme_root'];
-      $directory = '';
-      if ( isset( $_POST['directory'] ) ) {
-        $directory = $_POST['directory'];
-        $dir = substr( $directory, -1 );
-        if ( $dir != $slash ) {
-          $directory = $directory . $slash;
-        }
-        $dir = substr( $directory, 0, 1 );
-        if ( $dir == $slash ) {
-          $directory = substr( $directory, 1 );
-        }
-      }
-      $complete_directory = $current_theme_root . $directory;
-      if ( !is_dir( $complete_directory ) ) {
-        mkdir( $complete_directory);
-      }
-      
-      if ( $_FILES["file-0"]["error"] > 0 ) {
-		$response = json_encode(array('status' => '2', 'msg' =>  $_FILES["file-0"]["error"]));  
-      }
-      else {
+		$nonce = sanitize_text_field($_POST['_nonce']);
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {			
+			// Theme file upload
+			$slash = '/';
+			if ( WPWINDOWS ) {
+				$slash = '\\';
+			}
+			if ( isset( $_FILES["file-0"] ) && isset( $_POST['current_theme_root'] ) ) {
+				$type = base64_decode($_REQUEST["type"]);
+				$current_theme_root = $type == "themes" ? get_theme_root()."/".$_POST['current_theme_root']."/" : WP_PLUGIN_DIR."/".$_POST['current_theme_root']."/";
+				$directory = '';
+				if ( isset( $_POST['directory'] ) ) {
+					$directory = sanitize_text_field($_POST['directory']);
+					$dir = substr( $directory, -1 );
+					if ( $dir != $slash ) {
+						$directory = $directory . $slash;
+					}
+					$dir = substr( $directory, 0, 1 );
+					if ( $dir == $slash ) {
+						$directory = substr( $directory, 1 );
+					}
+				}
+				$allowed_types = get_allowed_mime_types();
+				$complete_directory = $current_theme_root . $directory;
+				if(strpos($complete_directory, '..') !== false){
+					$response = json_encode(array('status' => '2', 'msg' => 'Invalid request!'));
+				} 
+				else if(!in_array($_FILES["file-0"]["type"], $allowed_types)){
+					$response = json_encode(array('status' => '2', 'msg' => 'Invalid file type!'));
+				}
+				else{
+					if ( !is_dir( $complete_directory ) ) {
+						mkdir( $complete_directory);
+					}
+				
+					if ( $_FILES["file-0"]["error"] > 0 ) {
+						$response = json_encode(array('status' => '2', 'msg' =>  $_FILES["file-0"]["error"]));  
+					}
+					else {
 
-        if ( file_exists( $complete_directory . $_FILES["file-0"]["name"] ) ) {
-          $error = -1;
-		  $response = json_encode(array('status' => '2', 'msg' => $_FILES["file-0"]["name"].' already exists'));  
-        }
-        else {
-          move_uploaded_file( $_FILES["file-0"]["tmp_name"], $current_theme_root . $directory . $_FILES["file-0"]["name"] );
-          $success = "File Uploaded Successfully: Uploaded File Path is " . basename( $complete_directory ) . $slash . $_FILES["file-0"]["name"];
-		  $response = json_encode(array('status' => '1', 'msg' => $success));  
-        }
-      }
-    }
-    else {
-	     $response = json_encode(array('status' => '2', 'msg' => 'No File Selected'));  
-    }
-} else {
-		 $response = json_encode(array('status' => '2', 'msg' => 'Unable to verify nonce!'));  
+						if ( file_exists( $complete_directory . $_FILES["file-0"]["name"] ) ) {
+							$error = -1;
+							$response = json_encode(array('status' => '2', 'msg' => $_FILES["file-0"]["name"].' already exists'));  
+						}
+						else {
+							move_uploaded_file( $_FILES["file-0"]["tmp_name"], $current_theme_root . $directory . $_FILES["file-0"]["name"] );
+							$success = "File Uploaded Successfully: Uploaded File Path is " . basename( $complete_directory ) . $slash . $_FILES["file-0"]["name"];
+							$response = json_encode(array('status' => '1', 'msg' => $success));  
+						}
+					}
+				}
+			}
+			else {
+				$response = json_encode(array('status' => '2', 'msg' => 'No File Selected'));  
+			}
+		} else {
+			$response = json_encode(array('status' => '2', 'msg' => 'Unable to verify nonce!'));  
+		}
+		echo $response ;
+		die;
 	}
-	  echo $response ;
-	  die;
-  }
-  
 }

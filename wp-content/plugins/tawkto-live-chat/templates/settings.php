@@ -3,7 +3,7 @@
 /**
  * @package Tawk.to Widget for Wordpress
  * @author Tawk.to
- * @copyright (C) 2014- Tawk.to
+ * @copyright (C) 2014-2021 Tawk.to
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 **/
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,18 +23,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php submit_button(); ?>
 </div>
 <div class="tawksettingsbody">
-	<div class="tawktabs">
-	  <button class="tawktablinks" onclick="opentab(event, 'account')" id="defaultOpen">Account Settings</button>
-	  <button class="tawktablinks" onclick="opentab(event, 'visibility')">Visibility Options</button>
-	  	<?php
-	  	if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
-   		{
-   		?>
-	  		<button class="tawktablinks" onclick="opentab(event, 'woocommerce')">Woocomerce Options</button>
-	  	<?php } ?>
-	</div>
+  <div class="tawktabs">
+    <button class="tawktablinks" onclick="opentab(event, 'account')" id="defaultOpen">Account Settings</button>
+    <button class="tawktablinks" onclick="opentab(event, 'visibility')">Visibility Options</button>
+    <button class="tawktablinks" onclick="opentab(event, 'privacy')">Privacy Options</button>
+      <?php
+      if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )
+      {
+      ?>
+        <button class="tawktablinks" onclick="opentab(event, 'woocommerce')">Woocomerce Options</button>
+      <?php } ?>
+  </div>
 
-	<div id="account" class="tawktabcontent" >
+  <div id="account" class="tawktabcontent" >
   <?php
       $page_id = get_option(self::TAWK_PAGE_ID_VARIABLE);
       $widget_id = get_option(self::TAWK_WIDGET_ID_VARIABLE);
@@ -52,18 +53,18 @@ if ( ! defined( 'ABSPATH' ) ) {
     }
   if ($display_widgetsettings == TRUE){
   ?>
-		<iframe
-			id="tawkIframe"
-			src=""
-			style="min-height: 295px; width : 100%; border: none; margin-top: 20px">
-	  	</iframe>
-	  	<script>
-	  	  var currentHost = window.location.protocol + "//" + window.location.host;
-	  		var url = "<?php echo $iframe_url ?>&parentDomain=" + currentHost;
-	  		jQuery('#tawkIframe').attr('src', url);
-	  		var iframe = jQuery('#tawk_widget_customization')[0];
+    <iframe
+      id="tawkIframe"
+      src=""
+      style="min-height: 295px; width : 100%; border: none; margin-top: 20px">
+      </iframe>
+      <script>
+        var currentHost = window.location.protocol + "//" + window.location.host;
+        var url = "<?php echo $iframe_url ?>&parentDomain=" + currentHost;
+        jQuery('#tawkIframe').attr('src', url);
+        var iframe = jQuery('#tawk_widget_customization')[0];
 
-	  		window.addEventListener('message', function(e) {
+        window.addEventListener('message', function(e) {
                 if(e.origin === '<?php echo $base_url ?>') {
 
                     if(e.data.action === 'setWidget') {
@@ -100,15 +101,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                     }
                 });
             }
-	  	</script>
+      </script>
       <?php
-   }else{
+    }else{
       echo "<h2>Property and widget is already set.</h2>";
       $tawk_admin_url = admin_url('options-general.php?page=tawkto_plugin&override=1');
       echo 'if you wish to reselect property or widget <a href="'.$tawk_admin_url.'">click here</a>';
     }
   ?>
-	</div>
+  </div>
 <form method="post" action="options.php">
    <?php
    settings_fields( 'tawk_options' );
@@ -129,9 +130,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'display_on_shop' => 0,
 				'display_on_productcategory' => 0,
 				'display_on_productpage' => 0,
-				'display_on_producttag' => 0
+				'display_on_producttag' => 0,
+				'enable_visitor_recognition' => 1
 			);
    }
+
+    if (!isset($visibility['enable_visitor_recognition'])) {
+      $visibility['enable_visitor_recognition'] = 1; // default value
+    }
    ?>
 	<div id="visibility" class="tawktabcontent">
 	   <div id="tawkvisibilitysettings">
@@ -198,8 +204,8 @@ if ( ! defined( 'ABSPATH' ) ) {
         </label>
       	<div id="exlucded_urls_container" style="display:none;">
       	<textarea id="excluded_url_list" name="tawkto-visibility-options[excluded_url_list]" cols="50" rows="10"><?php echo $visibility['excluded_url_list']; ?></textarea><BR>
-      	<?php _e('Enter the url where you <b>DO NOT</b> want the widget to display.','tawk-to-live-chat'); ?><BR>
-				<?php _e('Separate entries with comma','tawk-to-live-chat'); ?>(,).<BR>
+        <?php _e('Enter the url where you <b>DO NOT</b> want the widget to display.','tawk-to-live-chat'); ?><BR>
+        <?php _e('Separate entries with comma','tawk-to-live-chat'); ?>(,).<BR>
         <?php _e('Add (*) at the end of the entry to match wildcard url.','tawk-to-live-chat'); ?><BR>
       	</div>
       </td>
@@ -283,7 +289,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	   ?>
 	</div>
 
-</div>
+  <div id="privacy" class="tawktabcontent">
+    <h2><?php _e('Privacy Options','tawk-to-live-chat'); ?></h2>
+    <table class="form-table">
+      <tr valign="top">
+        <th class="tawksetting" scope="row">
+          <?php _e('Enable Visitor Recognition', 'tawk-to-live-chat'); ?>
+        </th>
+        <td>
+          <label class="switch">
+          <input type="checkbox" class="slider round" id="enable_visitor_recognition" name="tawkto-visibility-options[enable_visitor_recognition]" value="1" <?php echo checked( 1, $visibility['enable_visitor_recognition'], false ); ?> />
+          <div class="slider round"></div>
+          </label>
+        </td>
+      </tr>
+    </table>
+  </div>
 <div class="tawkaction">
   <div class="tawkfootaction">
   <?php submit_button(); ?>

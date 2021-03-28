@@ -3,9 +3,9 @@ Contributors: bungeshea, ver3
 Donate link: https://sheabunge.com/donate
 Tags: code-snippets, snippets, code, php, network, multisite
 Requires at least: 3.6
-Tested up to: 5.5.0
+Tested up to: 5.7.0
 Requires PHP: 5.2
-Stable tag: 2.14.0
+Stable tag: 2.14.1
 License: MIT
 License URI: license.txt
 
@@ -31,6 +31,7 @@ If you'd like to contribute to the plugin's code or translate it into another la
 
 Code Snippets can be used in these different languages thanks to the following translators:
 
+* Czech  – [Lukáš Tesař](mailto:lukastesar03@gmail.com)
 * Danish - [Finn Sommer Jensen](https://profiles.wordpress.org/finnsommer/)
 * French – [momo-fr](https://www.momofr.net/) and [Shea Bunge](https://sheabunge.com)
 * Belarusian - [Hrank.com](https://www.hrank.com)
@@ -100,7 +101,6 @@ Or, for another example, if you were viewing a page on the front-end of your sit
 
 This will only work if the current user is logged in as an administrator – other visitors will see your site as normal.
 
-
 = Can I search and replace text inside the code editor? =
 The code editor supports several search and replace commands, accessible through keyboard shortcuts:
 
@@ -133,7 +133,7 @@ Snippets are stored in the `wp_snippets` table in the WordPress database. The ta
 You can get help with Code Snippets, report bugs or errors, and suggest new features and improvements either on the [WordPress Support Forums](https://wordpress.org/support/plugin/code-snippets) or on [GitHub](https://github.com/sheabunge/code-snippets)
 
 = How can I help contribute to the development of the Code Snippets plugin? =
-The best way to do this is to fork the [repository on GitHuclassb](https://github.com/sheabunge/code-snippets) and send a pull request.
+The best way to do this is to fork the [repository on GitHub](https://github.com/sheabunge/code-snippets) and send a pull request.
 
 == Screenshots ==
 
@@ -143,6 +143,16 @@ The best way to do this is to fork the [repository on GitHuclassb](https://githu
 4. Importing snippets from an export file
 
 == Changelog ==
+
+= 2.14.1 (10 Mar 2021) =
+* Added: Czech translation by [Lukáš Tesař](https://github.com/atomicf4ll).
+* Fixed: Code validator now supports `function_exists` and `class_exists` checks.
+* Fixed: Code validator now supports anonymous functions.
+* Fixed: Issue with saving the hidden columns setting.
+* Fixed: Replaced the outdated tag-it library with [tagger](https://github.com/jcubic/tagger) for powering the snippet tags editor.
+* Added: Code direction setting for RTL users.
+* Updated CodeMirror to version 5.59.4.
+* Added: Additional action hooks and search API thanks to [@Spreeuw](https://github.com/Spreeuw).
 
 = 2.14.0 (26 Jan 2020) =
 * Updated CodeMirror to version 5.50.2.

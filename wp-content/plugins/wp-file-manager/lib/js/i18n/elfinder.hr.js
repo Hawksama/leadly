@@ -59,7 +59,7 @@
 			'errRename'            : 'Ne mogu preimenovati "$1".',
 			'errCopyFrom'          : 'Kopiranje s diska "$1" nije dozvoljeno.',
 			'errCopyTo'            : 'Kopiranje na disk "$1" nije dozvoljeno.',
-			'errMkOutLink'         : 'Nije moguće stvoriti vezu izvan korijena volumena.', // from v2.1 added 03.10.2015
+			'errMkOutLink'         : 'Unable to create a link to outside the volume root.', // from v2.1 added 03.10.2015
 			'errUpload'            : 'Greška pri prebacivanju dokumenta na server.',  // old name - errUploadCommon
 			'errUploadFile'        : 'Ne mogu prebaciti "$1" na server', // old name - errUpload
 			'errUploadNoFiles'     : 'Nema dokumenata za prebacivanje na server',
@@ -68,7 +68,7 @@
 			'errUploadMime'        : 'Ovaj tip dokumenta nije dopušten.',
 			'errUploadTransfer'    : '"$1" greška pri prebacivanju',
 			'errUploadTemp'        : 'Ne mogu napraviti privremeni dokument za prijenos na server', // from v2.1 added 26.09.2015
-			'errNotReplace'        : 'Objekt "$ 1" već postoji na ovom mjestu i ne može ga zamijeniti objekt s drugom vrstom.', // new
+			'errNotReplace'        : 'Object "$1" already exists at this location and can not be replaced by object with another type.', // new
 			'errReplace'           : 'Ne mogu zamijeniti "$1".',
 			'errSave'              : 'Ne mogu spremiti "$1".',
 			'errCopy'              : 'Ne mogu kopirati "$1".',
@@ -172,9 +172,9 @@
 			'btnCancel' : 'Odustani',
 			'btnNo'     : 'Ne',
 			'btnYes'    : 'Da',
-			'btnMount'  : 'montiranje',  // added 18.04.2012
+			'btnMount'  : 'Mount',  // added 18.04.2012
 			'btnApprove': 'Goto $1 & approve', // from v2.1 added 26.04.2012
-			'btnUnmount': 'isključivanje', // from v2.1 added 30.04.2012
+			'btnUnmount': 'Unmount', // from v2.1 added 30.04.2012
 			'btnConv'   : 'Pretvoriti', // from v2.1 added 08.04.2014
 			'btnCwd'    : 'Evo',      // from v2.1 added 22.5.2015
 			'btnVolume' : 'Volumen',    // from v2.1 added 22.5.2015
@@ -400,6 +400,7 @@
 			'autoSync'        : 'Auto sync',  // from v2.1.6 added 10.1.2016
 			'moveUp'          : 'Gore',  // from v2.1.6 added 18.1.2016
 			'getLink'         : 'Get URL link', // from v2.1.7 added 9.2.2016
+			'share'           : 'Podijeli',
 			'selectedItems'   : 'Odabrani predmeti ($1)', // from v2.1.7 added 2.19.2016
 			'folderId'        : 'Folder ID', // from v2.1.10 added 3.25.2016
 			'offlineAccess'   : 'Omogući izvanmrežni pristup', // from v2.1.10 added 3.25.2016
@@ -475,6 +476,7 @@
 			'integrations'    : 'Integrations', // from v2.1.40 added 11.7.2018
 			'integrationWith' : 'This elFinder has the following external services integrated. Please check the terms of use, privacy policy, etc. before using it.', // from v2.1.40 added 11.7.2018
 			'showHidden'      : 'Pokaži skrivene stavke', // from v2.1.41 added 24.7.2018
+			'Code Editor'     : 'Uređivač koda',
 			'hideHidden'      : 'Sakrij skrivene stavke', // from v2.1.41 added 24.7.2018
 			'toggleHidden'    : 'Pokaži/Sakrij skrivene stavke', // from v2.1.41 added 24.7.2018
 			'makefileTypes'   : 'Vrste datoteka koje možete omogućiti s "Nova datoteka"', // from v2.1.41 added 7.8.2018

@@ -2,9 +2,9 @@
 Contributors: mndpsingh287
 Tags: file, editor, plugin, wp, wordpress, theme, theme editor, code editor, Preview Theme, create New Theme, Preview, Duplicate Theme
 Requires at least: 3.4
-Tested up to: 5.5
+Tested up to: 5.6.1
 Requires PHP: 5.2.4
-Stable tag: 2.4
+Stable tag: 2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,13 @@ Theme Editor allows you to edit theme files, create folder, upload files and rem
 
 
 == Changelog ==
+= 2.6 (10th Feb, 2021)
+
+* Updated script for create and delete file as per wordpress guidlines
+
+= 2.5 (27th Jan, 2021)
+
+* Updated file download script as per security perspective  
 
 = 2.4 (27th Aug, 2020) =
 

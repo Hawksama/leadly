@@ -183,7 +183,7 @@ class ACUI_Email_Options{
 		<?php
 	}
 
-	public static function send_email( $user_object, $positions = array(), $headers = array(), $data = array(), $created = false, $password = '' ){
+	static function send_email( $user_object, $positions = array(), $headers = array(), $data = array(), $created = false, $password = '' ){
 		$acui_helper = new ACUI_Helper();
 		
 		$key = get_password_reset_key( $user_object );
@@ -193,8 +193,8 @@ class ACUI_Email_Options{
 		$user_login= $user_object->user_login;
 		$user_email = $user_object->user_email;
 		
-		$body = get_option( "acui_mail_body" );
-		$subject = get_option( "acui_mail_subject" );
+		$body = apply_filters( 'acui_import_email_body_source', get_option( "acui_mail_body" ), $headers, $data, $created, $user_id );
+		$subject = apply_filters( 'acui_import_email_subject_source', get_option( "acui_mail_subject" ), $headers, $data, $created, $user_id );
 								
 		$body = str_replace( "**loginurl**", wp_login_url(), $body );
 		$body = str_replace( "**username**", $user_login, $body );

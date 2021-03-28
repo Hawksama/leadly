@@ -266,8 +266,12 @@ function ms_image($path,$theme_path,$check_name,$image_count ){
 					return xhr;
 				},
 				success: function(data){
-					alert('<?php _e('Image uploaded successfully!', 'theme-editor');?>');  
-					window.location.href="admin.php?page=ms_child_theme_editor&tab=ms_delete_image";
+					jQuery("#photouploads_ct").closest("div").find(".percen").html('');
+					var responsedata = jQuery.parseJSON(data);
+					alert(responsedata.msg);
+					if(responsedata.status == '1') {
+						window.location.href="admin.php?page=ms_child_theme_editor&tab=ms_delete_image";
+					}
 				},        
 			});
 		}

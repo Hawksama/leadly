@@ -6,7 +6,8 @@ class ACUI_Frontend{
 	function __construct(){
 		add_action( 'acui_frontend_save_settings', array( $this, 'save_settings' ), 10, 1 );
 		add_action( 'acui_post_frontend_import', array( $this, 'email_admin' ) );
-		add_shortcode( 'import-users-from-csv-with-meta', array( $this, 'shortcode' ) );
+		add_shortcode( 'import-users-from-csv-with-meta', array( $this, 'shortcode_import' ) );
+        add_shortcode( 'export-users', array( $this, 'shortcode_export' ) );
 	}
 	
 	public static function admin_gui(){
@@ -37,7 +38,7 @@ class ACUI_Frontend{
 		if( empty( $update_roles_existing_users ) )
 			$update_roles_existing_users = 'no';
 		?>
-		<h3><?php _e( "Execute an import of users in the frontend", 'import-users-from-csv-with-meta' ); ?></h3>
+		<h3><?php _e( "Execute an import of users in the frontend", 'import-users-from-csv-with-meta' ); ?> <em><a href="#export_frontend">(<?php _e( "you can also do an export in the frontend", 'import-users-from-csv-with-meta' ); ?>)</a></em></h3>
 
 		<form method="POST" enctype="multipart/form-data" action="" accept-charset="utf-8">
 			<table class="form-table">
@@ -195,6 +196,51 @@ class ACUI_Frontend{
 			<input class="button-primary" type="submit" value="<?php _e( 'Save frontend import options', 'import-users-from-csv-with-meta'); ?>"/>
 		</form>
 
+        <h3 id="export_frontend"><?php _e( "Execute an export of users in the frontend", 'import-users-from-csv-with-meta' ); ?></h3>
+        <table class="form-table">
+			<tbody>
+
+				<tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Use this shortcode in any page or post', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td>
+						<pre>[export-users]</pre>
+						<input class="button-primary" type="button" id="copy_to_clipboard_export" value="<?php _e( 'Copy to clipboard', 'import-users-from-csv-with-meta'); ?>"/>
+					</td>
+				</tr>
+
+                <tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Attribute role', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td><?php _e( 'You can use role as attribute to choose directly in the shortcode the role to use during the export. Remind that you must use the role slug, for example:', 'import-users-from-csv-with-meta' ); ?> <pre>[import-users-from-csv-with-meta role="editor"]</pre>
+					</td>
+				</tr>
+
+                <tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Attribute from', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td><?php _e( 'You can use from attribute to filter users created from a specified date. Date format has to be: Y-m-d, for example:', 'import-users-from-csv-with-meta' ); ?> <pre>[import-users-from-csv-with-meta from="<?php echo date( 'Y-m-d' ); ?>"]</pre>
+					</td>
+				</tr>
+
+                <tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Attribute to', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td><?php _e( 'You can use from attribute to filter users created before a specified date. Date format has to be: Y-m-d, for example:', 'import-users-from-csv-with-meta' ); ?> <pre>[import-users-from-csv-with-meta to="<?php echo date( 'Y-m-d' ); ?>"]</pre>
+					</td>
+				</tr>
+
+                <tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Attribute delimiter', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td><?php _e( 'You can use delimiter attribute to set which delimiter is going to be used, allowed values are:', 'import-users-from-csv-with-meta' ); ?> COMMA, COLON, SEMICOLON, TAB <pre>[import-users-from-csv-with-meta delimiter="SEMICOLON"]</pre>
+					</td>
+				</tr>
+
+                <tr class="form-field">
+					<th scope="row"><label for=""><?php _e( 'Attribute order-alphabetically', 'import-users-from-csv-with-meta' ); ?></label></th>
+					<td><?php _e( 'You can use order-alphabetically attribute to order alphabetically the fields, for example', 'import-users-from-csv-with-meta' ); ?> <pre>[import-users-from-csv-with-meta order-alphabetically]</pre>
+					</td>
+				</tr>
+
+            </tbody>
+        </table>                            
+
 		<script>
 		jQuery( document ).ready( function( $ ){
 			check_delete_users_checked();
@@ -207,6 +253,14 @@ class ACUI_Frontend{
 				var $temp = $("<input>");
 				$("body").append($temp);
 				$temp.val( '[import-users-from-csv-with-meta]' ).select();
+				document.execCommand("copy");
+				$temp.remove();
+			} );
+
+            $( '#copy_to_clipboard_export' ).click( function(){
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val( '[export-users]' ).select();
 				document.execCommand("copy");
 				$temp.remove();
 			} );
@@ -258,7 +312,7 @@ class ACUI_Frontend{
 		wp_mail( get_option( 'admin_email' ), '[Import and export users and customers] Frontend import has been executed', $body_mail, array( 'Content-Type: text/html; charset=UTF-8' ) );
 	}
 
-	function shortcode( $atts ) {
+	function shortcode_import( $atts ) {
 		$atts = shortcode_atts( array( 'role' => '', 'delete-only-specified-role' => false ), $atts );
 
 		ob_start();
@@ -331,6 +385,31 @@ class ACUI_Frontend{
 	    require_once( ABSPATH . "wp-admin" . '/includes/media.php' );
 	    $attach_id = media_handle_upload( $file_handler, 0 );
 	    return $attach_id;
+	}
+
+    function shortcode_export( $atts ) {
+		$atts = shortcode_atts( array( 'role' => '', 'from' => '', 'to' => '', 'delimiter' => '', 'order-alphabetically' => '' ), $atts );
+
+		ob_start();
+		
+		if( !current_user_can( apply_filters( 'acui_capability', 'create_users' ) ) )
+            wp_die( __( 'Only users who are able to create users can export them.', 'import-users-from-csv-with-meta' ) );
+
+		
+		?>
+		<form method="POST" action="<?php echo admin_url( 'admin-ajax.php' ); ?>" class="acui_frontend_form">
+            <input type="hidden" name="action" value="acui_export_users_csv"/>
+
+			<?php foreach( $atts as $key => $value ): ?>
+            <input type="hidden" name="<?php echo $key; ?>" value="<?php echo $value; ?>"/>
+            <?php endforeach; ?>
+            
+            <input class="acui_frontend_submit" type="submit" value="<?php _e( 'Export', 'import-users-from-csv-with-meta' ); ?>"/>
+
+			<?php wp_nonce_field( 'codection-security', 'security' ); ?>
+		</form>
+		<?php
+		return ob_get_clean();
 	}
 }
 

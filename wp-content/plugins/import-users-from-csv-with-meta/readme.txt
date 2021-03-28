@@ -3,8 +3,8 @@ Contributors: carazo, hornero
 Donate link: https://codection.com/go/donate-import-users-from-csv-with-meta/
 Tags: csv, import, importer, meta data, meta, user, users, user meta,  editor, profile, custom, fields, delimiter, update, insert
 Requires at least: 3.4
-Tested up to: 5.6
-Stable tag: 1.17.1.5
+Tested up to: 5.7
+Stable tag: 1.17.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,48 @@ Plugin will automatically detect:
 5. Extra profile information (user meta)
 
 == Changelog ==
+
+= 1.17.4.1 =
+*   Process import results shown in a table at the end of process
+
+= 1.17.4 =
+*   New shortcode to export users
+
+= 1.17.3.6 =
+*   Fixed problem importing ACF multiple select field type, thanks to @lpointet
+
+= 1.17.3.5 =
+*   Fixed warning on export
+
+= 1.17.3.4 =
+*   Tested up to 5.7
+*   New method to fix error when a WP_Error appear into an array, when the array is being printed
+
+= 1.17.3.3 =
+*   Improved messages when deleting users not present in CSV
+*   Fixed error when a WP_Error appear into an array, when the array is being printed
+
+= 1.17.3.2 =
+*   Improved BuddyPress group management when importing, now you can remove users from a group
+*   Improved BuddyPress import, now you can use group ids and not only group slugs
+
+= 1.17.3.1 =
+*   New filter to override default permission_callback in rest-api method to call cron
+
+= 1.17.3 =
+*   New feature added actions, now you can assign posts while you are importing users
+*   Code improvements
+
+= 1.17.2.1 =
+*   Addon included for WP User Manager - WPUM Groups
+*   BuddyPress addon improved
+
+= 1.17.2 =
+*   New addon included for WPML
+*   Email templates are being sent translated if you use the "locale" column in your CSV, so every user will receive the email translated in their own langauge
+
+= 1.17.1.6 =
+*   Warning solved, it appears sometimes importing in strtolower operation over roles
 
 = 1.17.1.5 =
 *   Bugs fixed exporting users

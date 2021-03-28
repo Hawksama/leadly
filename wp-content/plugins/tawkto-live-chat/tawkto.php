@@ -3,7 +3,7 @@
 Plugin Name: Tawk.to Live Chat
 Plugin URI: https://www.tawk.to
 Description: Embeds Tawk.to live chat widget to your site
-Version: 0.4.3
+Version: 0.5.3
 Author: Tawkto
 Text Domain: tawk-to-live-chat
 */
@@ -31,7 +31,8 @@ if(!class_exists('TawkTo_Settings')){
 				'display_on_shop' => 0,
 				'display_on_productcategory' => 0,
 				'display_on_productpage' => 0,
-				'display_on_producttag' => 0
+				'display_on_producttag' => 0,
+				'enable_visitor_recognition' => 1
 			);
 			update_option( 'tawkto-visibility-options', $visibility);
 			}
@@ -85,13 +86,13 @@ if(!class_exists('TawkTo_Settings')){
 
 		function tawk_admin_notice() {
 
-		   	if( isset($_GET["settings-updated"]) )
-		   	{
-			    ?>
-			    <div class="notice notice-warning is-dismissible">
-			        <p><?php _e( 'You might need to clear cache if your using a cache plugin to see your updates', 'tawk-to-live-chat' ); ?></p>
-			    </div>
-			    <?php
+			if( isset($_GET["settings-updated"]) )
+			{
+				?>
+				<div class="notice notice-warning is-dismissible">
+					<p><?php _e( 'You might need to clear cache if your using a cache plugin to see your updates', 'tawk-to-live-chat' ); ?></p>
+				</div>
+				<?php
 			}
 		}
 
@@ -106,20 +107,24 @@ if(!class_exists('TawkTo_Settings')){
 		}
 
 		public function validate_options($input){
+			$visibility_toggle_fields = array(
+				'always_display',
+				'show_onfrontpage',
+				'show_oncategory',
+				'show_ontagpage',
+				'show_onarticlepages',
+				'exclude_url',
+				'include_url',
+				'display_on_shop',
+				'display_on_productcategory',
+				'display_on_productpage',
+				'display_on_producttag',
+				'enable_visitor_recognition'
+			);
+			$visibility_text_fields = array('excluded_url_list', 'included_url_list');
 
-			$input['always_display'] = ($input['always_display'] != '1')? 0 : 1;
-			$input['show_onfrontpage'] = ($input['show_onfrontpage'] != '1')? 0 : 1;
-			$input['show_oncategory'] = ($input['show_oncategory'] != '1')? 0 : 1;
-			$input['show_ontagpage'] = ($input['show_ontagpage'] != '1')? 0 : 1;
-			$input['show_onarticlepages'] = ($input['show_onarticlepages'] != '1')? 0 : 1;
-			$input['exclude_url'] = ($input['exclude_url'] != '1')? 0 : 1;
-			$input['excluded_url_list'] = sanitize_text_field($input['excluded_url_list']);
-			$input['include_url'] = ($input['include_url'] != '1')? 0 : 1;
-			$input['included_url_list'] = sanitize_text_field($input['included_url_list']);
-			$input['display_on_shop'] = ($input['display_on_shop'] != '1')? 0 : 1;
-			$input['display_on_productcategory'] = ($input['display_on_productcategory'] != '1')? 0 : 1;
-			$input['display_on_productpage'] = ($input['display_on_productpage'] != '1')? 0 : 1;
-			$input['display_on_producttag'] = ($input['display_on_producttag'] != '1')? 0 : 1;
+			self::validate_visibility_toggle_fields($input, $visibility_toggle_fields);
+			self::validate_text_fields($input, $visibility_text_fields);
 
 			return $input;
 		}
@@ -169,6 +174,32 @@ if(!class_exists('TawkTo_Settings')){
 		public static function ids_are_correct($page_id, $widget_id) {
 			return preg_match('/^[0-9A-Fa-f]{24}$/', $page_id) === 1 && preg_match('/^[a-z0-9]{1,50}$/i', $widget_id) === 1;
 		}
+
+		private static function validate_text_fields(&$fields, $field_names) {
+			foreach ($field_names as $field_name) {
+				if (isset($fields[$field_name])) {
+					$fields[$field_name] = sanitize_text_field($fields[$field_name]);
+					continue;
+				}
+
+				$fields[$field_name] = '';
+			}
+
+			return;
+		}
+
+		private static function validate_visibility_toggle_fields(&$fields, $field_names) {
+			foreach ($field_names as $field_name) {
+				if (isset($fields[$field_name]) && $fields[$field_name] == '1') {
+					$fields[$field_name] = 1;
+					continue;
+				}
+
+				$fields[$field_name] = 0;
+			}
+
+			return;
+		}
 	}
 }
 
@@ -195,7 +226,8 @@ if(!class_exists('TawkTo')){
 				'display_on_shop' => 0,
 				'display_on_productcategory' => 0,
 				'display_on_productpage' => 0,
-				'display_on_producttag' => 0
+				'display_on_producttag' => 0,
+				'enable_visitor_recognition' => 1
 			);
 
 			add_option(TawkTo_Settings::TAWK_PAGE_ID_VARIABLE, '', '', 'yes');
@@ -228,8 +260,17 @@ if(!class_exists('TawkTo')){
 		public function embed_code() {
 			$page_id = get_option('tawkto-embed-widget-page-id');
 			$widget_id = get_option('tawkto-embed-widget-widget-id');
+			$visibility = get_option('tawkto-visibility-options');
 
-			$customer_details = $this->getCurrentCustomerDetails();
+			$enable_visitor_recognition = true; // default value
+
+			if (isset($visibility) && isset($visibility['enable_visitor_recognition'])) {
+				$enable_visitor_recognition = $visibility['enable_visitor_recognition'] == 1;
+			}
+
+			if ($enable_visitor_recognition) {
+				$customer_details = $this->getCurrentCustomerDetails();
+			}
 
 			if (!empty($page_id) && !empty($widget_id)) {
 				include(sprintf("%s/templates/widget.php", dirname(__FILE__)));

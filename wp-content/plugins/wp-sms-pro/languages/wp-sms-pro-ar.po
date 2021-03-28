@@ -1,0 +1,499 @@
+# Loco Gettext template
+msgid ""
+msgstr ""
+"Project-Id-Version: Wordpress SMS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-02 14:46+0330\n"
+"PO-Revision-Date: 2018-10-02 14:46+0330\n"
+"Last-Translator: Mostafa Soufi <mostafa.soufi@hotmail.com>\n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Revision-Date: Wed Sep 30 2015 18:26:19 GMT+0200 (Mitteleuropäische "
+"Sommerzeit)\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 2.0.7\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/class-wp-sms-pro-buddypress.php:48
+msgid "Your mobile number for get sms"
+msgstr "رقم هاتفك النقال للحصول على الرسائل القصيرة"
+
+#: includes/class-wp-sms-pro-easy-digital-downloads.php:41
+#: includes/class-wp-sms-pro-easy-digital-downloads.php:44
+#: includes/class-wp-sms-pro-easy-digital-downloads.php:69
+#: includes/class-wp-sms-pro-woocommerce.php:62
+msgid "Mobile Number"
+msgstr "رقم الجوال"
+
+#: includes/class-wp-sms-pro-easy-digital-downloads.php:42
+#: includes/class-wp-sms-pro-easy-digital-downloads.php:53
+msgid "Please enter mobile number for get sms"
+msgstr "الرجاء ادخال رقم جوالك لتلقي الرسائل النصية"
+
+#: includes/class-wp-sms-pro-woocommerce.php:63
+msgid "Enter your mobile number to get any notifications about your order"
+msgstr "أدخل رقم هاتفك المحمول للحصول على أي إشعارات حول طلبك"
+
+#: includes/class-wp-sms-pro-woocommerce.php:77
+msgid "Please enter mobile number."
+msgstr "الرجاء إدخال رقم الهاتف النقال."
+
+#: includes/class-wp-sms-pro-wordpress.php:73
+#: includes/templates/verify-sms-field.php:1
+#, fuzzy
+#| msgid "Notify of status"
+msgid "Mobile status"
+msgstr "إخطار بالحالة"
+
+#: includes/class-wp-sms-pro-wordpress.php:74
+msgid "Verification code"
+msgstr ""
+
+#: includes/class-wp-sms-pro-wordpress.php:99
+#: includes/templates/verify-sms-field.php:5
+msgid "Verified"
+msgstr ""
+
+#: includes/class-wp-sms-pro-wordpress.php:101
+msgid "Not verified!"
+msgstr ""
+
+#: includes/class-wp-sms-pro-wordpress.php:129
+#: includes/templates/login-sms-popup.php:42
+msgid ""
+"Your mobile number is not verified. Please Login again to get the "
+"verification code."
+msgstr ""
+
+#: includes/class-wp-sms-pro-wordpress.php:165
+msgid ""
+"Your mobile number is not verified! Please enter verification code to verify "
+"your mobile number on the site."
+msgstr ""
+
+#: includes/class-wp-sms-pro-wordpress.php:227
+#, php-format
+msgid "Verification code: %s"
+msgstr ""
+
+#: includes/class-wp-sms-pro-wp-job-manager.php:52
+#: includes/class-wp-sms-pro-wp-job-manager.php:71
+#, fuzzy
+#| msgid "Mobile Number"
+msgid "Mobile number"
+msgstr "رقم الجوال"
+
+#: includes/class-wp-sms-pro-wp-job-manager.php:55
+#: includes/class-wp-sms-pro-wp-job-manager.php:73
+#, php-format
+msgid "e.g. %s"
+msgstr ""
+
+#: includes/class-wp-sms-pro-wp-job-manager.php:88
+#, php-format
+msgid "<li>Mobile: %s</li>"
+msgstr ""
+
+#: includes/gateways/bulksms.class.php:21
+#: includes/gateways/bulksmshyderabad.class.php:20
+#: includes/gateways/cellsynt.class.php:19
+#: includes/gateways/clickatell.class.php:21
+#: includes/gateways/clicksend.class.php:21
+#: includes/gateways/clockworksms.class.php:23
+#: includes/gateways/cmtelecom.class.php:22
+#: includes/gateways/dot4all.class.php:19 includes/gateways/dsms.class.php:19
+#: includes/gateways/esms.class.php:19 includes/gateways/infobip.class.php:22
+#: includes/gateways/isms.class.php:18 includes/gateways/livesms.class.php:19
+#: includes/gateways/magicdeal4u.class.php:19
+#: includes/gateways/messagebird.class.php:19
+#: includes/gateways/mobily.class.php:19
+#: includes/gateways/moceansms.class.php:19
+#: includes/gateways/msg360.class.php:21 includes/gateways/msg91.class.php:20
+#: includes/gateways/nexmo.class.php:21 includes/gateways/ozioma.class.php:20
+#: includes/gateways/plivo.class.php:22 includes/gateways/pswin.class.php:18
+#: includes/gateways/ra.class.php:19 includes/gateways/sendsms247.class.php:19
+#: includes/gateways/smsapicom.class.php:20
+#: includes/gateways/smsfactor.class.php:21
+#: includes/gateways/smslive247.class.php:20
+#: includes/gateways/smstrade.class.php:18
+#: includes/gateways/ssdindia.class.php:20
+#: includes/gateways/textmarketer.class.php:21
+#: includes/gateways/twilio.class.php:19 includes/gateways/viensms.class.php:18
+#: includes/gateways/vsms.class.php:20 includes/gateways/websms.class.php:22
+#: includes/gateways/yamamah.class.php:19
+msgid "Your account does not credit for sending sms."
+msgstr ""
+
+#: includes/gateways/bulksms.class.php:90
+#: includes/gateways/bulksmshyderabad.class.php:77
+#: includes/gateways/cellsynt.class.php:74
+#: includes/gateways/clickatell.class.php:105
+#: includes/gateways/clicksend.class.php:87
+#: includes/gateways/clockworksms.class.php:87
+#: includes/gateways/cmtelecom.class.php:79
+#: includes/gateways/dot4all.class.php:76 includes/gateways/dsms.class.php:76
+#: includes/gateways/esms.class.php:98 includes/gateways/infobip.class.php:85
+#: includes/gateways/isms.class.php:76 includes/gateways/livesms.class.php:75
+#: includes/gateways/magicdeal4u.class.php:75
+#: includes/gateways/mobily.class.php:113
+#: includes/gateways/moceansms.class.php:84
+#: includes/gateways/msg360.class.php:76 includes/gateways/msg91.class.php:77
+#: includes/gateways/ozioma.class.php:79 includes/gateways/plivo.class.php:87
+#: includes/gateways/pswin.class.php:110 includes/gateways/ra.class.php:76
+#: includes/gateways/sendsms247.class.php:75
+#: includes/gateways/smsapicom.class.php:90
+#: includes/gateways/smsfactor.class.php:107
+#: includes/gateways/smslive247.class.php:82
+#: includes/gateways/smstrade.class.php:75
+#: includes/gateways/ssdindia.class.php:103
+#: includes/gateways/textmarketer.class.php:76
+#: includes/gateways/twilio.class.php:84 includes/gateways/viensms.class.php:76
+#: includes/gateways/vsms.class.php:96 includes/gateways/websms.class.php:112
+#: includes/gateways/yamamah.class.php:70
+msgid "Username/Password does not set for this gateway"
+msgstr ""
+
+#: includes/gateways/bulksms.class.php:94
+#: includes/gateways/clicksend.class.php:95
+#: includes/gateways/infobip.class.php:93 includes/gateways/nexmo.class.php:80
+#: includes/gateways/plivo.class.php:91
+#: includes/gateways/textmarketer.class.php:84
+msgid "Please enable WP-SMS-Pro plugin."
+msgstr ""
+
+#: includes/gateways/clickatell.class.php:109
+#: includes/gateways/clicksend.class.php:91
+#: includes/gateways/infobip.class.php:89
+#: includes/gateways/moceansms.class.php:88
+#: includes/gateways/smsapicom.class.php:94
+#: includes/gateways/textmarketer.class.php:80
+msgid "CURL extension not found in your server. please enable curl extenstion."
+msgstr ""
+
+#: includes/gateways/clockworksms.class.php:91
+msgid "Class DOMDocument not found in your php."
+msgstr ""
+
+#: includes/gateways/esms.class.php:102
+msgid "Function simplexml_load_string not found in your php."
+msgstr ""
+
+#: includes/gateways/messagebird.class.php:85
+msgid "API/Key does not set for this gateway"
+msgstr ""
+
+#: includes/gateways/twilio.class.php:88
+msgid "CURL extension not found in your server. please enable curl extension."
+msgstr ""
+
+#: includes/templates/login-sms-popup.php:12 includes/templates/login-sms.php:5
+msgid "Login with mobile"
+msgstr "تسجيل الدخول بالجوال"
+
+#: includes/templates/login-sms-popup.php:55
+msgid ""
+"Security code have beed send in your mobile. please enter the code for login "
+"to wordpress."
+msgstr "ستصلك رسالة تحتوي على رمز الحماية. الرجاء إدخال الرمز لتسجيل الدخول."
+
+#: includes/templates/login-sms-popup.php:59
+msgid "Mobile number not found!"
+msgstr "رقم الجوال غير موجود!"
+
+#: includes/templates/login-sms-popup.php:63
+msgid "User does not exist"
+msgstr "المستخدم غير موجود"
+
+#: includes/templates/login-sms-popup.php:75
+msgid "Security code is wrong"
+msgstr "رمز الحماية خطأ"
+
+#: includes/templates/login-sms-popup.php:84
+msgid "Error"
+msgstr "خطأ"
+
+#: includes/templates/login-sms-popup.php:89
+#: includes/templates/login-sms-popup.php:91
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: includes/templates/login-sms-popup.php:93
+msgid "Submit"
+msgstr "إرسال"
+
+#: includes/templates/login-sms-popup.php:99
+msgid "Code"
+msgstr "الرمز"
+
+#: includes/templates/login-sms-popup.php:101
+msgid "Submit code"
+msgstr "إرسال الرمز"
+
+#: includes/templates/verify-sms-field-login.php:2
+msgid "Verify code"
+msgstr ""
+
+#: includes/templates/verify-sms-field.php:11
+msgid "Yes"
+msgstr ""
+
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p4/Plugin/UpdateChecker.php:395
+msgid "Check for updates"
+msgstr ""
+
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p4/Plugin/UpdateChecker.php:432
+msgid "View details"
+msgstr ""
+
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p4/Plugin/UpdateChecker.php:455
+#, php-format
+msgid "More information about %s"
+msgstr ""
+
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p4/Plugin/UpdateChecker.php:558
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr ""
+
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p4/Vcs/PluginUpdateChecker.php:98
+msgid "There is no changelog available."
+msgstr ""
+
+#: wp-sms-pro.php:93
+msgid "WP SMS - Professional Package"
+msgstr "الرسائل النصية - الحزمة المطورة"
+
+#: wp-sms-pro.php:94
+msgid "Complementary package for add new capability to WP SMS Plugin."
+msgstr "حزمة متكاملة لإضافة قدرات جديدة لمنتج الرسائل النصية"
+
+#: wp-sms-pro.php:128
+#, fuzzy, php-format
+msgid ""
+"Please Install/Active <a href=\"%s\" class=\"thickbox\">WP-SMS</a> to run "
+"the plugin."
+msgstr ""
+"هذا المنتج بحاجة الى تنصيب <a href=\"%s\" class=\"thickbox\">الرسائل النصية</"
+"a> لكي يعمل."
+
+#: wp-sms-pro.php:203
+#, php-format
+msgid ""
+"<i>Automatic update is unavailable for this plugin.</i><br>To enable "
+"updates, please enter your license key on the <a href=\"%s\">setting page</"
+"a> If you don't have a license key, please see <a href=\"%s\">details & "
+"pricing</a>"
+msgstr ""
+
+#~ msgid "Pro Package"
+#~ msgstr "الحزمة المطورة"
+
+#~ msgid "Wordpress"
+#~ msgstr "ووردبريس"
+
+#~ msgid "BuddyPress"
+#~ msgstr "BuddyPress"
+
+#~ msgid "Woocommerce"
+#~ msgstr "Woocommerce"
+
+#~ msgid "Gravityforms"
+#~ msgstr "Gravityforms"
+
+#~ msgid "Quform"
+#~ msgstr "Quform"
+
+#~ msgid "Easy Digital Downloads"
+#~ msgstr "Easy Digital Downloads"
+
+#~ msgid "Settings updated"
+#~ msgstr "تم تحديث الإعدادات"
+
+#~ msgid "Enable"
+#~ msgstr "تفعيل"
+
+#~ msgid "Disable"
+#~ msgstr "تعطيل"
+
+#~ msgid "All"
+#~ msgstr "الكل"
+
+#~ msgid "Notify for %s form"
+#~ msgstr "إبلاغ عن النموذج %s"
+
+#~ msgid "Send SMS"
+#~ msgstr "إرسال رسالة نصية"
+
+#~ msgid "Send sms when this form get new message"
+#~ msgstr "إرسال رسالة نصية عند تلقي رسالة جديدة من هذا النموذج"
+
+#~ msgid "Message body"
+#~ msgstr "نص الرسالة"
+
+#~ msgid "Enter the contents of the sms message."
+#~ msgstr "أدخل محتويات الرسالة النصية."
+
+#~ msgid ""
+#~ "Form name: %s, IP: %s, Form url: %s, User agent: %s, Content form: %s"
+#~ msgstr ""
+#~ "اسم النموذج: %s, الآي بي: %s, رابط النموذج: %s, وكيل العضو: %s, محتوى "
+#~ "النموذج: %s"
+
+#~ msgid "Send SMS to field"
+#~ msgstr "إسال رسالة نصية الى الحقل"
+
+#~ msgid "Send sms to field value when this form get new message"
+#~ msgstr "إرسالة رسالة بقيمة الحقل عند تلقي رسالة جديدة من هذا النموذج"
+
+#~ msgid "Field form"
+#~ msgstr "نموذج الحقل"
+
+#~ msgid "Please select the field of the form"
+#~ msgstr "يرجى تحديد الحقل من النموذج"
+
+#~ msgid "Not active"
+#~ msgstr "غير نشيط"
+
+#~ msgid "Gravityforms should be enable to run this tab"
+#~ msgstr "يجب تمكين Gravityforms لتشغيل هذا التبويب"
+
+#~ msgid "Form name: %s, Form url: %s, Referring url: %s"
+#~ msgstr "اسم النموذج: %s, رابط النموذج: %s, رابط الإشارة: %s"
+
+#~ msgid "Quform should be enable to run this tab"
+#~ msgstr "يجب تمكين Quform لتشغيل هذا التبويب"
+
+#~ msgid "Login"
+#~ msgstr "دخول"
+
+#~ msgid "This option add login with sms in the auth form"
+#~ msgstr "هذا الخيار يضيف مصادقة تسجيل الدخول بالرسائل النصية"
+
+#~ msgid "Fields"
+#~ msgstr "الحقول"
+
+#~ msgid "Mobile field"
+#~ msgstr "حقل الجوال"
+
+#~ msgid "Add mobile field to profile page"
+#~ msgstr "أضافة حقل الجوال في صفحة الملف الشخصي"
+
+#~ msgid "Mentions"
+#~ msgstr "الإشارة"
+
+#~ msgid "Send SMS to user when someone mentioned. for example @admin"
+#~ msgstr ""
+#~ "إرسالة رسالة نصية الى المستخدم عندما يقوم شخص بالإشارة إلية. على سبيل "
+#~ "المثال @admin"
+
+#~ msgid ""
+#~ "Posted user display name: %s, User profile permalink: %s, Time: %s, "
+#~ "Message: %s, Receiver user display name: %s"
+#~ msgstr ""
+#~ "اسم العرض للمستخدم في المقال: %s, نبذة عن المستخدم: %s, الوقت: %s, "
+#~ "الرسالة: %s, اسم العرض للمستخدم المشار إلية: %s"
+
+#~ msgid "Comments"
+#~ msgstr "التعليقات"
+
+#~ msgid "Send sms to user when the user get a reply on comment"
+#~ msgstr "ارسال رسالة نصية للمستخدم عندما يحصل على رد من تعليق"
+
+#~ msgid ""
+#~ "Posted user display name: %s, Comment content: %s, Receiver user display "
+#~ "name: %s"
+#~ msgstr ""
+#~ "اسم العرض لكتاب التعليق: %s, محتوى التعليق: %s, اسم العرض لمستخدم المشار "
+#~ "إلية: %s"
+
+#~ msgid "Add mobile field to checkout page"
+#~ msgstr "إضافة حقل الجوال في صفحة الشراء"
+
+#~ msgid "Notify for new product"
+#~ msgstr "إخطار عن منتج جديد"
+
+#~ msgid "Send sms when publish new a product"
+#~ msgstr "ارسال الرسائل القصيرة عند نشر منتج جديد"
+
+#~ msgid "SMS receiver"
+#~ msgstr "مستقبل  الرسائل القصيرة"
+
+#~ msgid "Subscribe users"
+#~ msgstr "الأعضاء المشتركين"
+
+#~ msgid "Customers (Users)"
+#~ msgstr "العملاء (المستخدمين)"
+
+#~ msgid "Please select the receiver of sms"
+#~ msgstr "يرجى تحديد متلقي الرسائل القصيرة"
+
+#~ msgid "Subscribe group"
+#~ msgstr "مجموعة الاشتراك"
+
+#~ msgid "If you select the Subscribe users, can select the group for send sms"
+#~ msgstr ""
+#~ "إذا قمت بتحديد الاعضاء المشتركين، يمكن اختيار مجموعة لإرسال الرسائل "
+#~ "القصيرة"
+
+#~ msgid ""
+#~ "Product title: %s, Product url: %s, Product date: %s, Product price: %s"
+#~ msgstr ""
+#~ "عنوان المنتج: %s, رابط المنتج: %s, تاريخ المنتج\" %s, سعر المنتج: %s"
+
+#~ msgid "Notify for new order"
+#~ msgstr "إخطار لطلب جديد"
+
+#~ msgid "Send sms when submit new order"
+#~ msgstr "إرسال رسالة نصية عند تلقي طلب جديد"
+
+#~ msgid "Order id: %s, Order status: %s"
+#~ msgstr "رقم الطلب: %s, حالة الطلب: %s"
+
+#~ msgid "Notify to customer order"
+#~ msgstr "إخطار العميل بالطلب"
+
+#~ msgid "Send sms to customer when submit the order"
+#~ msgstr "إخطار العميل عند استقبل الطلب"
+
+#~ msgid ""
+#~ "Order id: %s, Order status: %s, Customer name: %s, Customer family: %s"
+#~ msgstr "رقم الطلب: %s, حالة الطلب: %s, اسم العميل: %s, عائلة العميل: %s"
+
+#~ msgid "Notify of stock"
+#~ msgstr "إخطار بالمخزون"
+
+#~ msgid "Send sms when stock is low"
+#~ msgstr "إرسال رسالة نصية عند إنخفاض المخزون"
+
+#~ msgid "Product id: %s, Product name: %s"
+#~ msgstr "رقم المنتج: %s, اسم المنتج: %s"
+
+#~ msgid "Send sms to customer when status is changed"
+#~ msgstr "إرسال رسالة نصية للعميل عند تغيير حالة الطلب"
+
+#~ msgid ""
+#~ "Order status: %s, Order number: %s, Customer name: %s, Customer family: %s"
+#~ msgstr "حالة الطلب: %s, رقم الطلب: %s, اسم العميل: %s, عائلة العميل: %s"
+
+#, fuzzy
+#~ msgid "Email: %s, First name: %s, Last name: %s"
+#~ msgstr "البريد: %s, الاسم الأول: %s, الأسم الأخير: %s"
+
+#~ msgid "Active"
+#~ msgstr "نشط"
+
+#~ msgid "Upload File"
+#~ msgstr "تحميل ملف"
+
+#~ msgid "Professional Package WP SMS"
+#~ msgstr "الحزمة المطورة للرسائل النصية"
+
+#~ msgid "Premium list"
+#~ msgstr "قائمة التميز"

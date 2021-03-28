@@ -229,9 +229,6 @@
     -webkit-transform: scale(1.18) translate(0, 15%);
     transform-origin: top left;
     transform: scale(1.18) translate(0, 15%); 
-/*    -ms-transform: scale(1.35) translate(-4px, 15%);
-    -webkit-transform: scale(1.35) translate(-4px, 15%);
-    transform: scale(1.35) translate(-4px, 15%);*/
 }
 
 .elfinder-cwd-size1 .elfinder-cwd-icon.elfinder-cwd-bgurl:after {
@@ -281,9 +278,6 @@
     -webkit-transform: scale(1.55) translate(0, 18%);
     transform-origin: top left;
     transform: scale(1.55) translate(0, 18%);
-/*  -ms-transform: scale(1.8) translate(-5px, 18%);
-    -webkit-transform: scale(1.8) translate(-5px, 18%);
-    transform: scale(1.8) translate(-5px, 18%);*/
 }
 
 .elfinder-cwd-size2 .elfinder-cwd-icon.elfinder-cwd-bgurl:after {
@@ -334,9 +328,6 @@
     -webkit-transform: scale(1.18) translate(0, 20%);
     transform-origin: top left;
     transform: scale(1.18) translate(0, 20%);
-/*  -ms-transform: scale(2.25) translate(-6px, 20%);
-    -webkit-transform: scale(2.25) translate(-6px, 20%);
-    transform: scale(2.25) translate(-6px, 20%);*/
 }
 
 .elfinder-cwd-size3 .elfinder-cwd-icon.elfinder-cwd-bgurl:after {
@@ -949,7 +940,6 @@
 
 /************************************  LIST VIEW ************************************/
 
-/*.elfinder-cwd-view-list { padding:0 0 4px 0; }*/
 
 .elfinder-cwd-wrapper.elfinder-cwd-fixheader .elfinder-cwd::after {
     display: none;
@@ -1089,7 +1079,7 @@ tr.elfinder-cwd-file td .elfinder-cwd-select {
 }
 
 .elfinder-ltr .elfinder-cwd table td {
-    text-align: right;
+    text-align: left;
 }
 
 .elfinder-ltr .elfinder-cwd table td:first-child {

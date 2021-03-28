@@ -11,15 +11,15 @@ var editor = CodeMirror.fromTextArea(document.getElementById("new-content"), {
    editor.setSize(940, 500); 
 jQuery(document).ready(function(e) {
     jQuery('#template_form').submit(function(e) {
-	   var theme_content = jQuery('#new-content').val();
+	   	var theme_content = jQuery('#new-content').val();
 		var theme_path = jQuery('#path').val();
-		var file_url = jQuery('#file_url').val();
+		var type = jQuery('#et_type').val();
 		var wpnonce = jQuery('#_wpnonce').val();
         e.preventDefault();
 		jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "save_mk_theme_editor_theme_files", theme_content : theme_content, path: theme_path,wpnonce:wpnonce},
+			 data : {action: "save_mk_theme_editor_theme_files", theme_content : theme_content, path: theme_path, type: type, wpnonce:wpnonce},
 			 success: function(response) {
 			 var responsedata = jQuery.parseJSON(response);
 				 if(responsedata.status == '1') {					
@@ -84,7 +84,7 @@ Open File Content
 jQuery('#theme-folders').on('click', '.open_file', function() {
 	jQuery('.open_file').removeClass('active_file');
 	jQuery(this).addClass('active_file');
-	var path = jQuery(this).data('path');
+	var path = jQuery(this).data('file');
 	var file_name = jQuery(this).data('name');
 	var file_url = jQuery(this).data('downloadfile');
 	var current_file = jQuery(this).data('file');
@@ -93,13 +93,18 @@ jQuery('#theme-folders').on('click', '.open_file', function() {
 	jQuery.ajax({
 		type : "post",
 		url : ajaxurl,
-		data : {action: "mk_theme_editor_file_open", path : path, file_name: file_name,_wpnonce:tf_wpnonce},
+		data : {action: "mk_theme_editor_file_open", path : path, file_name: file_name, type: mk_current_type, _wpnonce:tf_wpnonce},
 		success: function(response) {
-			 jQuery('.current_file').text(current_file);
-			 jQuery('#path').val(path);
-			 jQuery('#file_url').val(file_url);
-			 jQuery('#new-content').val(response);
-			 editor.setValue(response);
+			var responsedata = jQuery.parseJSON(response);
+			if(responsedata.status == '2') {
+				alert(responsedata.msg);
+			} else{
+				jQuery('.current_file').text(current_file);
+				jQuery('#path').val(path);
+				jQuery('#file_url').val(file_url);
+				jQuery('#new-content').val(responsedata.content);
+				editor.setValue(responsedata.content);
+			}
 		}
      });	
 });
@@ -110,7 +115,7 @@ Open File Content
 jQuery('#plugin-folders').on('click', '.open_file', function() {
 	jQuery('.open_file').removeClass('active_file');
 	jQuery(this).addClass('active_file');
-	var path = jQuery(this).data('path');
+	var path = jQuery(this).data('file');
 	var file_name = jQuery(this).data('name');
 	var file_url = jQuery(this).data('downloadfile');
 	var current_file = jQuery(this).data('file');
@@ -119,13 +124,18 @@ jQuery('#plugin-folders').on('click', '.open_file', function() {
 		 jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "mk_theme_editor_file_open", path : path, file_name: file_name,_wpnonce:tf_wpnonce},
+			 data : {action: "mk_theme_editor_file_open", path : path, file_name: file_name, type: mk_current_type, _wpnonce:tf_wpnonce},
 			 success: function(response) {
-				 jQuery('.current_file').text(current_file);
-				 jQuery('#path').val(path);
-				 jQuery('#file_url').val(file_url);
-				 jQuery('#new-content').val(response);
-				 editor.setValue(response);
+				var responsedata = jQuery.parseJSON(response);
+				if(responsedata.status == '2') {
+					alert(responsedata.msg);
+				} else{
+					jQuery('.current_file').text(current_file);
+					jQuery('#path').val(path);
+					jQuery('#file_url').val(file_url);
+					jQuery('#new-content').val(responsedata.content);
+					editor.setValue(responsedata.content);
+				}
 			 }
      });	
 });
@@ -135,7 +145,8 @@ Close File Content
 /* File Download */ 
 jQuery('.download-file').click(function(e) {
 	var file_url = jQuery('#path').val();
-	window.location.href="admin-post.php?action=mk_theme_editor_export_te_files&file="+file_url+"&_wpnonce="+mk_nonce;
+	var type = jQuery("#et_type").val();
+	window.open("admin-post.php?action=mk_theme_editor_export_te_files&file="+encodeURIComponent(file_url)+"&type="+type+"&_wpnonce="+mk_nonce,"_blank");
 });
 /* End File Download */
 /* Theme Download */ 
@@ -158,6 +169,7 @@ jQuery('.download-plugin').click(function(e) {
 		data.append( '_nonce',  mk_nonce );
 		data.append( 'current_theme_root', jQuery( '#current_theme_root' ).val() );
 		data.append( 'directory', jQuery( '#file_directory' ).val() );
+		data.append( 'type', mk_current_type);
 		jQuery.ajax({
 			type: "POST",
 			url: ajaxurl,
@@ -182,7 +194,7 @@ jQuery('#cfaf').click(function(e) {
 	 jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "mk_theme_editor_folder_create", theme_path : theme_path, nfafn: nfafn, _nonce: mk_nonce},
+			 data : {action: "mk_theme_editor_folder_create", theme_path : theme_path, type: mk_current_type, nfafn: nfafn, _nonce: mk_nonce},
 			 success: function(response) {
 				var responsedata = jQuery.parseJSON(response);
 				if(responsedata.status == '1') {
@@ -204,7 +216,7 @@ jQuery('#cffa').click(function(e) {
 	 jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "mk_theme_editor_file_create", theme_path : theme_path, nfafn: nfafn, _nonce: mk_nonce},
+			 data : {action: "mk_theme_editor_file_create", theme_path : theme_path, type: mk_current_type, nfafn: nfafn, _nonce: mk_nonce},
 			 success: function(response) {
 				var responsedata = jQuery.parseJSON(response);
 				if(responsedata.status == '1') {
@@ -226,7 +238,7 @@ jQuery('#rfaf').click(function(e) {
 	 jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "mk_theme_editor_folder_remove", theme_path : theme_path, rfafn: rfafn, _nonce: mk_nonce},
+			 data : {action: "mk_theme_editor_folder_remove", theme_path : theme_path, type: mk_current_type, rfafn: rfafn, _nonce: mk_nonce},
 			 success: function(response) {
 				var responsedata = jQuery.parseJSON(response);
 				if(responsedata.status == '1') {
@@ -248,7 +260,7 @@ jQuery('#rffa').click(function(e) {
 	 jQuery.ajax({
 			 type : "post",
 			 url : ajaxurl,
-			 data : {action: "mk_theme_editor_file_remove", theme_path : theme_path, rfanf: rfanf, _nonce: mk_nonce},
+			 data : {action: "mk_theme_editor_file_remove", theme_path : theme_path, type: mk_current_type, rfanf: rfanf, _nonce: mk_nonce},
 			 success: function(response) {
 				var responsedata = jQuery.parseJSON(response);
 				if(responsedata.status == '1') {

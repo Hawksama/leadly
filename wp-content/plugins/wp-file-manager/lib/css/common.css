@@ -88,7 +88,6 @@ div.elfinder {
 .elfinder *:not(input):not(textarea):not(select):not([contenteditable=true]),
 .elfinder-contextmenu *:not(input):not(textarea):not(select):not([contenteditable=true]) {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    /*-webkit-touch-callout:none;*/
     -webkit-user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -285,4 +284,11 @@ div.elfinder {
 
 .elfinder-rtl .elfinder-ui-progressbar {
     right: 0;
+}
+
+/* Word Break Pop*/
+.ui-dialog.elfinder-dialog-info .elfinder-info-title .elfinder-cwd-icon + strong{ float: left; width: calc(100% - 65px); word-break: break-all; display: block; }
+.ui-dialog.elfinder-dialog-info .elfinder-info-tb .elfinder-info-path,
+.ui-dialog.elfinder-dialog-info .elfinder-info-tb .elfinder-info-link{
+    word-break: break-all;
 }

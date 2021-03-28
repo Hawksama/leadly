@@ -3,7 +3,7 @@
  * Class Google\Site_Kit\Modules\AdSense\Tag_Guard
  *
  * @package   Google\Site_Kit\Modules\AdSense
- * @copyright 2020 Google LLC
+ * @copyright 2021 Google LLC
  * @license   https://www.apache.org/licenses/LICENSE-2.0 Apache License 2.0
  * @link      https://sitekit.withgoogle.com
  */
@@ -30,6 +30,12 @@ class Tag_Guard extends Module_Tag_Guard {
 	 */
 	public function can_activate() {
 		$settings = $this->settings->get();
+
+		// For web stories, the tag must only be rendered if a story-specific ad unit is provided.
+		if ( is_singular( 'web-story' ) && empty( $settings['webStoriesAdUnit'] ) ) {
+			return false;
+		}
+
 		return ! empty( $settings['useSnippet'] ) && ! empty( $settings['clientID'] );
 	}
 

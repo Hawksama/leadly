@@ -1,14 +1,14 @@
-# Copyright (C) 2020 weDevs
+# Copyright (C) 2021 weDevs
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Project Manager 2.4.8\n"
+"Project-Id-Version: WP Project Manager 2.4.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cpm\n"
-"POT-Creation-Date: 2020-12-18 08:18:55+00:00\n"
+"POT-Creation-Date: 2021-03-17 17:33:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: wp-vue-i18n 1.1.3\n"
@@ -151,21 +151,21 @@ msgstr ""
 msgid "You have no permission to create project."
 msgstr ""
 
-#: core/Promotions/Offers.php:30
+#: core/Promotions/Offers.php:27
 msgid ""
-"Enjoy Up To <strong>50% OFF</strong> on <strong>WP Project Manager "
-"Pro</strong>. Get Your "
+"It's Our Birthday! Enjoy Up To <strong>45% OFF</strong> on <strong>WP "
+"Project Manager Pro</strong>. "
 msgstr ""
 
-#: core/Promotions/Offers.php:94
-msgid "Holiday Deals Now"
+#: core/Promotions/Offers.php:61
+msgid "Get Now"
 msgstr ""
 
-#: core/Promotions/Offers.php:138 core/Promotions/Wedevs_Promotion.php:190
+#: core/Promotions/Offers.php:129 core/Promotions/Wedevs_Promotion.php:190
 msgid "Invalid nonce"
 msgstr ""
 
-#: core/Promotions/Offers.php:142 core/Promotions/Wedevs_Promotion.php:194
+#: core/Promotions/Offers.php:134 core/Promotions/Wedevs_Promotion.php:194
 msgid "You have no permission to do that"
 msgstr ""
 
@@ -2475,7 +2475,7 @@ msgstr ""
 msgid "Back to Task Lists"
 msgstr ""
 
-#: views/assets/src/components/project-task-lists/single-list.vue:465
+#: views/assets/src/components/project-task-lists/single-list.vue:467
 msgid "Delete List"
 msgstr ""
 

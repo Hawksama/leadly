@@ -64,13 +64,22 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 				'render'   => array( $this, 'tab_help' ),
 				'priority' => 10,
 			),
-			'system-info' => array(
+		);
+
+		if ( $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
+			$wsal_help_tabs['contact'] = array(
+				'name'     => __( 'Contact Us', 'wp-security-audit-log' ),
+				'link'     => add_query_arg( 'tab', 'contact', $this->GetUrl() ),
+				'render'   => array( $this, 'tab_contact_us' ),
+				'priority' => 15,
+			);
+			$wsal_help_tabs['system-info'] = array(
 				'name'     => __( 'System Info', 'wp-security-audit-log' ),
 				'link'     => add_query_arg( 'tab', 'system-info', $this->GetUrl() ),
 				'render'   => array( $this, 'tab_system_info' ),
 				'priority' => 20,
-			),
-		);
+			);
+		}
 
 		/**
 		 * Filter: `wsal_help_tabs`
@@ -115,7 +124,7 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 	 * Method: Get View Name.
 	 */
 	public function GetName() {
-		return __( 'Help', 'wp-security-audit-log' );
+		return __( 'Help & Contact Us', 'wp-security-audit-log' );
 	}
 
 	/**
@@ -141,11 +150,12 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 	 * Method: Get View.
 	 */
 	public function Render() {
+		$can_current_user_edit = $this->_plugin->settings()->CurrentUserCan( 'edit' );
 		?>
 		<nav id="wsal-tabs" class="nav-tab-wrapper">
 			<?php
 			foreach ( $this->wsal_help_tabs as $tab_id => $tab ) :
-				if ( 'system-info' !== $this->current_tab || ( 'system-info' === $this->current_tab && $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) ) :
+				if ( 'system-info' !== $this->current_tab || ( 'system-info' === $this->current_tab && $can_current_user_edit ) ) :
 					?>
 					<a href="<?php echo esc_url( $tab['link'] ); ?>" class="nav-tab <?php echo ( $tab_id === $this->current_tab ) ? 'nav-tab-active' : false; ?>"><?php echo esc_html( $tab['name'] ); ?></a>
 					<?php
@@ -158,7 +168,7 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 			<div class="wsal-help-main">
 				<?php
 				if ( ! empty( $this->current_tab ) && ! empty( $this->wsal_help_tabs[ $this->current_tab ]['render'] ) ) {
-					if ( 'system-info' !== $this->current_tab || ( 'system-info' === $this->current_tab && $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) ) {
+					if ( 'system-info' !== $this->current_tab || ( 'system-info' === $this->current_tab && $can_current_user_edit ) ) {
 						call_user_func( $this->wsal_help_tabs[ $this->current_tab ]['render'] );
 					}
 				}
@@ -176,7 +186,7 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 		<div class="wsal-help-section">
 			<h2 class="wsal-tab__heading"><?php esc_html_e( 'Getting Started', 'wp-security-audit-log' ); ?></h2>
 			<p><?php esc_html_e( 'Getting started with WP Activity Log is really easy; once the plugin is installed it will automatically keep a log of everything that is happening on your website and you do not need to do anything. Watch the video below for a quick overview of the plugin.', 'wp-security-audit-log' ); ?></p>
-			<p><iframe class="wsal-youtube-embed" width="100%" height="315" src="https://www.youtube.com/embed/1nopATCS-CQ?rel=0" frameborder="0" allowfullscreen></iframe></p>
+			<p><iframe class="wsal-youtube-embed" width="100%" height="315" src="https://www.youtube.com/embed/pgFEMIvKFTA?rel=0" frameborder="0" allowfullscreen></iframe></p>
 		</div>
 		<div class="wsal-help-section">
 			<h2 class="wsal-tab__heading"><?php esc_html_e( 'Plugin Support', 'wp-security-audit-log' ); ?></h2>
@@ -222,6 +232,28 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Tab: Contact us.
+	 */
+	public function tab_contact_us() {
+		?>
+		<h3 class="wsal-tab__heading"><?php esc_html_e( 'Contact Us', 'wp-security-audit-log' ); ?></h3>
+			<style type="text/css">
+			.fs-secure-notice {
+				position: relative !important;
+				top: 0 !important;
+				left: 0 !important;
+			}
+			.fs-full-size-wrapper {
+			  margin: 10px 20px 0 2px !important;
+			}
+		</style>
+		<?php
+		$freemius_id = wsal_freemius()->get_id();
+		$vars = array( 'id' => $freemius_id );
+		echo fs_get_template( 'contact.php', $vars );
 	}
 
 	/**
@@ -296,6 +328,7 @@ class WSAL_Views_Help extends WSAL_AbstractView {
 	 * Method: Get system information.
 	 *
 	 * @return string - System information.
+	 * @throws Freemius_Exception
 	 */
 	public function get_sysinfo() {
 		// System info.

@@ -54,6 +54,7 @@ class Front_End {
 		add_theme_support( 'editor-color-palette', $this->get_gutenberg_color_palette() );
 		add_theme_support( 'fl-theme-builder-headers' );
 		add_theme_support( 'fl-theme-builder-footers' );
+		add_theme_support( 'fl-theme-builder-parts' );
 		add_theme_support( 'header-footer-elementor' );
 		add_theme_support( 'lifterlms-sidebars' );
 		add_theme_support( 'lifterlms' );
@@ -86,43 +87,44 @@ class Front_End {
 	 * Get the color palette in Gutenberg from Customizer colors.
 	 */
 	private function get_gutenberg_color_palette() {
+		$prefix                  = ( apply_filters( 'ti_wl_theme_is_localized', false ) ? __( 'Theme', 'neve' ) : 'Neve' ) . ' - ';
 		$gutenberg_color_palette = array();
 		$from_global_colors      = [
 			'neve-link-color'       => array(
 				'val'   => 'var(--nv-primary-accent)',
-				'label' => __( 'Neve - Primary Accent', 'neve' ),
+				'label' => $prefix . __( 'Primary Accent', 'neve' ),
 			),
 			'neve-link-hover-color' => array(
 				'val'   => 'var(--nv-secondary-accent)',
-				'label' => __( 'Neve - Secondary Accent', 'neve' ),
+				'label' => $prefix . __( 'Secondary Accent', 'neve' ),
 			),
 			'nv-site-bg'            => array(
 				'val'   => 'var(--nv-site-bg)',
-				'label' => __( 'Neve - Site Background', 'neve' ),
+				'label' => $prefix . __( 'Site Background', 'neve' ),
 			),
 			'nv-light-bg'           => array(
 				'val'   => 'var(--nv-light-bg)',
-				'label' => __( 'Neve - Light Background', 'neve' ),
+				'label' => $prefix . __( 'Light Background', 'neve' ),
 			),
 			'nv-dark-bg'            => array(
 				'val'   => 'var(--nv-dark-bg)',
-				'label' => __( 'Neve - Dark Background', 'neve' ),
+				'label' => $prefix . __( 'Dark Background', 'neve' ),
 			),
 			'neve-text-color'       => array(
 				'val'   => 'var(--nv-text-color)',
-				'label' => __( 'Neve - Text Color', 'neve' ),
+				'label' => $prefix . __( 'Text Color', 'neve' ),
 			),
 			'nv-text-dark-bg'       => array(
 				'val'   => 'var(--nv-text-dark-bg)',
-				'label' => __( 'Neve - Text Dark Background', 'neve' ),
+				'label' => $prefix . __( 'Text Dark Background', 'neve' ),
 			),
 			'nv-c-1'                => array(
 				'val'   => 'var(--nv-c-1)',
-				'label' => __( 'Neve - Extra Color 1', 'neve' ),
+				'label' => $prefix . __( 'Extra Color 1', 'neve' ),
 			),
 			'nv-c-2'                => array(
 				'val'   => 'var(--nv-c-2)',
-				'label' => __( 'Neve - Extra Color 2', 'neve' ),
+				'label' => $prefix . __( 'Extra Color 2', 'neve' ),
 			),
 		];
 
@@ -443,7 +445,7 @@ class Front_End {
 			wp_enqueue_style( 'neve-woocommerce' );
 		}
 
-		wp_register_style( 'neve-style', get_template_directory_uri() . '/style' . ( ( NEVE_DEBUG ) ? '' : '.min' ) . '.css', array(), apply_filters( 'neve_version_filter', NEVE_VERSION ) );
+		wp_register_style( 'neve-style', get_template_directory_uri() . '/style-main' . ( ( NEVE_DEBUG ) ? '' : '.min' ) . '.css', array(), apply_filters( 'neve_version_filter', NEVE_VERSION ) );
 		wp_style_add_data( 'neve-style', 'rtl', 'replace' );
 		wp_style_add_data( 'neve-style', 'suffix', '.min' );
 		wp_enqueue_style( 'neve-style' );

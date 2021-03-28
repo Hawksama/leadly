@@ -6,7 +6,7 @@
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px;
     border-radius: 7px;
-    padding: 20px 0 40px 0;
+    padding: 32px 0 40px 0;
 }
 
 .elfinder-navdock .elfinder-quicklook {
@@ -37,7 +37,7 @@
 
 /* quicklook fullscreen window */
 .elfinder-quicklook.elfinder-quicklook-fullscreen {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -58,18 +58,12 @@
 
 /* hide titlebar in fullscreen mode */
 .elfinder-quicklook-fullscreen .elfinder-quicklook-titlebar,
-.elfinder-quicklook-fullscreen.elfinder-quicklook .ui-resizable-handle {
-    display: none;
-}
+.elfinder-quicklook-fullscreen.elfinder-quicklook .ui-resizable-handle{ display: none; }
 
 /* hide preview border in fullscreen mode */
 .elfinder-quicklook-fullscreen .elfinder-quicklook-preview {
     border: 0 solid;
 }
-
-/*.elfinder-quicklook-fullscreen iframe {
-	height: 100%;
-}*/
 
 .elfinder-quicklook-cover {
     width: 100%;
@@ -93,7 +87,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
+    width: calc(100% - 12px);
     height: 20px;
     -moz-border-radius-topleft: 7px;
     -webkit-border-top-left-radius: 7px;
@@ -103,6 +97,7 @@
     border-top-right-radius: 7px;
     border: none;
     line-height: 1.2;
+    padding: 6px;
 }
 
 .elfinder-navdock .elfinder-quicklook-titlebar {

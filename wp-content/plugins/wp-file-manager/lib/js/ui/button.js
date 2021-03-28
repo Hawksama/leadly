@@ -18,7 +18,7 @@ jQuery.fn.elfinderbutton = function(cmd) {
 			menu,
 			text     = jQuery('<span class="elfinder-button-text">'+cmd.title+'</span>'),
 			prvCname = cmd.className? cmd.className : cmd.name,
-			button   = jQuery(this).addClass('ui-state-default elfinder-button')
+			button   = jQuery(this).addClass('ui-state-default elfinder-button tool-op-'+prvCname)
 				.attr('title', cmd.title)
 				.append('<span class="elfinder-button-icon elfinder-button-icon-' + prvCname + '"></span>', text)
 				.on('mouseenter mouseleave', function(e) { !button.hasClass(disabled) && button[e.type == 'mouseleave' ? 'removeClass' : 'addClass'](hover);})

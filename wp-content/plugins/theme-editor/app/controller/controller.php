@@ -95,32 +95,47 @@ class theme_editor_controller {
 		  }
 	}
 	public function export_te_files() {
-		$nonce = $_REQUEST['_wpnonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-			$file_path = $_GET['file'];
-			if(file_exists( $file_path )) {
-			$this->theme_controller->download_file( $file_path, 'theme' );
-			} else {
-			wp_die('File Not Exists! <a href="themes.php?page=theme_editor_theme">&larr; Back</a>');
+		$nonce = sanitize_text_field($_REQUEST['_wpnonce']);
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+			$file_path = urldecode(sanitize_text_field($_GET['file']));
+			//$file_path = str_replace('\\\\','\\',$file_path);
+			if(strpos($file_path, '..') !== false){
+				wp_die('Invalid request! <a href="themes.php?page=theme_editor_theme">&larr; Back</a>');
+			} else{
+				$type = base64_decode($_REQUEST["type"]);
+				$file_path = $type == "plugins" ? WP_PLUGIN_DIR."/".ltrim($file_path,'/') : get_theme_root()."/".ltrim($file_path,'/');
+				if(file_exists( $file_path )) {
+					$this->theme_controller->download_file( $file_path, 'theme' );
+				} else {
+					wp_die('File Not Exists! <a href="themes.php?page=theme_editor_theme">&larr; Back</a>');
+				}
 			}
 		}
 	}
 	
 	public function download_te_theme() {
-		$nonce = $_REQUEST['_wpnonce'];
-		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-			$theme_name = $_GET['theme_name'];
-			if(!empty($theme_name)) {
-			  $this->theme_controller->download_theme( $theme_name );
+		$nonce = sanitize_text_field($_REQUEST['_wpnonce']);
+		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options') && is_admin()) {
+			$theme_name = sanitize_text_field($_GET['theme_name']);
+			if(strpos($theme_name, '..') !== false){
+				wp_die('Invalid request! <a href="themes.php?page=theme_editor_theme">&larr; Back</a>');
+			} else{
+				if(!empty($theme_name)) {
+					$this->theme_controller->download_theme( $theme_name );
+				}
 			}
 		}
 	}	
 	public function download_te_plugin() {
-		$nonce = $_REQUEST['_wpnonce'];
+		$nonce = sanitize_text_field($_REQUEST['_wpnonce']);
 		if(wp_verify_nonce( $nonce, 'mk-fd-nonce') && current_user_can('manage_options')) {
-			$plugin_name = $_GET['plugin_name'];
-			if(!empty($plugin_name)) {
-			  $this->plugin_controller->download_plugin( $plugin_name );
+			$plugin_name = sanitize_text_field($_GET['plugin_name']);
+			if(strpos($plugin_name, '..') !== false){
+				wp_die('Invalid request! <a href="admin.php?page=theme_editor_plugin">&larr; Back</a>');
+			} else{
+				if(!empty($plugin_name)) {
+					$this->plugin_controller->download_plugin( $plugin_name );
+				}
 			}
 		}
 	}	

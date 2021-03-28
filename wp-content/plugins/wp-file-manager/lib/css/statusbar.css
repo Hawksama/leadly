@@ -137,9 +137,12 @@
 
 .elfinder-ltr .elfinder-stat-size {
     text-align: right;
-    float: right\9;
+    float: right\9; 
+    padding-right: 10px;
 }
-
+.elfinder-ltr .elfinder-stat-size > .elfinder-stat-size {
+    padding-right: 0px;
+}
 .elfinder-rtl .elfinder-stat-size {
     text-align: left;
     float: left\9;

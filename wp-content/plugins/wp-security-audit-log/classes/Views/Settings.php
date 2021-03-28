@@ -213,7 +213,7 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Method: Check security token.
 	 */
 	public function AjaxCheckSecurityToken() {
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			echo wp_json_encode(
 				array(
 					'success' => false,
@@ -262,7 +262,7 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Method: Run cleanup.
 	 */
 	public function AjaxRunCleanup() {
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			die( 'Access Denied.' );
 		}
 
@@ -444,8 +444,12 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Tab: `General`
 	 */
 	private function tab_general() {
+        $settings = $this->_plugin->settings();
+        $enforced_settings = $settings->get_mainwp_enforced_settings();
+        $login_page_notification_settings_enforced_by_mainwp = array_key_exists('login_notification_enabled', $enforced_settings);
+        $incognito_setting_enforced_by_mainwp = array_key_exists('incognito_mode_enabled', $enforced_settings);
 		?>
-				<h3><?php esc_html_e( 'Use infinite scroll or pagination for the event viewer?', 'wp-security-audit-log' ); ?></h3>
+        <h3><?php esc_html_e( 'Use infinite scroll or pagination for the event viewer?', 'wp-security-audit-log' ); ?></h3>
         <p class="description">
 			<?php
 			echo sprintf(
@@ -600,7 +604,7 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
             <tr>
                 <th><label for="login_page_notification"><?php esc_html_e( 'Login Page Notification', 'wp-security-audit-log' ); ?></label></th>
                 <td>
-                    <fieldset>
+                    <fieldset <?php echo disabled($login_page_notification_settings_enforced_by_mainwp); ?>>
 						<?php
 						// Get login page notification checkbox.
 						$wsal_lpn = $this->_plugin->settings()->is_login_page_notification();
@@ -875,13 +879,13 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 		<!-- From Email & Name -->
 
 		<h3><?php esc_html_e( 'Do you want to hide the plugin from the list of installed plugins?', 'wp-security-audit-log' ); ?></h3>
-		<p class="description"><?php esc_html_e( 'By default all installed plugins are listed in the plugins page. If you do not want other administrators to see that you installed this plugin set this option to Yes so the WP Activity Log is not listed as an installed plugin on this website.', 'wp-security-audit-log' ); ?></p>
+		<p class="description"><?php esc_html_e( 'By default all installed plugins are listed in the plugins page. Set this option to Yes remove WP Activity Log from the list of installed plugins for users who are unable to access the WP Activity Log settings.', 'wp-security-audit-log' ); ?></p>
 		<table class="form-table wsal-tab">
 			<tbody>
 				<tr>
 					<th><label for="incognito_yes"><?php esc_html_e( 'Hide Plugin in Plugins Page', 'wp-security-audit-log' ); ?></label></th>
 					<td>
-						<fieldset>
+                        <fieldset <?php echo disabled( $incognito_setting_enforced_by_mainwp ); ?>>
 							<label for="incognito_yes">
 								<input type="radio" name="Incognito" value="yes" id="incognito_yes" <?php checked( $this->_plugin->settings()->IsIncognito() ); ?> />
 								<?php esc_html_e( 'Yes, hide the plugin from the list of installed plugins', 'wp-security-audit-log' ); ?>
@@ -1194,7 +1198,6 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 				</tr>
 			</tbody>
 		</table>
-
 		<!-- / File Changes Logging Tab -->
 		<?php
 	}
@@ -1338,76 +1341,11 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Tab: `Advanced Settings`
 	 */
 	private function tab_advanced_settings() {
-		$location = $this->_plugin->GetGlobalSetting( 'custom-logging-dir', $this->_plugin->settings()->get_default_working_dir_relative() );
 		?>
         <p class="description">
 			<?php esc_html_e( 'These settings are for advanced users.', 'wp-security-audit-log' ); ?>
 			<?php echo sprintf( __( 'If you have any questions <a href="https://wpactivitylog.com/contact/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=settings+pages" target="_blank">contact us</a>.', 'wp-security-audit-log' ), $this->_plugin->allowed_html_tags ); ?>
 		</p>
-
-        <h3><?php esc_html_e( 'Where do you want the plugin\'s working directory for log files, reports and other files?', 'wp-security-audit-log' ); ?></h3>
-        <p class="description"><?php esc_html_e( 'The plugin stores the reports it generates, a number of log files and the request log in this working directory. By default the directory is in the default WordPress uploads directory. Use the below setting to create the working directory in a different location. Note that the plugin requires write permissions to this directory. Please specify the relative path of the directory.', 'wp-security-audit-log' ); ?></p>
-        <table class="form-table wsal-tab">
-            <tbody>
-            <!-- custom log directory -->
-            <tr>
-                <th><label><?php esc_html_e( 'Working directory location', 'wp-security-audit-log' ); ?></label></th>
-                <td>
-                    <fieldset>
-                        <label for="wsal-custom-logs-dir">
-                            <input type="text" name="wsal-custom-logs-dir" id="wsal-custom-logs-dir"
-                                   value="<?php echo esc_attr( $location ); ?>">
-                        </label>
-                        <p class="description">
-							<?php
-							echo wp_kses(
-								__( '<strong>Note:</strong> Enter a path from the root of your website: eg "/wp-content/uploads/wp-activity-log/".' ),
-								$this->_plugin->allowed_html_tags
-							);
-							?>
-                        </p>
-                    </fieldset>
-                </td>
-            </tr>
-            <!-- / custom log directory -->
-            </tbody>
-        </table>
-
-
-        <h3><?php esc_html_e( 'Troubleshooting setting: Keep a debug log of all the requests this website receives', 'wp-security-audit-log' ); ?></h3>
-        <p class="description"><?php esc_html_e( 'Only enable the request log on testing, staging and development website. Never enable logging on a live website unless instructed to do so. Enabling request logging on a live website may degrade the performance of the website.', 'wp-security-audit-log' ); ?></p>
-        <table class="form-table wsal-tab">
-            <tbody>
-            <tr>
-                <th><label><?php esc_html_e( 'Request Log', 'wp-security-audit-log' ); ?></label></th>
-                <td>
-                    <fieldset>
-						<?php $devoption_checked = $this->_plugin->settings()->IsDevOptionEnabled( WSAL_Settings::OPT_DEV_REQUEST_LOG ); ?>
-                        <label for="devoption_yes">
-                            <input type="radio" name="DevOptions" id="devoption_yes"
-								<?php checked( $devoption_checked, true ); ?>
-                                   value="<?php echo esc_attr( WSAL_Settings::OPT_DEV_REQUEST_LOG ); ?>">
-							<?php esc_html_e( 'Yes', 'wp-security-audit-log' ); ?>
-                        </label>
-                        <br>
-                        <label for="devoption_no">
-                            <input type="radio" name="DevOptions" id="devoption_no" <?php checked( $devoption_checked, false ); ?> value="0">
-							<?php esc_html_e( 'No', 'wp-security-audit-log' ); ?>
-                        </label>
-                        <p class="description">
-							<?php
-							echo wp_kses(
-								__( '<strong>Note:</strong> The requests debug log file is saved as request.log.php in the /wp-content/uploads/wp-activity-log/ directory.' ),
-								$this->_plugin->allowed_html_tags
-							);
-							?>
-                        </p>
-                    </fieldset>
-                </td>
-            </tr>
-            <!-- / Developer Options -->
-            </tbody>
-        </table>
 
         <h3><?php esc_html_e( 'Reset plugin settings to default', 'wp-security-audit-log' ); ?></h3>
         <p class="description"><?php _e( 'Use this button to <em>factory reset</em> the plugin. This means that all the configured settings will be reset to default and all email notifications, scheduled reports, external database / third party services connections, archiving and mirroring rule will be deleted. NOTE: the activity log data will not be purged. Use the setting below to purge the activity log.', 'wp-security-audit-log' ); ?></p>
@@ -1535,12 +1473,6 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 		$post_array = filter_input_array( INPUT_POST );
 
 		$this->_plugin->settings()->SetDeleteData( isset( $post_array['DeleteData'] ) ? sanitize_text_field( $post_array['DeleteData'] ) : false );
-		$this->_plugin->settings()->ClearDevOptions();
-		if ( isset( $post_array['DevOptions'] ) && 'r' === $post_array['DevOptions'] ) {
-			$this->_plugin->settings()->SetDevOptionEnabled( 'r', true );
-		} else {
-			$this->_plugin->settings()->SetDevOptionEnabled( 'r', false );
-		}
 
 		$stealth_mode = isset( $post_array['mwp_stealth_mode'] ) ? $post_array['mwp_stealth_mode'] : false;
 		if ( 'yes' === $stealth_mode ) {
@@ -1555,33 +1487,6 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 			}
 		} else {
 			$this->_plugin->settings()->deactivate_mainwp_child_stealth_mode();
-		}
-
-		$custom_logging_dir = $this->_plugin->settings()->get_default_working_dir_relative();
-		if ( isset( $post_array['wsal-custom-logs-dir'] ) ) {
-			$posted_logging_dir = filter_var( $post_array['wsal-custom-logs-dir'], FILTER_SANITIZE_STRING );
-			if (!empty($posted_logging_dir)) {
-				$custom_logging_dir = $posted_logging_dir;
-			}
-		}
-
-		if ( ! empty( $custom_logging_dir ) ) {
-			$custom_logging_path = trailingslashit( get_home_path() ) . ltrim( trailingslashit( $custom_logging_dir ), '/' );
-			if ( ! is_dir( $custom_logging_path ) || ! is_readable( $custom_logging_path ) || ! is_writable( $custom_logging_path ) ) {
-                $dir_made = wp_mkdir_p( $custom_logging_path );
-                if ( $dir_made ) {
-                    // make an empty index.php in the directory.
-                    @file_put_contents( $custom_logging_path . 'index.php', '<?php // Silence is golden' );
-                }
-
-				// if the directory was not made then we will display an error message
-				if ( ! $dir_made ) {
-				    //  throw an exception to display an error message
-				    throw new Exception( __( 'The plugin cannot create the directory for the log files. Please check permissions and configure it again.', 'wp-security-audit-log' ) );
-				}
-			}
-			// save.
-			$this->_plugin->SetGlobalSetting( 'custom-logging-dir', $custom_logging_dir );
 		}
 	}
 
@@ -1684,8 +1589,8 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Method: Ajax Request handler for AjaxGetAllUsers.
 	 */
 	public function AjaxGetAllUsers() {
-		// Die if user does not have permission to view.
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		// Die if user does not have permission to edit.
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			die( 'Access Denied.' );
 		}
 
@@ -1712,8 +1617,8 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * Method: Ajax Request handler for AjaxGetAllRoles.
 	 */
 	public function AjaxGetAllRoles() {
-		// Die if user does not have permission to view.
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		// Die if user does not have permission to edit.
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			die( 'Access Denied.' );
 		}
 
@@ -1742,8 +1647,8 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	 * @since 2.6.7
 	 */
 	public function AjaxGetAllCPT() {
-		// Die if user does not have permission to view.
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		// Die if user does not have permission to edit.
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			die( 'Access Denied.' );
 		}
 
@@ -1802,9 +1707,9 @@ class WSAL_Views_Settings extends WSAL_AbstractView {
 	/**
 	 * Method: Purge plugin occurrence & meta tables.
 	 */
-	public function purge_activity() {
+        public function purge_activity() {
 		// Die if user does not have permission to change settings.
-		if ( ! $this->_plugin->settings()->CurrentUserCan( 'view' ) ) {
+		if ( ! $this->_plugin->settings()->CurrentUserCan( 'edit' ) ) {
 			wp_send_json_error( esc_html__( 'Access Denied.', 'wp-security-audit-log' ) );
 		}
 

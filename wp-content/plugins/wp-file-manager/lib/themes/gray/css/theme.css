@@ -123,7 +123,6 @@ select.elfinder-tabstop.ui-state-hover {
   -webkit-box-shadow: none;
   box-shadow: none;
   opacity: inherit;
-  padding: 10px 60px;
 }
 .elfinder .elfinder-toast > div button.ui-button {
   color: #fff;
@@ -142,7 +141,7 @@ select.elfinder-tabstop.ui-state-hover {
 }
 .elfinder-toast-msg {
   font-family: "Noto Sans", sans-serif;
-  font-size: 17px;
+  font-size: 14px;
 }
 /**
  * For Ace Editor
@@ -763,10 +762,10 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   font: normal normal normal 14px/1 material;
 }
 .elfinder .elfinder-toast > div:before {
-  font-size: 45px;
+  font-size: 24px;
   position: absolute;
-  left: 5px;
-  top: 15px;
+  left: 15px;
+  top: 3px;
 }
 .elfinder .elfinder-toast > .toast-info,
 .elfinder .elfinder-toast > .toast-error,
@@ -1146,9 +1145,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   background: rgba(40, 42, 45, 0.79);
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  /*-webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;*/
   border: 0;
   margin: 0;
   padding: 0 23px;
@@ -1207,7 +1203,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
 .elfinder-cwd-file.ui-selected {
   background: #455158;
   color: #555;
-/*  width: 120px !important;*/
 }
 .elfinder-cwd-filename input,
 .elfinder-cwd-filename textarea {
@@ -1304,7 +1299,6 @@ div.elfinder-cwd-wrapper-list .ui-icon-grip-dotted-vertical {
   transition: all 0.4s;
   background: #fff;
   color: #222;
-  /*border: none;*/
 }
 .ui-button .ui-icon,
 .ui-button:active .ui-icon,
@@ -1319,7 +1313,6 @@ a.ui-button:active,
 .ui-button.ui-state-active {
   background: #3498DB;
   color: #fff;
-  /*border: none;*/
 }
 .ui-button:hover .ui-icon,
 a.ui-button:active .ui-icon,
@@ -1516,3 +1509,14 @@ a.ui-button:active .ui-icon,
 .elfinder .elfinder-contextmenu-rtl .elfinder-contextmenu-arrow:before {
     content: '\e858';
 }
+
+.elfinder .elfinder-cwd table thead td{ background: #cdcfd4; }
+
+.elfinder-contextmenu-item .elfinder-button-icon-opennew:before {content: ''; background: url(../images/icon-new-window.png) no-repeat; height: 16px; width: 16px; display: block; background-size: 15px; }
+
+.elfinder-contextmenu-item .elfinder-button-icon-hide:before {content: ''; background: url(../images/hide.png) no-repeat; height: 16px; width: 16px; display: block; background-size: 15px; }
+
+/* New Css Added Here  */
+.ui-front.elfinder-quicklook.elfinder-frontmost .ui-dialog-titlebar .ui-icon{ font-size: 11px; line-height: 17px; }
+.elfinder-notify-cancel .elfinder-notify-button.ui-icon.ui-icon-close{ line-height: 19px; font-size: 11px; color:#ffffff} 
+.elfinder-notify-cancel .elfinder-notify-button.ui-icon.ui-icon-close:hover{ background: #ff6252; }

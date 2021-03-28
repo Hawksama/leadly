@@ -43,7 +43,6 @@ class ACUI_ACF{
 	function import( $headers, $row, $user_id ){
 		$fields_positions = array();
 		$types = $this->get_user_fields_types();
-		$types_multiple = array( 'select', 'checkbox', 'radio', 'button_group' );
 
 		foreach ( $types as $key => $type ) {
 			$pos = array_search( $key, $headers );
@@ -62,14 +61,14 @@ class ACUI_ACF{
 			}*/
 
 			// slugs in relationship
-			if( $types[ $key ] == 'relationship' && (string)(int)$data[0] != $data[0] ){
+			if( $types[ $key ][ 'type' ] == 'relationship' ){
 				$data = explode( ',', $row[ $pos ] );
 
 				foreach ( $data as $it => $slug ) {
-					$data[ $it ] = $this->get_post_id_by_slug( $slug );
+					$data[ $it ] = ACUI_Helper::get_post_id_by_slug( $slug );
 				}
 			}
-			elseif( in_array( $types[ $key ], $types_multiple ) ){
+			elseif( $types[ $key ][ 'multiple' ] ){
 				$data = explode( ',', $row[ $pos ] );
 				array_filter( $data, function( $value ){ return $value !== ''; } );
 			}
@@ -123,63 +122,22 @@ class ACUI_ACF{
 	function get_user_fields_types(){
 		$fields = $this->get_user_fields();
 		$fields_keys = array();
+		$types_multiple = array( 'select', 'checkbox', 'radio', 'button_group' );
 
 		if( empty( $fields ) )
 			return array();
 
 		foreach ( $fields as $group => $fields_of_group ){
 			foreach ( $fields_of_group as $field ){
-				$fields_keys[ $field['name'] ] = $field['type'];
+				$fields_keys[ $field['name'] ] = [
+					'type' => $field['type'],
+					// 'select' type has a 'multiple' key which can be 0 or 1
+					'multiple' => !empty( $field['multiple'] ) || ( !isset( $field['multiple'] ) && in_array( $field['type'], $types_multiple ) ),
+				];
 			}
 		}
 
 		return $fields_keys;
-	}
-
-	function get_post_id_by_slug( $slug ){
-		global $wpdb;
-
-		$page_path     = rawurlencode( urldecode( $slug ) );
-		$page_path     = str_replace( '%2F', '/', $page_path );
-		$page_path     = str_replace( '%20', ' ', $page_path );
-		$parts         = explode( '/', trim( $page_path, '/' ) );
-		$parts         = array_map( 'sanitize_title_for_query', $parts );
-		$escaped_parts = esc_sql( $parts );
-
-		$in_string = "'" . implode( "','", $escaped_parts ) . "'";
-
-		$sql = "SELECT ID, post_name, post_parent, post_type FROM $wpdb->posts WHERE post_name IN ($in_string)";
-
-		$pages = $wpdb->get_results( $sql, OBJECT_K );
-
-		$revparts = array_reverse( $parts );
-
-		$foundid = 0;
-
-		foreach ( (array) $pages as $page ) {
-			if ( $page->post_name == $revparts[0] ) {
-				$count = 0;
-				$p     = $page;
-
-				while ( 0 != $p->post_parent && isset( $pages[ $p->post_parent ] ) ) {
-					$count++;
-					$parent = $pages[ $p->post_parent ];
-					if ( ! isset( $revparts[ $count ] ) || $parent->post_name != $revparts[ $count ] ) {
-						break;
-					}
-					$p = $parent;
-				}
-
-				if ( 0 == $p->post_parent && count( $revparts ) == $count + 1 && $p->post_name == $revparts[ $count ] ) {
-					$foundid = $page->ID;
-					if ( $page->post_type == $post_type ) {
-						break;
-					}
-				}
-			}
-		}
-
-		return $foundid;
 	}
 }
 

@@ -154,7 +154,7 @@ class ACUI_Exporter{
 		elseif( strtotime( $value ) ){ // dates in datetime format
 			return date( $datetime_format, strtotime( $value ) );
 		}
-		elseif( ( self::is_valid_timestamp( $value ) && strlen( $value ) > 4 ) || in_array( $key, $timestamp_keys) ){ // dates in timestamp format
+		elseif( is_int( $value ) && ( ( self::is_valid_timestamp( $value ) && strlen( $value ) > 4 ) || in_array( $key, $timestamp_keys) ) ){ // dates in timestamp format
 			return date( $datetime_format, $value );
 		}
 		else{
@@ -197,6 +197,10 @@ class ACUI_Exporter{
 			case 'TAB':
 				$delimiter = "\t";
 				break;
+
+            default:
+                $delimiter = ",";
+                break;
 		}
 
 		$data = array();
@@ -233,9 +237,6 @@ class ACUI_Exporter{
 			foreach ( $this->get_user_meta_keys() as $key ) {
 				$row[ $key ] = self::prepare( $key, get_user_meta( $user, $key, true ), $datetime_format, $user );
 			}
-
-			$row['user_login'] = '';
-			$row['user_email'] = '';
 
 			$row = $this->maybe_fill_empty_data( $row, $user );
 
