@@ -1,6 +1,6 @@
 <?php
 
-define( 'NEVE_CHILD_VERSION', '1.0.5' );
+define( 'NEVE_CHILD_VERSION', '1.2.1' );
 
 
 function nevechild_enqueue_scripts() {
@@ -635,7 +635,7 @@ function vcard_function( $data ) {
 		$vc->vcardInformation['nickname'] = $vpost['nickname'][0]; 
 	}
 
-	if (!empty($vpost['headline'][0])) {
+	if (!empty($vpost['job-title'][0])) {
 		$vc->vcardInformation['title'] = $vpost['job-title'][0]; 
 	}
 
@@ -666,9 +666,9 @@ function vcard_function( $data ) {
 	if ($data->get_param('id')) {
 		$vc->vcardInformation['photo'] = get_avatar_url($data->get_param('id')); 
 	}
-
-	if ($vpost['biography-short'][0]) {
-		$vc->vcardInformation['note'] = $vpost['biography-short'][0];
+	
+	if (!empty($vpost['headline2'][0])) {
+		$vc->vcardInformation['note'] = $vpost['headline2'][0];
 	}
 
 	if (!empty($vpost['twitter'][0])) {
