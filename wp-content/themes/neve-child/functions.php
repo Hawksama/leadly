@@ -1,6 +1,6 @@
 <?php
 
-define( 'NEVE_CHILD_VERSION', '1.2.1' );
+define( 'NEVE_CHILD_VERSION', '1.2.3' );
 
 
 function nevechild_enqueue_scripts() {
@@ -797,8 +797,8 @@ function wpb_demo_shortcode() {
     $message = '<a href="' . esc_url( $_SERVER['SERVER_NAME'] ) . '/wp-json/vcard/v1/user/id=' . um_profile_id() . '"';
     $message .= 'class="um-button um-alt save-contact"';
     $message .= 'target="_blank"';
-    $message .= 'title="SAVE CONTACT">';
-	$message .= 'SAVE CONTACT';
+    $message .= 'title="Save Contact">';
+	$message .= 'Save Contact';
 	$message .= '</a>';
     
 	return $message;
